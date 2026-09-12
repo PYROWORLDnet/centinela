@@ -286,7 +286,7 @@ input {
 }
 
 .pills button:hover {
-  color: #ececec;
+  color: var(--ink);
 }
 
 .pills button:active {
@@ -294,10 +294,9 @@ input {
 }
 
 .pills button.is-active {
-  background: rgba(255, 255, 255, 0.14);
-  color: #ececec;
+  background: #5ecfc4;
+  color: #1a1a1a;
   font-weight: 600;
-  box-shadow: inset 0 0 0 1px rgba(94, 207, 196, 0.45);
 }
 
 /* A · Isla — pastilla centrada arriba */

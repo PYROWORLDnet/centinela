@@ -1,6 +1,15 @@
 import pg from "pg";
 
 export function dbClient() {
+  const url = process.env.DATABASE_URL;
+  if (url) {
+    const clean = url.replace(/[?&]sslmode=[^&]*/g, "").replace(/\?$/, "");
+    const local = /localhost|127\.0\.0\.1/.test(clean);
+    return new pg.Client({
+      connectionString: clean,
+      ssl: local ? false : { rejectUnauthorized: false },
+    });
+  }
   return new pg.Client({
     host: process.env.PGHOST,
     port: Number(process.env.PGPORT || 5432),
@@ -37,7 +46,7 @@ export async function flushNodes(db, batch) {
   let i = 1;
   for (const n of unique) {
     values.push(
-      `($${i++}, $${i++}, $${i++}::text[], $${i++}, $${i++}, $${i++}, $${i++}, $${i++}, $${i++}::jsonb)`,
+      `($${i++}, $${i++}, $${i++}::text[], $${i++}, $${i++}, $${i++}, $${i++}, $${i++}, $${i++}, $${i++}, $${i++}, $${i++}::jsonb)`,
     );
     params.push(
       n.id,
@@ -46,19 +55,25 @@ export async function flushNodes(db, batch) {
       n.category,
       n.role || null,
       n.rnc || null,
+      n.salary ?? null,
+      n.netWorth ?? n.net_worth ?? null,
+      n.netWorthDelta ?? n.net_worth_delta ?? null,
       n.amount ?? null,
       n.summary || null,
       JSON.stringify(n.extra || {}),
     );
   }
   await db.query(
-    `INSERT INTO nodes (id, name, aliases, category, role, rnc, amount, summary, extra)
+    `INSERT INTO nodes (id, name, aliases, category, role, rnc, salary, net_worth, net_worth_delta, amount, summary, extra)
      VALUES ${values.join(",")}
      ON CONFLICT (id) DO UPDATE SET
        name = EXCLUDED.name,
        aliases = EXCLUDED.aliases,
        role = COALESCE(EXCLUDED.role, nodes.role),
        rnc = COALESCE(EXCLUDED.rnc, nodes.rnc),
+       salary = COALESCE(EXCLUDED.salary, nodes.salary),
+       net_worth = COALESCE(EXCLUDED.net_worth, nodes.net_worth),
+       net_worth_delta = COALESCE(EXCLUDED.net_worth_delta, nodes.net_worth_delta),
        amount = COALESCE(EXCLUDED.amount, nodes.amount),
        summary = COALESCE(EXCLUDED.summary, nodes.summary),
        extra = nodes.extra || EXCLUDED.extra`,

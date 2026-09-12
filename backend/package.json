@@ -10,7 +10,13 @@
     "ingest:dgcp": "node src/scripts/ingestDgcp.js",
     "download:dgcp": "node src/scripts/downloadDgcp.js",
     "download:prestamos": "node src/scripts/downloadPrestamos.js",
+    "download:nomina-camara": "node src/scripts/downloadNominaCamara.js",
+    "download:nomina-senado": "node src/scripts/downloadNominaSenado.js",
+    "download:djp": "node src/scripts/downloadDjp.js",
     "ingest:prestamos": "node src/scripts/ingestPrestamos.js",
+    "ingest:nomina-camara": "node src/scripts/ingestNominaCamara.js",
+    "ingest:nomina-senado": "node src/scripts/ingestNominaSenado.js",
+    "ingest:djp": "node src/scripts/ingestDjp.js",
     "refresh:diario": "node src/scripts/refreshDiario.js",
     "start:cron": "node src/scripts/refreshDiario.js"
   },
@@ -18,6 +24,8 @@
     "cors": "^2.8.5",
     "csv-parse": "^5.6.0",
     "express": "^5.1.0",
-    "pg": "^8.16.0"
+    "pdf-parse": "^2.4.5",
+    "pg": "^8.16.0",
+    "xlsx": "^0.18.5"
   }
 }

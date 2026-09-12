@@ -1,3 +1,6 @@
+import { loadEnv } from "./db/loadEnv.js";
+loadEnv();
+
 import express from "express";
 import cors from "cors";
 import {

@@ -58,6 +58,10 @@ export async function getNode(id) {
   const byId = new Map(others.map((n) => [n.id, n]));
   return {
     ...node,
+    salary: node.salary != null ? Number(node.salary) : null,
+    netWorth: node.net_worth != null ? Number(node.net_worth) : null,
+    netWorthDelta: node.net_worth_delta != null ? Number(node.net_worth_delta) : null,
+    amount: node.amount != null ? Number(node.amount) : null,
     connections: links.map((l) => ({
       type: l.type,
       direction: l.direction,
