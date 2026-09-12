@@ -1,0 +1,24 @@
+{
+  "tools": [
+    {
+      "name": "buscar_conexiones",
+      "description": "Consulta la base propia de Centinela (Postgres). No busques en internet ni respondas de memoria: llama esta herramienta con el nombre de una persona, empresa, institución, caso, contrato o préstamo. Devuelve nodos, vínculos y fuentes citables para armar la respuesta y el grafo.",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "q": {
+            "type": "string",
+            "description": "Nombre o alias a buscar: Loteka, Calamar, un senador, un RNC, una institución."
+          },
+          "hops": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 3,
+            "description": "Grados de conexión a expandir. 1 = vecinos directos."
+          }
+        },
+        "required": ["q"]
+      }
+    }
+  ]
+}

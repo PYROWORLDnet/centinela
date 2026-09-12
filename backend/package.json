@@ -5,9 +5,19 @@
   "type": "module",
   "scripts": {
     "dev": "node --watch src/index.js",
-    "start": "node src/index.js"
+    "start": "node src/index.js",
+    "ingest:proveedores": "node src/scripts/ingestProveedores.js",
+    "ingest:dgcp": "node src/scripts/ingestDgcp.js",
+    "download:dgcp": "node src/scripts/downloadDgcp.js",
+    "download:prestamos": "node src/scripts/downloadPrestamos.js",
+    "ingest:prestamos": "node src/scripts/ingestPrestamos.js",
+    "refresh:diario": "node src/scripts/refreshDiario.js",
+    "start:cron": "node src/scripts/refreshDiario.js"
   },
   "dependencies": {
-    "express": "^5.1.0"
+    "cors": "^2.8.5",
+    "csv-parse": "^5.6.0",
+    "express": "^5.1.0",
+    "pg": "^8.16.0"
   }
 }

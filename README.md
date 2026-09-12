@@ -1,21 +1,24 @@
 # Centinela
 
-Monorepo con backend y frontend.
+Plataforma de transparencia gubernamental RD — grafo navegable de personas, empresas, contratos e instituciones.
 
-## Estructura
+Ver [PRODUCT.md](./PRODUCT.md) para la especificación completa.
 
-```
-centinela/
-├── backend/   # API
-└── frontend/  # App web
-```
+## Stack (fase demo)
+
+- **backend** — Express + grafo demo en memoria
+- **frontend** — Vite + React + `react-force-graph-2d` (vista galaxia estilo Obsidian)
 
 ## Desarrollo
 
 ```bash
-# Backend
+# Terminal 1
 cd backend && npm install && npm run dev
 
-# Frontend
+# Terminal 2
 cd frontend && npm install && npm run dev
 ```
+
+Abre http://localhost:5173
+
+Prueba buscar: **Horizonte**, **Ramírez**, **Constructora Norte**.
