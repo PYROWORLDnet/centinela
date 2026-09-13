@@ -67,7 +67,7 @@ export default function ObsidianView({ onBackToCurated }) {
   }
 
   return (
-    <div className={`view view--obsidian${focused ? " is-focused" : ""}`}>
+    <div className={`view view--obsidian${focused ? " is-focused" : ""}${searchOpen ? " is-searching" : ""}`}>
       <main className="stage">
         <div className="universe" aria-hidden />
         {error && <div className="banner">{error}</div>}
