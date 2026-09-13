@@ -862,12 +862,13 @@ input {
 .wordmark::after {
   content: "";
   display: inline-block;
-  width: 0.28em;
-  height: 0.28em;
-  margin-left: 0.12em;
+  width: 0.2em;
+  height: 0.2em;
+  margin-left: 0.1em;
   background: #f0c14a;
-  vertical-align: baseline;
-  transform: translateY(-0.02em);
+  vertical-align: 0;
+  position: relative;
+  top: 0;
 }
 
 .wordmark--footer {
