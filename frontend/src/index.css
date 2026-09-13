@@ -2178,14 +2178,17 @@ input {
     font-size: 1.05rem;
   }
 
+  /* Mobile: hide "Ver el mecanismo" CTAs (hub + panel). Keep desktop. */
   .hub-intro,
+  .hub-intro__cta,
+  .panel__tour-cta,
+  .panel__foot:has(.panel__tour-cta) {
+    display: none !important;
+  }
+
   .story-start {
     bottom: max(3.2rem, calc(env(safe-area-inset-bottom, 0px) + 2.4rem));
     max-width: min(94vw, 28rem);
-  }
-
-  .hub-intro__cta,
-  .story-start {
     font-size: 0.74rem;
     padding: 0.58rem 1rem;
   }
