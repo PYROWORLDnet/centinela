@@ -66,7 +66,7 @@ export default function DossierView() {
     <div className="view view--dossier">
       <header className="dos__head">
         <div className="dos__title">
-          <h1>Centinela</h1>
+          <h1 className="wordmark">Centinela</h1>
           <p>Expediente público · República Dominicana</p>
         </div>
         <SearchBar onSelect={setSelectedId} colors={COLORS} />

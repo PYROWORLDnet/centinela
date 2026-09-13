@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="Centinela">
+  <rect width="64" height="64" rx="14" fill="#141416"/>
+  <text
+    x="12"
+    y="42"
+    font-family="Archivo Black, Arial Black, sans-serif"
+    font-size="28"
+    font-weight="400"
+    letter-spacing="-1.2"
+    fill="#ececec"
+  >C</text>
+  <rect x="36" y="34" width="8" height="8" fill="#f0c14a"/>
+</svg>
