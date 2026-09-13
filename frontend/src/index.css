@@ -2178,11 +2178,10 @@ input {
     font-size: 1.05rem;
   }
 
-  /* Mobile: hide "Ver el mecanismo" CTAs (hub + panel). Keep desktop. */
+  /* Mobile: hide only the floating bottom-center hub CTA.
+     Keep "Ver el mecanismo" inside the topic info panel so tours can start. */
   .hub-intro,
-  .hub-intro__cta,
-  .panel__tour-cta,
-  .panel__foot:has(.panel__tour-cta) {
+  .hub-intro__cta {
     display: none !important;
   }
 
