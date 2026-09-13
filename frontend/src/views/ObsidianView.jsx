@@ -16,7 +16,7 @@ const COLORS = {
   prestamo: "#c5b4e3",
 };
 
-export default function ObsidianView() {
+export default function ObsidianView({ onBackToCurated }) {
   const { graph, galaxy, error, focusId, detail, canGoBack, select, goBack } = useGraphExplorer();
   const [category, setCategory] = useState("all");
   const [searchOpen, setSearchOpen] = useState(false);
@@ -129,6 +129,11 @@ export default function ObsidianView() {
         </nav>
 
         <div className="chrome-glocke">
+          {onBackToCurated && (
+            <button type="button" className="chrome-exit-archive" onClick={onBackToCurated}>
+              Modo curado
+            </button>
+          )}
           <AlertBell
             onOpenAlert={(alert) => {
               setBrowse(null);
@@ -188,6 +193,7 @@ export default function ObsidianView() {
 
       <footer className="status">
         <div className="status__left">
+          <span>Archivo masivo</span>
           {galaxy?.meta && !focused && (
             <>
               <span>{galaxy.meta.nodeCount} nodos</span>

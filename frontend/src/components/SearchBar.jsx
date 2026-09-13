@@ -6,6 +6,8 @@ export default function SearchBar({
   colors,
   id = "centinela-search",
   onOpenChange,
+  searchUrl,
+  placeholder = "Calamar, Abinader, una empresa…",
 }) {
   const [query, setQuery] = useState("");
   const [results, setResults] = useState([]);
@@ -56,9 +58,10 @@ export default function SearchBar({
       abortRef.current = ctrl;
       setLoading(true);
       try {
-        const res = await fetch(`/api/search?q=${encodeURIComponent(q)}`, {
-          signal: ctrl.signal,
-        });
+        const url = searchUrl
+          ? `${searchUrl}${encodeURIComponent(q)}`
+          : `/api/search?q=${encodeURIComponent(q)}`;
+        const res = await fetch(url, { signal: ctrl.signal });
         const data = await res.json();
         setResults(data.results || []);
       } catch (err) {
@@ -69,7 +72,7 @@ export default function SearchBar({
     }, 180);
 
     return () => clearTimeout(t);
-  }, [query]);
+  }, [query, searchUrl]);
 
   function toggle() {
     if (disabled) return;
@@ -153,7 +156,7 @@ export default function SearchBar({
             id={`${id}-input`}
             type="search"
             autoComplete="off"
-            placeholder="Calamar, Abinader, una empresa…"
+            placeholder={placeholder}
             value={query}
             disabled={disabled}
             role="combobox"

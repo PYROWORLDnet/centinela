@@ -22,6 +22,13 @@ import {
   contractYears as pgContractYears,
   searchNodes as pgSearch,
 } from "./data/pgGraph.js";
+import {
+  listThemes,
+  getCuratedGraph,
+  getCuratedNode,
+  getCuratedTour,
+  searchCurated,
+} from "./data/curated/index.js";
 
 const app = express();
 const port = process.env.PORT || 4000;
@@ -126,6 +133,44 @@ app.get("/api/alerts", async (_req, res) => {
   res.json(await getAlerts());
 });
 
+app.get("/api/curated/themes", (_req, res) => {
+  res.json({ themes: listThemes(), defaultTheme: "pensiones" });
+});
+
+app.get("/api/curated/:theme/tour", (req, res) => {
+  const tour = getCuratedTour(req.params.theme);
+  if (!tour) {
+    res.status(404).json({ error: "Sin recorrido para este tema" });
+    return;
+  }
+  res.json(tour);
+});
+
+app.get("/api/curated/search", (req, res) => {
+  const q = String(req.query.q || "");
+  const theme = req.query.theme ? String(req.query.theme) : null;
+  res.json({ results: searchCurated(q, theme) });
+});
+
+app.get("/api/curated/nodes/:id", (req, res) => {
+  const node = getCuratedNode(req.params.id);
+  if (!node) {
+    res.status(404).json({ error: "Nodo curado no encontrado" });
+    return;
+  }
+  res.json(node);
+});
+
+app.get("/api/curated/:theme/graph", (req, res) => {
+  const pill = String(req.query.pill || "all");
+  const g = getCuratedGraph(req.params.theme, pill);
+  if (!g) {
+    res.status(404).json({ error: "Tema no encontrado" });
+    return;
+  }
+  res.json(g);
+});
+
 app.get("/api/search", async (req, res) => {
   const q = String(req.query.q || "");
   if (hasDatabase()) {
@@ -142,6 +187,11 @@ app.post("/api/tools/buscar_conexiones", async (req, res) => {
 });
 
 app.get("/api/nodes/:id", async (req, res) => {
+  const curated = getCuratedNode(req.params.id);
+  if (curated) {
+    res.json(curated);
+    return;
+  }
   if (hasDatabase()) {
     const node = (await pgNode(req.params.id)) || (await resolveAlertNode(req.params.id));
     if (!node) {

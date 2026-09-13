@@ -23,6 +23,7 @@ export default function NodePanel({
   canGoBack,
   onFocusConnection,
   onPickBrowse,
+  onStartTour,
   colors,
 }) {
   const palette = colors || CATEGORY_COLOR;
@@ -190,6 +191,12 @@ export default function NodePanel({
             <dd>{node.summary}</dd>
           </>
         )}
+        {(node.mechanism || node.extra?.mechanism) && (
+          <>
+            <dt>Mecanismo</dt>
+            <dd className="panel__mechanism">{node.mechanism || node.extra?.mechanism}</dd>
+          </>
+        )}
         {source?.url && (
           <>
             <dt>Fuente</dt>
@@ -214,7 +221,15 @@ export default function NodePanel({
         </ul>
       </section>
 
-      {canGoBack && (
+      {onStartTour && (
+        <footer className="panel__foot">
+          <button type="button" className="panel__tour-cta" onClick={onStartTour}>
+            Ver el mecanismo →
+          </button>
+        </footer>
+      )}
+
+      {canGoBack && !onStartTour && (
         <footer className="panel__foot">
           <button type="button" className="panel__back" onClick={onBack}>
             ← Volver
@@ -227,6 +242,13 @@ export default function NodePanel({
 
 function LinkRow({ c, palette, onFocus }) {
   const src = c.sourceRef && !isBadSource(c.sourceRef) ? c.sourceRef : null;
+  const meta = [
+    c.type?.replaceAll("_", " "),
+    c.amount != null ? formatMoney(c.amount, c.currency || "DOP") : null,
+    c.note || null,
+  ]
+    .filter(Boolean)
+    .join(" · ");
   return (
     <li>
       <button type="button" onClick={() => onFocus(c.node.id)}>
@@ -236,7 +258,7 @@ function LinkRow({ c, palette, onFocus }) {
         />
         <span className="panel__link-body">
           <strong>{c.node?.name}</strong>
-          <em>{c.type.replaceAll("_", " ")}</em>
+          <em>{meta}</em>
         </span>
       </button>
       {src && (
