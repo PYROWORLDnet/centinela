@@ -6,7 +6,7 @@ const ALLOWED_VOICES = new Set(["nova", "alloy"]);
 
 const FALLBACK_VOICES = [
   { id: "nova", label: "Nova · clara" },
-  { id: "alloy", label: "Alloy · neutra" },
+  { id: "alloy", label: "Alloy · grave" },
 ];
 
 function readStoredVoice() {
@@ -22,6 +22,61 @@ function readStoredVoice() {
 function stopBrowserSpeech() {
   if (typeof window === "undefined" || !window.speechSynthesis) return;
   window.speechSynthesis.cancel();
+}
+
+/** Nova → voz española femenina; Alloy → masculina/grave (fallback del navegador). */
+function pickBrowserVoice(preferredId) {
+  if (typeof window === "undefined" || !window.speechSynthesis) return null;
+  const list = window.speechSynthesis.getVoices?.() || [];
+  if (!list.length) return null;
+
+  const es = list.filter((v) => /^es([-_]|$)/i.test(v.lang || ""));
+  const pool = es.length ? es : list;
+  const label = (v) => `${v.name || ""} ${v.voiceURI || ""}`;
+
+  const maleRe =
+    /\b(male|hombre|juan|carlos|jorge|diego|antonio|miguel|pablo|daniel|eddie|reed|thomas|alex|enrique|fred|rishi|david|mark|james)\b|google uk english male|microsoft .+ male|english \(united (kingdom|states)\).*male/i;
+  const femaleRe =
+    /\b(female|femenin\w*|mujer|monica|mónica|paulina|lucia|lucía|maria|maría|carmen|elena|soledad|sabina|ines|inés|penelope|meadow|samantha|karen|moira|zira|victoria|fiona)\b|español.*femen|mexican.*femen|google uk english female|microsoft .+ female/i;
+
+  if (preferredId === "alloy") {
+    return (
+      pool.find((v) => maleRe.test(label(v))) ||
+      list.find((v) => maleRe.test(label(v))) ||
+      pool.find((v) => !femaleRe.test(label(v))) ||
+      list.find((v) => !femaleRe.test(label(v))) ||
+      pool[pool.length - 1] ||
+      null
+    );
+  }
+
+  return (
+    pool.find((v) => femaleRe.test(label(v))) ||
+    pool.find((v) => /female|femen/i.test(v.name || "")) ||
+    pool[0] ||
+    null
+  );
+}
+
+function waitForBrowserVoices() {
+  return new Promise((resolve) => {
+    if (typeof window === "undefined" || !window.speechSynthesis) {
+      resolve([]);
+      return;
+    }
+    const existing = window.speechSynthesis.getVoices();
+    if (existing?.length) {
+      resolve(existing);
+      return;
+    }
+    const done = () => {
+      window.speechSynthesis.removeEventListener("voiceschanged", done);
+      resolve(window.speechSynthesis.getVoices() || []);
+    };
+    window.speechSynthesis.addEventListener("voiceschanged", done);
+    // iOS a veces no dispara voiceschanged
+    window.setTimeout(done, 250);
+  });
 }
 
 /**
@@ -131,8 +186,9 @@ export function useTourSpeech(text, { autoKey, prefetchText, done = false, onAdv
     onAdvanceRef.current?.();
   }, []);
 
-  // Prefetch paso actual
+  // Prefetch paso actual (solo con OpenAI; en browser evita 503 en móvil)
   useEffect(() => {
+    if (provider === "browser") return undefined;
     const payload = String(text || "").trim();
     if (!payload) return undefined;
     const voice = voiceIdRef.current;
@@ -143,14 +199,15 @@ export function useTourSpeech(text, { autoKey, prefetchText, done = false, onAdv
     return () => {
       void gen;
     };
-  }, [text, voiceId, autoKey, ensureObjectUrl]);
+  }, [text, voiceId, autoKey, ensureObjectUrl, provider]);
 
   // Prefetch siguiente paso mientras suena el actual
   useEffect(() => {
+    if (provider === "browser") return;
     const payload = String(prefetchText || "").trim();
     if (!payload) return;
     ensureObjectUrl(payload, voiceIdRef.current).catch(() => {});
-  }, [prefetchText, voiceId, ensureObjectUrl]);
+  }, [prefetchText, voiceId, ensureObjectUrl, provider]);
 
   const setVoiceId = useCallback(
     (id) => {
@@ -172,14 +229,22 @@ export function useTourSpeech(text, { autoKey, prefetchText, done = false, onAdv
     [stopPlayback],
   );
 
-  const speakBrowser = useCallback(() => {
+  const speakBrowser = useCallback(async () => {
     if (typeof window === "undefined" || !("speechSynthesis" in window)) return;
     const payload = textRef.current?.trim();
     if (!payload) return;
     stopBrowserSpeech();
+    await waitForBrowserVoices();
     const u = new SpeechSynthesisUtterance(payload);
-    u.rate = 1.05;
+    // Pitch/rate distintos: en iOS a menudo solo hay una voz ES y hay que separar personas.
+    u.rate = voiceIdRef.current === "alloy" ? 0.94 : 1.06;
+    u.pitch = voiceIdRef.current === "alloy" ? 0.72 : 1.12;
     u.lang = "es-MX";
+    const picked = pickBrowserVoice(voiceIdRef.current);
+    if (picked) {
+      u.voice = picked;
+      if (picked.lang) u.lang = picked.lang;
+    }
     u.onstart = () => {
       speakingRef.current = true;
       setSpeaking(true);
@@ -207,6 +272,13 @@ export function useTourSpeech(text, { autoKey, prefetchText, done = false, onAdv
     const ctrl = new AbortController();
     playAbortRef.current = ctrl;
 
+    // Sin OpenAI configurado: ir directo al fallback (evita 503 en móvil).
+    if (provider === "browser") {
+      if (ctrl.signal.aborted) return;
+      await speakBrowser();
+      return;
+    }
+
     try {
       const objectUrl = await ensureObjectUrl(payload, voiceIdRef.current);
       if (ctrl.signal.aborted) return;
@@ -232,9 +304,9 @@ export function useTourSpeech(text, { autoKey, prefetchText, done = false, onAdv
     } catch (err) {
       if (err?.name === "AbortError" || ctrl.signal.aborted) return;
       setLoading(false);
-      speakBrowser();
+      await speakBrowser();
     }
-  }, [ensureObjectUrl, finishOrAdvance, speakBrowser, stopPlayback]);
+  }, [ensureObjectUrl, finishOrAdvance, provider, speakBrowser, stopPlayback]);
 
   const stop = useCallback(() => {
     autoplayRef.current = false;
