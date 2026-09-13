@@ -198,7 +198,7 @@ export default function CuratedView({ themeId = "todo", navigate }) {
     <div
       className={`view view--obsidian view--curated${focused ? " is-focused" : ""}${
         inStory || tourDone ? " is-story" : ""
-      }${inHub ? " is-hub" : ""}`}
+      }${inHub ? " is-hub" : ""}${searchOpen ? " is-searching" : ""}`}
     >
       <main className="stage">
         <div className="universe" aria-hidden />

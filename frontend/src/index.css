@@ -828,7 +828,7 @@ input {
     top: calc(100% + 0.35rem);
     margin: 0;
     width: auto;
-    max-height: min(50vh, 280px);
+    max-height: min(42vh, 240px);
   }
 }
 
@@ -2140,7 +2140,7 @@ input {
     right: max(0.5rem, env(safe-area-inset-right, 0px));
     bottom: max(2rem, calc(env(safe-area-inset-bottom, 0px) + 1.25rem));
     width: auto;
-    max-height: min(42vh, 22rem);
+    max-height: min(36vh, 18.5rem);
     border-radius: 1rem;
     padding: 0.85rem 0.9rem 1rem;
   }
@@ -2217,6 +2217,20 @@ input {
 
   .search__field input::placeholder {
     font-size: 0.78rem;
+  }
+
+  .view--curated.is-searching .panel,
+  .view--obsidian.is-searching .panel {
+    opacity: 0;
+    pointer-events: none;
+    transform: translateY(8px);
+  }
+
+  .view--curated.is-searching .hub-intro,
+  .view--curated.is-searching .story-start,
+  .view--curated.is-searching .story {
+    opacity: 0.35;
+    pointer-events: none;
   }
 }
 
