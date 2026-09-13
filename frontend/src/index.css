@@ -2191,13 +2191,7 @@ input {
   }
 
   .zoom-toggle {
-    left: max(0.65rem, env(safe-area-inset-left, 0px));
-  }
-
-  .zoom-toggle__btn {
-    width: 2.45rem;
-    height: 2.45rem;
-    font-size: 1.2rem;
+    display: none;
   }
 
   .story__top {
