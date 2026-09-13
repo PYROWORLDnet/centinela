@@ -156,9 +156,9 @@ input {
 }
 
 .chrome-themes__todo.is-active {
-  background: rgba(61, 124, 255, 0.55);
-  border-color: rgba(61, 124, 255, 0.45);
-  color: #f5f7fa;
+  background: #f0c14a;
+  border-color: rgba(240, 193, 74, 0.85);
+  color: #1a1406;
   font-weight: 600;
 }
 
