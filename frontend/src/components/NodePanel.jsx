@@ -1,20 +1,114 @@
 import { CATEGORY_COLOR, formatMoney } from "../lib/categories";
 
-function isDemoLink(c) {
-  if (c.demo) return true;
-  const label = c.sourceRef?.label || "";
-  return /demostraci[oó]n/i.test(label);
+function isBadSource(ref) {
+  if (!ref?.url) return true;
+  const blob = `${ref.label || ""} ${ref.url}`;
+  return /github\.com|demostraci[oó]n\s+centinela|datos de demostraci[oó]n/i.test(blob);
 }
 
-export default function NodePanel({ node, onClose, onBack, canGoBack, onFocusConnection, colors }) {
+function isDemoLink(c) {
+  if (c.demo) return true;
+  return isBadSource(c.sourceRef);
+}
+
+export default function NodePanel({
+  node,
+  browse,
+  browseLabel,
+  browseYears,
+  browseYear,
+  onBrowseYear,
+  onClose,
+  onBack,
+  canGoBack,
+  onFocusConnection,
+  onPickBrowse,
+  colors,
+}) {
+  const palette = colors || CATEGORY_COLOR;
+
+  // Lista por categoría (ej. clic en Préstamos / Contratos)
+  if (!node && (browse?.length || browseYears?.length)) {
+    return (
+      <aside className="panel" aria-label={browseLabel || "Explorar"}>
+        <header className="panel__head">
+          <div className="panel__titles">
+            <p className="panel__cat">Explorar</p>
+            <h2>{browseLabel || "Categoría"}</h2>
+            <p className="panel__role">
+              {browseYears?.length
+                ? "Más recientes primero · filtra por año si quieres histórico"
+                : "Elige un nodo para ver la ficha"}
+            </p>
+          </div>
+          <button type="button" className="panel__close" onClick={onClose} aria-label="Cerrar">
+            ×
+          </button>
+        </header>
+        {browseYears?.length > 0 && (
+          <div className="panel__years" role="group" aria-label="Filtrar por año">
+            <button
+              type="button"
+              className={!browseYear ? "is-active" : undefined}
+              onClick={() => onBrowseYear?.(null)}
+            >
+              Todos
+            </button>
+            {browseYears.slice(0, 8).map((y) => (
+              <button
+                key={y.year}
+                type="button"
+                className={browseYear === y.year ? "is-active" : undefined}
+                onClick={() => onBrowseYear?.(y.year)}
+              >
+                {y.year}
+              </button>
+            ))}
+          </div>
+        )}
+        <section className="panel__links">
+          {!browse?.length && (
+            <p className="panel__empty-links">No hay contratos para ese año en la muestra.</p>
+          )}
+          <ul>
+            {(browse || []).map((item) => (
+              <li key={item.id}>
+                <button type="button" onClick={() => onPickBrowse?.(item.id)}>
+                  <span
+                    className="search__dot"
+                    style={{ background: palette[item.category] || "#888" }}
+                  />
+                  <span className="panel__link-body">
+                    <strong>{item.name}</strong>
+                    <em>
+                      {[
+                        item.fecha || null,
+                        item.role,
+                        item.amount != null ? formatMoney(item.amount, item.currency || "DOP") : null,
+                      ]
+                        .filter(Boolean)
+                        .join(" · ") || item.category}
+                    </em>
+                  </span>
+                </button>
+              </li>
+            ))}
+          </ul>
+        </section>
+      </aside>
+    );
+  }
+
   if (!node) return null;
 
-  const palette = colors || CATEGORY_COLOR;
   const initial = node.name?.charAt(0)?.toUpperCase() || "?";
   const color = palette[node.category] || "#888";
   const connections = node.connections || [];
   const sourced = connections.filter((c) => !isDemoLink(c));
-  const demo = connections.filter((c) => isDemoLink(c));
+  const source = !isBadSource(node.sourceRef || node.extra?.source)
+    ? node.sourceRef || node.extra?.source
+    : null;
+  const currency = node.extra?.moneda || (node.category === "prestamo" ? "USD" : "DOP");
 
   return (
     <aside className="panel" aria-label={`Ficha de ${node.name}`}>
@@ -41,7 +135,7 @@ export default function NodePanel({ node, onClose, onBack, canGoBack, onFocusCon
         )}
         {node.period && (
           <>
-            <dt>Período</dt>
+            <dt>Periodo</dt>
             <dd>{node.period}</dd>
           </>
         )}
@@ -69,12 +163,19 @@ export default function NodePanel({ node, onClose, onBack, canGoBack, onFocusCon
         {node.amount != null && (
           <>
             <dt>Monto</dt>
-            <dd>
-              {formatMoney(
-                node.amount,
-                node.extra?.moneda || (node.category === "prestamo" ? "USD" : "DOP"),
-              )}
-            </dd>
+            <dd>{formatMoney(node.amount, currency)}</dd>
+          </>
+        )}
+        {(node.fecha || node.extra?.fecha) && (
+          <>
+            <dt>Fecha</dt>
+            <dd>{node.fecha || node.extra?.fecha}</dd>
+          </>
+        )}
+        {node.rnc && (
+          <>
+            <dt>RNC</dt>
+            <dd className="mono">{node.rnc}</dd>
           </>
         )}
         {node.code && (
@@ -89,27 +190,21 @@ export default function NodePanel({ node, onClose, onBack, canGoBack, onFocusCon
             <dd>{node.summary}</dd>
           </>
         )}
-        {node.extra?.source?.url && (
+        {source?.url && (
           <>
             <dt>Fuente</dt>
             <dd>
-              <a className="panel__source" href={node.extra.source.url} target="_blank" rel="noreferrer">
-                {node.extra.source.label || "Documento oficial"}
+              <a className="panel__source" href={source.url} target="_blank" rel="noreferrer">
+                {source.label || "Documento oficial"}
               </a>
             </dd>
-          </>
-        )}
-        {node.fullName && (
-          <>
-            <dt>Nombre completo</dt>
-            <dd>{node.fullName}</dd>
           </>
         )}
       </dl>
 
       <section className="panel__links">
         <h3>Vinculaciones</h3>
-        {sourced.length === 0 && demo.length === 0 && (
+        {sourced.length === 0 && (
           <p className="panel__empty-links">Sin vínculos documentados todavía.</p>
         )}
         <ul>
@@ -117,22 +212,6 @@ export default function NodePanel({ node, onClose, onBack, canGoBack, onFocusCon
             <LinkRow key={`s-${c.type}-${c.node?.id}`} c={c} palette={palette} onFocus={onFocusConnection} />
           ))}
         </ul>
-        {demo.length > 0 && (
-          <>
-            <h3 className="panel__links-demo">Solo demostración — no es evidencia</h3>
-            <ul>
-              {demo.map((c) => (
-                <LinkRow
-                  key={`d-${c.type}-${c.node?.id}`}
-                  c={c}
-                  palette={palette}
-                  onFocus={onFocusConnection}
-                  demo
-                />
-              ))}
-            </ul>
-          </>
-        )}
       </section>
 
       {canGoBack && (
@@ -146,9 +225,10 @@ export default function NodePanel({ node, onClose, onBack, canGoBack, onFocusCon
   );
 }
 
-function LinkRow({ c, palette, onFocus, demo = false }) {
+function LinkRow({ c, palette, onFocus }) {
+  const src = c.sourceRef && !isBadSource(c.sourceRef) ? c.sourceRef : null;
   return (
-    <li className={demo ? "is-demo" : undefined}>
+    <li>
       <button type="button" onClick={() => onFocus(c.node.id)}>
         <span
           className="search__dot"
@@ -159,14 +239,9 @@ function LinkRow({ c, palette, onFocus, demo = false }) {
           <em>{c.type.replaceAll("_", " ")}</em>
         </span>
       </button>
-      {c.sourceRef && (
-        <a
-          className="panel__source"
-          href={c.sourceRef.url}
-          target="_blank"
-          rel="noreferrer"
-        >
-          Fuente: {c.sourceRef.label}
+      {src && (
+        <a className="panel__source" href={src.url} target="_blank" rel="noreferrer">
+          Fuente: {src.label}
         </a>
       )}
     </li>

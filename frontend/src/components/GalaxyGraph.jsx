@@ -44,7 +44,8 @@ function centerGalaxy(fg, nodes, wrapEl, ms = 0) {
 
   const w = wrapEl?.clientWidth || window.innerWidth;
   const h = wrapEl?.clientHeight || window.innerHeight;
-  const zoom = Math.min(6.5, Math.max(1.8, (Math.min(w, h) * 0.39) / maxR));
+  // Menos fill → más aire alrededor de la nube (antes 0.39 / max 6.5 se sentía pegado).
+  const zoom = Math.min(2.8, Math.max(0.85, (Math.min(w, h) * 0.24) / maxR));
   fg.centerAt(cx, cy, ms);
   fg.zoom(zoom, ms);
   return true;
@@ -63,7 +64,7 @@ const GalaxyGraph = forwardRef(function GalaxyGraph(
     if (!graph) return { nodes: [], links: [] };
     const seeded = graph.nodes.map((n, i) => {
       const a = (i * 2.399963) % (Math.PI * 2);
-      const r = Math.sqrt((i + 1) / graph.nodes.length) * 170;
+      const r = Math.sqrt((i + 1) / graph.nodes.length) * 280;
       return {
         ...n,
         x: Math.cos(a) * r,
@@ -211,10 +212,10 @@ const GalaxyGraph = forwardRef(function GalaxyGraph(
   useEffect(() => {
     const fg = fgRef.current;
     if (!fg) return;
-    fg.d3Force("charge")?.strength(-7);
-    fg.d3Force("link")?.distance(9)?.strength(0.85);
-    fg.d3Force("center")?.strength(1.15);
-    fg.d3Force("collide", forceCollide(1.55).strength(0.85));
+    fg.d3Force("charge")?.strength(-22);
+    fg.d3Force("link")?.distance(22)?.strength(0.55);
+    fg.d3Force("center")?.strength(0.55);
+    fg.d3Force("collide", forceCollide(3.2).strength(0.7));
 
     fitted.current = false;
     let tries = 0;

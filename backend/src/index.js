@@ -14,9 +14,12 @@ import {
 import { buscarConexiones } from "./tools/buscarConexiones.js";
 import { getAlerts, resolveAlertNode } from "./data/alerts.js";
 import {
+  getGraph as pgGraph,
   getNode as pgNode,
   getSubgraph as pgSubgraph,
   hasDatabase,
+  listByCategory as pgListByCategory,
+  contractYears as pgContractYears,
   searchNodes as pgSearch,
 } from "./data/pgGraph.js";
 
@@ -56,8 +59,45 @@ app.get("/health", (_req, res) => {
   res.json({ ok: true, service: "centinela-backend" });
 });
 
-app.get("/api/graph", (_req, res) => {
+app.get("/api/graph", async (_req, res) => {
+  if (hasDatabase()) {
+    const g = await pgGraph();
+    if (g) {
+      res.json(g);
+      return;
+    }
+  }
   res.json(getGraph());
+});
+
+app.get("/api/category/:category", async (req, res) => {
+  const category = String(req.params.category || "");
+  const year = req.query.year ? String(req.query.year) : null;
+  if (hasDatabase()) {
+    const results = await pgListByCategory(category, 40, { year });
+    const payload = { results };
+    if (category === "contrato") {
+      payload.years = await pgContractYears();
+    }
+    res.json(payload);
+    return;
+  }
+  const all = getGraph().nodes.filter((n) => category === "all" || n.category === category);
+  res.json({
+    results: all
+      .slice()
+      .sort((a, b) => (b.degree || 0) - (a.degree || 0))
+      .slice(0, 40)
+      .map((n) => ({
+        id: n.id,
+        name: n.name,
+        category: n.category,
+        role: n.role,
+        summary: n.summary,
+        amount: n.amount,
+        degree: n.degree,
+      })),
+  });
 });
 
 app.get("/api/scenarios", (_req, res) => {
@@ -88,14 +128,11 @@ app.get("/api/alerts", async (_req, res) => {
 
 app.get("/api/search", async (req, res) => {
   const q = String(req.query.q || "");
-  const mem = searchNodes(q);
-  if (!hasDatabase()) {
-    res.json({ results: mem });
+  if (hasDatabase()) {
+    res.json({ results: await pgSearch(q) });
     return;
   }
-  const pg = await pgSearch(q);
-  const seen = new Set(mem.map((m) => m.id));
-  res.json({ results: [...mem, ...pg.filter((p) => !seen.has(p.id))].slice(0, 12) });
+  res.json({ results: searchNodes(q) });
 });
 
 app.post("/api/tools/buscar_conexiones", async (req, res) => {
@@ -105,10 +142,16 @@ app.post("/api/tools/buscar_conexiones", async (req, res) => {
 });
 
 app.get("/api/nodes/:id", async (req, res) => {
-  const node =
-    (hasDatabase() ? await pgNode(req.params.id) : null) ||
-    getNode(req.params.id) ||
-    (await resolveAlertNode(req.params.id));
+  if (hasDatabase()) {
+    const node = (await pgNode(req.params.id)) || (await resolveAlertNode(req.params.id));
+    if (!node) {
+      res.status(404).json({ error: "Nodo no encontrado" });
+      return;
+    }
+    res.json(node);
+    return;
+  }
+  const node = getNode(req.params.id) || (await resolveAlertNode(req.params.id));
   if (!node) {
     res.status(404).json({ error: "Nodo no encontrado" });
     return;

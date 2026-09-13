@@ -19,7 +19,46 @@ export default function ObsidianView() {
   const { graph, error, focusId, detail, neighbors, canGoBack, select, goBack } = useGraphExplorer();
   const [category, setCategory] = useState("all");
   const [searchOpen, setSearchOpen] = useState(false);
+  const [browse, setBrowse] = useState(null);
+  const [browseLabel, setBrowseLabel] = useState("");
+  const [browseYears, setBrowseYears] = useState([]);
+  const [browseYear, setBrowseYear] = useState(null);
   const galaxyRef = useRef(null);
+
+  async function loadBrowse(catId, year = null) {
+    const qs = year ? `?year=${encodeURIComponent(year)}` : "";
+    const res = await fetch(`/api/category/${encodeURIComponent(catId)}${qs}`);
+    if (!res.ok) throw new Error("category");
+    const data = await res.json();
+    setBrowse(data.results || []);
+    setBrowseYears(data.years || []);
+    setBrowseYear(year);
+  }
+
+  async function openCategory(cat) {
+    setCategory(cat.id);
+    if (cat.id === "all") {
+      select(null);
+      setBrowse(null);
+      setBrowseLabel("");
+      setBrowseYears([]);
+      setBrowseYear(null);
+      return;
+    }
+    select(null);
+    setBrowseLabel(cat.label);
+    setBrowseYear(null);
+    try {
+      await loadBrowse(cat.id, null);
+    } catch {
+      const local = (graph?.nodes || [])
+        .filter((n) => n.category === cat.id)
+        .sort((a, b) => String(b.fecha || "").localeCompare(String(a.fecha || "")) || (b.degree || 0) - (a.degree || 0))
+        .slice(0, 40);
+      setBrowse(local);
+      setBrowseYears([]);
+    }
+  }
 
   return (
     <div className="view view--obsidian">
@@ -33,7 +72,10 @@ export default function ObsidianView() {
             focusId={focusId}
             category={category}
             neighborIds={neighbors}
-            onSelectNode={select}
+            onSelectNode={(id) => {
+              setBrowse(null);
+              select(id);
+            }}
           />
         )}
       </main>
@@ -41,7 +83,10 @@ export default function ObsidianView() {
       <header className={`chrome${searchOpen ? " is-searching" : ""}`}>
         <div className="chrome-search">
           <SearchBar
-            onSelect={select}
+            onSelect={(id) => {
+              setBrowse(null);
+              select(id);
+            }}
             disabled={!graph}
             colors={COLORS}
             onOpenChange={setSearchOpen}
@@ -56,10 +101,7 @@ export default function ObsidianView() {
                 type="button"
                 className={category === c.id ? "is-active" : undefined}
                 title={c.label}
-                onClick={() => {
-                  setCategory(c.id);
-                  select(null);
-                }}
+                onClick={() => openCategory(c)}
               >
                 <span className="pill-full">{c.label}</span>
                 <span className="pill-short">{c.short || c.label}</span>
@@ -69,7 +111,12 @@ export default function ObsidianView() {
         </nav>
 
         <div className="chrome-glocke">
-          <AlertBell onOpenAlert={(alert) => select(alert.nodeId)} />
+          <AlertBell
+            onOpenAlert={(alert) => {
+              setBrowse(null);
+              select(alert.nodeId);
+            }}
+          />
         </div>
       </header>
 
@@ -96,10 +143,26 @@ export default function ObsidianView() {
 
       <NodePanel
         node={detail}
-        onClose={() => select(null)}
+        browse={!detail ? browse : null}
+        browseLabel={browseLabel}
+        browseYears={category === "contrato" ? browseYears : []}
+        browseYear={browseYear}
+        onBrowseYear={(year) => {
+          loadBrowse("contrato", year).catch(() => {});
+        }}
+        onClose={() => {
+          select(null);
+          setBrowse(null);
+          setBrowseYears([]);
+          setBrowseYear(null);
+        }}
         onBack={goBack}
         canGoBack={canGoBack}
         onFocusConnection={select}
+        onPickBrowse={(id) => {
+          setBrowse(null);
+          select(id);
+        }}
         colors={COLORS}
       />
 
@@ -109,6 +172,7 @@ export default function ObsidianView() {
             <>
               <span>{graph.meta.nodeCount} nodos</span>
               <span>{graph.meta.linkCount} vínculos</span>
+              {graph.meta.demo === false && <span>fuentes oficiales</span>}
             </>
           )}
         </div>

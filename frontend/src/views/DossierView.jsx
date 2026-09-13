@@ -135,7 +135,7 @@ export default function DossierView() {
           {!detail && activeLead && (
             <div className="dos__ev-empty">
               <p>{activeLead.text}</p>
-              {activeLead.sourceRef && (
+              {activeLead.sourceRef && !/github\.com|demostraci/i.test(`${activeLead.sourceRef.label} ${activeLead.sourceRef.url}`) && (
                 <a href={activeLead.sourceRef.url} target="_blank" rel="noreferrer">
                   {activeLead.sourceRef.label}
                 </a>

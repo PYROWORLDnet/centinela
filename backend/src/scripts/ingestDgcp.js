@@ -143,6 +143,8 @@ async function ingestProcesos(db) {
       });
     }
     const procId = `proc-${code}`;
+    const fecha = String(row.FECHA_PUBLICACION || "").slice(0, 10) || null;
+    const portalUrl = String(row.URL || "").trim() || null;
     nodes.push({
       id: procId,
       name: String(row.CARATULA || code).slice(0, 280),
@@ -150,13 +152,18 @@ async function ingestProcesos(db) {
       category: "contrato",
       role: row.MODALIDAD || null,
       amount: money(row.MONTO_ESTIMADO),
-      summary: [row.ESTADO_PROCESO, row.OBJETO_PROCESO, row.UNIDAD_COMPRA].filter(Boolean).join(" · "),
+      summary: [row.ESTADO_PROCESO, fecha, row.OBJETO_PROCESO, row.UNIDAD_COMPRA]
+        .filter(Boolean)
+        .join(" · "),
       extra: {
         codigoProceso: row.CODIGO_PROCESO,
         unidadCompra: unidad,
         mipyme: row.DIRIGIDO_MIPYMES,
-        url: row.URL,
-        source: { label: "DGCP — Procesos SECP 2015–2026", url: "https://datos.gob.do/dataset/datos-procesos-publicados" },
+        fecha,
+        url: portalUrl,
+        source: portalUrl
+          ? { label: "Compras Dominicana — ficha del proceso", url: portalUrl }
+          : { label: "DGCP — Procesos SECP", url: "https://comunidad.comprasdominicana.gob.do/" },
       },
     });
     if (uc) {
@@ -189,6 +196,8 @@ async function ingestAdjudicaciones(db) {
     const cid = companyId(row.NUMERO_DOCUMENTO, row.RPE);
     if (!ctr || !firm || !cid) return;
     const contractId = `ctr-${ctr}`;
+    const fecha =
+      String(row.FECHA_ADJUDICACION || row.FECHA_CREACION_CONTRATO || "").slice(0, 10) || null;
     nodes.push({
       id: contractId,
       name: `${row.CODIGO_CONTRATO} · ${firm}`.slice(0, 280),
@@ -197,13 +206,18 @@ async function ingestAdjudicaciones(db) {
       role: row.OBJETO_CONTRATO || null,
       rnc: String(row.NUMERO_DOCUMENTO || "").trim() || null,
       amount: money(row.VALOR_CONTRATADO),
-      summary: [row.ESTADO_CONTRATO, row.FECHA_ADJUDICACION, row.MONEDA].filter(Boolean).join(" · "),
+      summary: [row.ESTADO_CONTRATO, fecha, row.MONEDA].filter(Boolean).join(" · "),
       extra: {
         codigoContrato: row.CODIGO_CONTRATO,
         codigoProceso: row.CODIGO_PROCESO,
         moneda: row.MONEDA,
         rpe: row.RPE,
-        source: { label: "DGCP — Adjudicaciones SECP 2015–2026", url: "https://datos.gob.do/dataset/adjudicaciones-secp" },
+        fecha,
+        // URL profunda se completa en backfill desde el proceso vinculado.
+        source: {
+          label: "Compras Dominicana",
+          url: "https://comunidad.comprasdominicana.gob.do/",
+        },
       },
     });
     nodes.push({

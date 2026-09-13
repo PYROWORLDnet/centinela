@@ -1023,6 +1023,35 @@ input {
   color: var(--ink);
 }
 
+.panel__years {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem;
+  padding: 0 1rem 0.75rem;
+}
+
+.panel__years button {
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  background: transparent;
+  color: rgba(236, 240, 245, 0.72);
+  font: inherit;
+  font-size: 0.78rem;
+  padding: 0.28rem 0.55rem;
+  border-radius: 999px;
+  cursor: pointer;
+}
+
+.panel__years button:hover {
+  color: #fff;
+  border-color: rgba(255, 255, 255, 0.28);
+}
+
+.panel__years button.is-active {
+  color: #141414;
+  background: #5ecfc4;
+  border-color: #5ecfc4;
+}
+
 .panel__meta {
   display: grid;
   grid-template-columns: 7rem 1fr;
