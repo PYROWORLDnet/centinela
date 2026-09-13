@@ -17,6 +17,7 @@ export const THEMES = [
   { id: "migracion", label: "Migración", ready: true, pills: [] },
   { id: "mineria", label: "Minería", ready: true, pills: [] },
   { id: "ong", label: "ONU/ONG", ready: true, pills: [] },
+  { id: "adp", label: "ADP", ready: true, pills: [] },
 ];
 
 export const THEME_COLORS = {
