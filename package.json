@@ -4,5 +4,8 @@
   "type": "module",
   "engines": {
     "node": ">=20"
+  },
+  "scripts": {
+    "build:vercel": "node scripts/vercel-build.mjs"
   }
 }

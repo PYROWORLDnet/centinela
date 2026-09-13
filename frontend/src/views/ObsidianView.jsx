@@ -105,7 +105,7 @@ export default function ObsidianView({ onBackToCurated }) {
               setBrowse(null);
               select(id);
             }}
-            disabled={!galaxy}
+            disabled={false}
             colors={COLORS}
             onOpenChange={setSearchOpen}
           />
