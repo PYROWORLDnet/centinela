@@ -13,6 +13,7 @@ const THEMES = [
   "Aduana",
   "Construcción",
   "Migración",
+  "Minería",
 ];
 
 const OPTIONS = [
