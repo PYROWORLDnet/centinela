@@ -241,7 +241,7 @@ export default function CuratedView({ themeId = "todo", navigate }) {
               setExploring(true);
               select(id);
             }}
-            disabled={!galaxy || !ready}
+            disabled={false}
             colors={colors}
             onOpenChange={setSearchOpen}
             searchUrl="/api/curated/search?q="

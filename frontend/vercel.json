@@ -1,7 +1,13 @@
 {
+  "installCommand": "npm install && npm install --prefix ../backend",
   "buildCommand": "npm run build",
   "outputDirectory": "dist",
   "framework": "vite",
+  "functions": {
+    "api/index.js": {
+      "includeFiles": "../backend/**"
+    }
+  },
   "rewrites": [
     { "source": "/api/(.*)", "destination": "/api" },
     { "source": "/(.*)", "destination": "/index.html" }
