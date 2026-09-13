@@ -4,7 +4,10 @@
  */
 import { createReadStream } from "node:fs";
 import { parse } from "csv-parse";
-import pg from "pg";
+import { loadEnv } from "../db/loadEnv.js";
+import { dbClient, flushNodes } from "../db/upsert.js";
+
+loadEnv();
 
 const CSV = new URL("../../data/proveedores-dgcp.csv", import.meta.url);
 const SOURCE = {
@@ -22,24 +25,25 @@ function categoryFor(row) {
 
 function nodeId(row) {
   const doc = String(row.NUMERO_DOCUMENTO || "").replace(/\D/g, "");
-  const rpe = String(row.RPE || "").trim();
+  const rpe = String(row.RPE || row["\ufeffRPE"] || "").trim();
   if (doc) return `rpe-${doc}`;
   return `rpe-${rpe}`;
 }
 
+function parseRm(raw) {
+  const s = String(raw || "").trim().toUpperCase();
+  if (!s || s === "N/A" || s === "NA") return null;
+  const m = s.match(/^(\d+)([A-Z]+)$/);
+  if (!m) return { registro: s, numero: null, camaraCodigo: null };
+  return { registro: s, numero: m[1], camaraCodigo: m[2] };
+}
+
 async function main() {
-  const client = new pg.Client({
-    host: process.env.PGHOST,
-    port: Number(process.env.PGPORT || 5432),
-    user: process.env.PGUSER,
-    password: process.env.PGPASSWORD,
-    database: process.env.PGDATABASE || process.env.POSTGRES_DB,
-    ssl: { rejectUnauthorized: false },
-  });
+  const client = dbClient();
   await client.connect();
 
   const parser = createReadStream(CSV).pipe(
-    parse({ columns: true, bom: true, skip_empty_lines: true, relax_quotes: true }),
+    parse({ columns: true, bom: true, skip_empty_lines: true, relax_quotes: true, relax_column_count: true }),
   );
 
   let batch = [];
@@ -47,54 +51,38 @@ async function main() {
 
   async function flush() {
     if (!batch.length) return;
-    const unique = [...new Map(batch.map((n) => [n.id, n])).values()];
+    const n = await flushNodes(client, batch);
     batch = [];
-    const values = [];
-    const params = [];
-    let i = 1;
-    for (const n of unique) {
-      values.push(
-        `($${i++}, $${i++}, $${i++}::text[], $${i++}, $${i++}, $${i++}, $${i++}, $${i++}::jsonb)`,
-      );
-      params.push(
-        n.id,
-        n.name,
-        n.aliases,
-        n.category,
-        n.role,
-        n.rnc,
-        n.summary,
-        JSON.stringify(n.extra),
-      );
-    }
-    await client.query(
-      `INSERT INTO nodes (id, name, aliases, category, role, rnc, summary, extra)
-       VALUES ${values.join(",")}
-       ON CONFLICT (id) DO UPDATE SET
-         name = EXCLUDED.name,
-         aliases = EXCLUDED.aliases,
-         extra = nodes.extra || EXCLUDED.extra,
-         rnc = COALESCE(EXCLUDED.rnc, nodes.rnc)`,
-      params,
-    );
-    upserted += unique.length;
+    upserted += n;
   }
 
   for await (const row of parser) {
     const name = String(row.RAZON_SOCIAL || "").trim();
     if (!name) continue;
-    const rnc = String(row.NUMERO_DOCUMENTO || "").trim() || null;
+    const rnc = String(row.NUMERO_DOCUMENTO || "").replace(/\D/g, "") || null;
+    const rm = parseRm(row.NUMERO_REGISTRO_MERCANTIL);
     batch.push({
       id: nodeId(row),
       name,
-      aliases: [row.RPE, row.NUMERO_REGISTRO_MERCANTIL].filter((x) => x && x !== "N/A"),
+      aliases: [row.RPE || row["\ufeffRPE"], rm?.registro, rnc].filter(Boolean),
       category: categoryFor(row),
       role: row.FORMA_JURIDICA || row.OCUPACION || null,
       rnc,
-      summary: [row.ESTADO_RPE, row.CLASIFICACION].filter(Boolean).join(" · "),
+      summary: [row.ESTADO_RPE, row.CLASIFICACION, rm?.registro ? `RM ${rm.registro}` : null]
+        .filter(Boolean)
+        .join(" · "),
       extra: {
-        rpe: row.RPE,
-        registroMercantil: row.NUMERO_REGISTRO_MERCANTIL,
+        rpe: row.RPE || row["\ufeffRPE"] || null,
+        registroMercantil: rm?.registro || null,
+        mercantil: rm
+          ? {
+              registro: rm.registro,
+              numero: rm.numero,
+              camaraCodigo: rm.camaraCodigo,
+              fechaVigencia: row.FECHA_REGISTRO_MERCANTIL || null,
+              fuente: "dgcp-rpe",
+            }
+          : undefined,
         source: SOURCE,
       },
     });

@@ -158,15 +158,22 @@ async function downloadCatalog() {
   }));
 }
 
-async function enrichPatrimonio(rows) {
+async function enrichPatrimonio(rows, existingByDecl = new Map()) {
   let targets = rows.filter((r) => r.verPatrimonio && r.identificador);
+  const incremental = process.env.DJP_INCREMENTAL === "1";
+  if (incremental && existingByDecl.size) {
+    targets = targets.filter((r) => !existingByDecl.has(r.declaracion));
+    console.log("incremental: ya teníamos", existingByDecl.size, "→ nuevos", targets.length);
+  }
   if (PDF_LIMIT != null) targets = targets.slice(0, PDF_LIMIT);
   console.log("patrimonios a parsear", targets.length);
 
   let done = 0;
   let ok = 0;
   let fail = 0;
-  const byDecl = new Map();
+  const byDecl = new Map(existingByDecl);
+
+  if (!targets.length) return byDecl;
 
   await mapPool(targets, CONCURRENCY, async (row) => {
     try {
@@ -213,15 +220,18 @@ async function main() {
   }
 
   let patrimonioMap = new Map();
+  if (existsSync(patrimonioPath)) {
+    const list = JSON.parse(await readFile(patrimonioPath, "utf8"));
+    patrimonioMap = new Map(list.map((p) => [p.declaracion, p]));
+  }
+
   if (!SKIP_PDF) {
-    patrimonioMap = await enrichPatrimonio(rows);
+    patrimonioMap = await enrichPatrimonio(rows, patrimonioMap);
     const list = [...patrimonioMap.values()];
     await writeFile(patrimonioPath, JSON.stringify(list));
     console.log("guardado", patrimonioPath, list.length);
-  } else if (existsSync(patrimonioPath)) {
-    const list = JSON.parse(await readFile(patrimonioPath, "utf8"));
-    patrimonioMap = new Map(list.map((p) => [p.declaracion, p]));
-    console.log("reusando patrimonios", patrimonioMap.size);
+  } else {
+    console.log("SKIP_PDF=1 — patrimonios en disco", patrimonioMap.size);
   }
 
   const withMoney = rows.filter((r) => patrimonioMap.has(r.declaracion)).length;

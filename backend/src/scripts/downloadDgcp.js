@@ -30,6 +30,10 @@ const FILES = [
     dest: "nomina-dgcp.csv",
     url: "https://datos.gob.do/dataset/nomina-empleados-dgcp/resource/fe3bbc15-0478-4df1-9f2f-4ac91696952c/download/nomina.csv",
   },
+  {
+    dest: "proveedores-dgcp.csv",
+    url: "https://www.dgcp.gob.do/new_dgcp/documentos/da/Lista de Proveedores del Estado, DGCP, 2005 - 2026.csv",
+  },
 ];
 
 async function download(file) {

@@ -17,6 +17,7 @@
     "ingest:nomina-camara": "node src/scripts/ingestNominaCamara.js",
     "ingest:nomina-senado": "node src/scripts/ingestNominaSenado.js",
     "ingest:djp": "node src/scripts/ingestDjp.js",
+    "ingest:mercantil": "node src/scripts/ingestMercantil.js",
     "refresh:diario": "node src/scripts/refreshDiario.js",
     "start:cron": "node src/scripts/refreshDiario.js"
   },
