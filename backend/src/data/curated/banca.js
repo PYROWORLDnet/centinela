@@ -13,7 +13,7 @@ const LOCAL_NODES = [
     kind: "banco",
     role: "Bancos + AFP + mesa monetaria",
     summary:
-      "Los bancos no son solo bancos: son el núcleo que compra deuda pública, alimenta AFP del mismo grupo y se sienta bajo reglas de la Junta Monetaria — donde también pesan familias.",
+      "Los bancos no son solo bancos: son el núcleo que compra deuda pública, alimenta AFP del mismo grupo y se sienta bajo reglas de la Junta Monetaria. La ley prohíbe a un miembro designado mandar un banco. Héctor José Rizek Llabaly fue miembro histórico (1985–2026), no actual.",
     mechanism: "Cada casa grande quiere su banco, su AFP, su flujo.",
     weight: 100,
     source: SRC.sb,
@@ -22,12 +22,14 @@ const LOCAL_NODES = [
 ];
 
 const SHARED_IDS = [
+  "c-la-cupula",
   "i-junta-monetaria",
   "i-superintendencia-bancos",
   "i-banco-central",
   "e-grupo-popular",
   "e-grupo-bhd",
   "e-grupo-rizek",
+  "e-grupo-brache",
   "e-banco-popular",
   "e-banco-bhd",
   "e-banreservas",
@@ -82,5 +84,12 @@ export const BANCA_EDGES = [
     target: "i-superintendencia-bancos",
     type: "supervisado_por",
     sourceRef: SRC.sb,
+  },
+  {
+    source: "c-corazon-bancario",
+    target: "c-la-cupula",
+    type: "atraviesa",
+    note: "Las mismas casas del mapa",
+    sourceRef: SRC.popular,
   },
 ];

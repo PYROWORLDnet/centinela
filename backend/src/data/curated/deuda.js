@@ -111,6 +111,7 @@ const LOCAL_NODES = [
 ];
 
 const SHARED_IDS = [
+  "c-la-cupula",
   "i-hacienda",
   "i-banco-central",
   "e-grupo-popular",
@@ -252,6 +253,13 @@ export const DEUDA_EDGES = [
     target: "c-bancos-deuda",
     type: "emite_titulos",
     note: "Títulos BC en carteras financieras",
+    sourceRef: SRC.acentoDeuda,
+  },
+  {
+    source: "c-acreedores-privados",
+    target: "c-la-cupula",
+    type: "atraviesa",
+    note: "Popular, BHD, Rizek, Banreservas son casas, no “el mercado”",
     sourceRef: SRC.acentoDeuda,
   },
 ];

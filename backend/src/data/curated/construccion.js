@@ -4,8 +4,9 @@
  */
 
 import { SRC_SHARED, pickNodes, SHARED_EDGES } from "./shared.js";
+import { SRC_CUPULA } from "./cupula.js";
 
-const SRC = { ...SRC_SHARED };
+const SRC = { ...SRC_SHARED, ...SRC_CUPULA };
 
 const LOCAL_NODES = [
   {
@@ -138,7 +139,17 @@ const LOCAL_NODES = [
   },
 ];
 
-const SHARED_IDS = ["e-grupo-estrella", "e-grupo-rainieri", "e-grupo-bonetti", "i-dga"];
+const SHARED_IDS = [
+  "c-la-cupula",
+  "e-grupo-estrella",
+  "e-grupo-rainieri",
+  "e-grupo-bonetti",
+  "e-grupo-linda",
+  "e-grupo-corripio",
+  "p-felix-garcia",
+  "m-cdn",
+  "i-dga",
+];
 
 function dedupe(nodes) {
   const seen = new Set();
@@ -285,5 +296,18 @@ export const CONSTRUCCION_EDGES = [
     type: "demanda",
     note: "Industria / planta también construye",
     sourceRef: SRC.sid,
+  },
+  {
+    source: "c-cadena-construccion",
+    target: "c-la-cupula",
+    type: "atraviesa",
+    sourceRef: SRC.estrella,
+  },
+  {
+    source: "e-grupo-linda",
+    target: "c-cadena-construccion",
+    type: "toca",
+    note: "El Dinero: García y Corripio coinciden en ferretería y cemento",
+    sourceRef: SRC.elDineroEmporios,
   },
 ];

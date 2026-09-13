@@ -4,6 +4,8 @@
  * Solo hechos con fuente. Sin fuente clara = sin cifra / sin edge.
  */
 
+import { CUPULA_EDGES, cupulaNodes } from "./cupula.js";
+
 export const SRC_SHARED = {
   inicia: {
     label: "Listín Diario — Vicini ahora se llamará INICIA (2016)",
@@ -24,6 +26,22 @@ export const SRC_SHARED = {
   rizekBloomberg: {
     label: "Bloomberg Línea — Héctor José Rizek Llabaly (Junta Monetaria desde 1985)",
     url: "https://www.bloomberglinea.com/especiales/personajes-bloomberg-linea/hector-jose-rizek-llabaly/",
+  },
+  rizekFallece: {
+    label: "Diario Libre — muere Héctor José Rizek Llabaly (28 mar 2026)",
+    url: "https://www.diariolibre.com/actualidad/sucesos/2026/03/28/muere-el-empresario-hector-rizek-llabaly/3484859",
+  },
+  jmMiembros: {
+    label: "Diario Libre — composición de la Junta Monetaria (jul 2026)",
+    url: "https://www.diariolibre.com/politica/gobierno/2026/07/26/abinader-debera-revisar-funcionarios-clave-para-economia/3611373",
+  },
+  jmLey: {
+    label: "Ley 183-02 — Monetaria y Financiera (art. 10–11, incompatibilidades)",
+    url: "https://www.sb.gob.do/regulacion/compendio-de-leyes-y-reglamentos/ley-no-183-02-monetaria-y-financiera/",
+  },
+  sbCedeno: {
+    label: "Presidencia — Enmanuel Cedeño Brea, superintendente de Bancos (sep 2026)",
+    url: "https://www.presidencia.gob.do/noticias/ministro-magin-diaz-juramenta-enmanuel-cedeno-brea-como-nuevo-superintendente-de-bancos",
   },
   rizekCacao: {
     label: "Listín Diario — Héctor Rizek Llabaly / Rizek Cacao",
@@ -170,6 +188,7 @@ export const FAMILY_NODES = [
     name: "Grupo Vicini / INICIA",
     kind: "familia",
     role: "Capital histórico · medios y activos",
+    aliases: ["vicini", "inicia"],
     summary:
       "Familia Vicini: más de un siglo en RD. En 2016 la firma VICINI pasó a llamarse INICIA (gestión de activos). Juan Bautista Vicini Lluberes fue uno de los accionistas que asumieron Listín Diario en 2010.",
     mechanism: "Capital viejo + medios + influencia. No es una empresa suelta: es una casa.",
@@ -181,12 +200,12 @@ export const FAMILY_NODES = [
     id: "e-grupo-rizek",
     name: "Grupo Rizek",
     kind: "familia",
-    role: "Pensiones · combustible · cacao · Junta Monetaria",
+    role: "Pensiones · combustible · cacao · asiento histórico en la Junta",
     summary:
-      "Controla AFP Crecer; facilitó Refidomsa vía PATSA (2021); exporta cacao (Rizek Cacao). Héctor José Rizek Llabaly: miembro de la Junta Monetaria desde 1985 (Bloomberg Línea). También accionista histórico de Listín Diario (2010).",
-    mechanism: "Misma familia, varias venas: tu pensión, el combustible, el cacao y la mesa monetaria.",
+      "Controla AFP Crecer; facilitó Refidomsa vía PATSA (2021); exporta cacao (Rizek Cacao). Héctor José Rizek Llabaly fue miembro de la Junta Monetaria desde 1985 hasta su muerte (28 mar 2026): miembro histórico, no actual. También accionista histórico de Listín Diario (2010).",
+    mechanism: "Misma familia, varias venas: tu pensión, el combustible, el cacao y —durante cuatro décadas— la mesa monetaria.",
     weight: 98,
-    source: SRC_SHARED.rizekBloomberg,
+    source: SRC_SHARED.rizekFallece,
     themes: ["familias", "pensiones", "gasolina", "deuda", "medios", "banca", "aduana"],
   },
   {
@@ -194,6 +213,7 @@ export const FAMILY_NODES = [
     name: "Grupo Corripio",
     kind: "familia",
     role: "Medios · distribución · industria",
+    aliases: ["corripio", "pepín corripio", "pepin corripio"],
     summary:
       "Conglomerado con fuerte brazo mediático: Hoy, Telesistema, Teleantillas, El Día, El Nacional, Radio Listín y participación en Listín Diario, además de distribución e industria.",
     mechanism: "Quien controla pantallas y titulares filtra lo que el país discute.",
@@ -217,6 +237,7 @@ export const FAMILY_NODES = [
     name: "Grupo Rainieri / Puntacana",
     kind: "familia",
     role: "Turismo · aeropuerto Punta Cana",
+    aliases: ["rainieri", "puntacana", "punta cana"],
     summary:
       "Grupo Puntacana: resort, destino y Aeropuerto Internacional de Punta Cana. Turismo de enclave con infraestructura propia. El Este turístico depende de energía confiable (CEPM/InterEnergy opera en esa zona).",
     weight: 82,
@@ -261,6 +282,7 @@ export const FAMILY_NODES = [
     name: "Grupo Estrella",
     kind: "familia",
     role: "Construcción · cemento · acero",
+    aliases: ["estrella", "manuel estrella"],
     summary:
       "Conglomerado dominicano: Ingeniería Estrella (obras), Acero Estrella, y PANAM (cemento, concreto, agregados). Integración vertical de la cadena de la construcción (sitio corporativo).",
     mechanism: "No solo construye: también fabrica la materia prima de la obra.",
@@ -275,11 +297,12 @@ export const PERSON_NODES = [
     id: "p-hector-rizek",
     name: "Héctor José Rizek Llabaly",
     kind: "persona",
-    role: "Junta Monetaria desde 1985 · cacao",
+    role: "Fallecido · miembro histórico de la Junta Monetaria (1985–2026)",
+    aliases: ["rizek", "héctor rizek", "hector rizek", "señor cacao"],
     summary:
-      "Presidente histórico de Rizek Cacao. Miembro de la Junta Monetaria desde 1985 (Bloomberg Línea). Puente explícito entre un grupo familiar y la regulación monetaria.",
+      "Falleció el 28 de marzo de 2026 (Diario Libre). Presidente histórico de Rizek Cacao. Integró la Junta Monetaria desde 1985 hasta su muerte: miembro histórico, no forma parte de la composición actual. El puente familia ↔ regulación monetaria quedó en el archivo, no en la mesa de hoy.",
     weight: 70,
-    source: SRC_SHARED.rizekBloomberg,
+    source: SRC_SHARED.rizekFallece,
     themes: ["familias", "banca"],
   },
 ];
@@ -342,6 +365,7 @@ export const MEDIA_NODES = [
     name: "El Nacional",
     kind: "medio",
     role: "Grupo Corripio",
+    aliases: ["el nacional", "nacional"],
     summary: "Periódico del ecosistema Corripio.",
     weight: 62,
     source: SRC_SHARED.corripioWiki,
@@ -447,12 +471,14 @@ export const STATE_NODES = [
     id: "i-junta-monetaria",
     name: "Junta Monetaria",
     kind: "estado",
-    role: "Órgano superior del sistema monetario",
+    role: "Órgano superior · 3 ex officio + 6 designados",
+    aliases: ["junta monetaria", "jm"],
     summary:
-      "Define política monetaria y financiera. Héctor José Rizek Llabaly figura como miembro desde 1985 (Bloomberg Línea).",
-    mechanism: "Quien sienta en esa mesa pesa sobre bancos, tasas y reglas del dinero.",
+      "Ley 183-02: tres miembros ex officio —gobernador del Banco Central (la preside), ministro de Hacienda y Economía y superintendente de Bancos— y seis designados por el Presidente por dos años, renovables. Composición reciente (prensa 2026): Héctor Valdez Albizu (presidente), Magín Díaz (Hacienda), Enmanuel Cedeño Brea (Superintendencia de Bancos, desde sep 2026); designados Julio César Llibre Salcedo, Arturo Martínez Moya, Eduardo de Jesús Tejera Curbelo, Sergia Elena Mejía de Peña, Ricardo Rojas León y José Manuel Mallén. Héctor José Rizek Llabaly fue miembro histórico (1985–2026), no actual: falleció el 28 de marzo de 2026.",
+    mechanism:
+      "Art. 11 de la Ley 183-02: el cargo de miembro designado es incompatible con dirigir o controlar una entidad de intermediación financiera y con tener participación directa o indirecta en el capital de las entidades sometidas a esa ley. Quien sienta en esa mesa no puede, a la vez, mandar un banco.",
     weight: 90,
-    source: SRC_SHARED.rizekBloomberg,
+    source: SRC_SHARED.jmLey,
     themes: ["banca", "familias", "deuda"],
   },
   {
@@ -536,15 +562,15 @@ export const SHARED_EDGES = [
     source: "e-grupo-rizek",
     target: "p-hector-rizek",
     type: "liderado_por",
-    note: "Junta Monetaria desde 1985",
-    sourceRef: SRC_SHARED.rizekBloomberg,
+    note: "Presidente histórico · fallecido 28 mar 2026",
+    sourceRef: SRC_SHARED.rizekFallece,
   },
   {
     source: "p-hector-rizek",
     target: "i-junta-monetaria",
-    type: "integra",
-    note: "Miembro desde 1985",
-    sourceRef: SRC_SHARED.rizekBloomberg,
+    type: "integró",
+    note: "Miembro histórico 1985–2026 · no actual",
+    sourceRef: SRC_SHARED.rizekFallece,
   },
   {
     source: "e-grupo-rizek",
@@ -658,6 +684,7 @@ export const SHARED_EDGES = [
     type: "supervisa",
     sourceRef: SRC_SHARED.sb,
   },
+  ...CUPULA_EDGES,
 ];
 
 export function pickNodes(ids) {
@@ -667,6 +694,7 @@ export function pickNodes(ids) {
     ...MEDIA_NODES,
     ...BANK_AFP_NODES,
     ...STATE_NODES,
+    ...cupulaNodes(),
   ];
   const set = new Set(ids);
   return all.filter((n) => set.has(n.id));

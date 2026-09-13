@@ -245,7 +245,7 @@ export default function CuratedView({ themeId = "todo", navigate }) {
             colors={colors}
             onOpenChange={setSearchOpen}
             searchUrl="/api/curated/search?q="
-            placeholder="Rizek, Banreservas, JCE, Refidomsa…"
+            placeholder="Cúpula, Rizek, La Sirena, Fanjul…"
           />
         </div>
 

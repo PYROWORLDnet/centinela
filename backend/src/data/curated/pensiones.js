@@ -9,6 +9,8 @@
  * - Sitios corporativos Grupo Popular / AFP
  */
 
+import { CUPULA_NODE } from "./cupula.js";
+
 const SRC = {
   sipenInv: {
     label: "SIPEN — composición de inversiones (ene 2025)",
@@ -114,6 +116,7 @@ const SRC = {
 
 /** @type {Array<object>} */
 export const PENSIONES_NODES = [
+  CUPULA_NODE,
   // —— Poder: CNSS y tripartismo ——
   {
     id: "i-cnss",
@@ -440,6 +443,27 @@ export const PENSIONES_NODES = [
 
 /** @type {Array<object>} */
 export const PENSIONES_EDGES = [
+  {
+    source: "c-la-cupula",
+    target: "e-grupo-popular",
+    type: "agrupa",
+    note: "AFP Popular + Banco Popular",
+    sourceRef: SRC.grupoPopular,
+  },
+  {
+    source: "c-la-cupula",
+    target: "e-grupo-rizek",
+    type: "agrupa",
+    note: "AFP Crecer",
+    sourceRef: SRC.afpCrecerNosotros,
+  },
+  {
+    source: "c-la-cupula",
+    target: "e-grupo-bhd",
+    type: "agrupa",
+    note: "AFP Siembra",
+    sourceRef: SRC.afpSiembraAccionista,
+  },
   // —— Mecanismo de poder (CNSS) ——
   {
     source: "i-cnss",

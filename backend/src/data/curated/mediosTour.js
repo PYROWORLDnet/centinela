@@ -34,8 +34,8 @@ export const MEDIOS_TOUR = {
       id: 2,
       line: "Corripio concentra pantallas.",
       detail:
-        "Hoy, Telesistema 11, Teleantillas, El Día, El Nacional y más. Un solo conglomerado con varios micrófonos. Eso no es pluralismo automático: es escala.",
-      nodeIds: ["e-grupo-corripio", "m-hoy", "m-telesistema", "m-teleantillas", "m-el-dia", "m-el-nacional"],
+        "Hoy, Telesistema 11, Teleantillas, El Día, El Nacional y más. Un solo conglomerado con varios micrófonos. El Nacional es Corripio: si lo buscas, caes en esta casa — y en La Cúpula.",
+      nodeIds: ["e-grupo-corripio", "m-hoy", "m-telesistema", "m-teleantillas", "m-el-dia", "m-el-nacional", "c-la-cupula"],
       panelId: "e-grupo-corripio",
     },
     {
@@ -82,9 +82,9 @@ export const MEDIOS_TOUR = {
       id: 8,
       line: "Pluralismo de marcas ≠ pluralismo de dueños.",
       detail:
-        "Puedes tener cinco logos y dos o tres casas detrás. Contar canales no es contar poder. Contar familias sí.",
-      nodeIds: ["e-grupo-corripio", "m-hoy", "m-teleantillas", "m-el-nacional", "c-filtros"],
-      panelId: "e-grupo-corripio",
+        "Puedes tener cinco logos y dos o tres casas detrás. Corripio tiene El Nacional. Félix García tiene El Caribe y, con Estrella, CDN. Contar canales no es contar poder. Contar familias sí.",
+      nodeIds: ["e-grupo-corripio", "m-el-nacional", "e-grupo-linda", "m-el-caribe", "m-cdn", "c-filtros"],
+      panelId: "m-el-nacional",
     },
     {
       id: 9,

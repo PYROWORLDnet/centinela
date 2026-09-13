@@ -26,15 +26,15 @@ export const BANCA_TOUR = {
       id: 1,
       line: "Arriba está la Junta Monetaria.",
       detail:
-        "Ahí se definen reglas del dinero. No es un detalle técnico: es la mesa donde el sistema financiero toma forma. Y en esa mesa también se sientan nombres con casa propia.",
+        "Ley 183-02: tres ex officio (gobernador del Banco Central, ministro de Hacienda y Economía, superintendente de Bancos) y seis designados por dos años. Hoy la presidencia es de Valdez Albizu; Hacienda, Magín Díaz; Superintendencia, Enmanuel Cedeño Brea (sep 2026). El art. 11 prohíbe a un designado dirigir un banco o tener participación en el capital de las entidades que regula.",
       nodeIds: ["i-junta-monetaria", "i-banco-central", "c-corazon-bancario"],
       panelId: "i-junta-monetaria",
     },
     {
       id: 2,
-      line: "Rizek está en esa mesa desde 1985.",
+      line: "Rizek estuvo en esa mesa. Ya no.",
       detail:
-        "Héctor José Rizek Llabaly: miembro de la Junta Monetaria desde 1985 (Bloomberg Línea). La misma familia de AFP Crecer y PATSA. Regulación y negocio, misma casa.",
+        "Héctor José Rizek Llabaly integró la Junta desde 1985 hasta su muerte, el 28 de marzo de 2026. Miembro histórico, no actual. La misma familia de AFP Crecer y PATSA. El asiento quedó en el archivo; la casa sigue en el mapa.",
       nodeIds: ["p-hector-rizek", "i-junta-monetaria", "e-grupo-rizek", "e-afp-crecer"],
       panelId: "p-hector-rizek",
     },
@@ -72,9 +72,9 @@ export const BANCA_TOUR = {
     },
     {
       id: 7,
-      line: "Rizek entra por la AFP — y por la Junta.",
+      line: "Rizek entra por la AFP — y por la Junta histórica.",
       detail:
-        "No tiene el “Banco Rizek” en este mapa, pero tiene AFP Crecer y asiento histórico en la Junta Monetaria. Otra forma de estar en el corazón del sistema.",
+        "No tiene el “Banco Rizek” en este mapa, pero tiene AFP Crecer y tuvo asiento en la Junta Monetaria hasta 2026. Otra forma de estar en el corazón del sistema.",
       nodeIds: ["e-grupo-rizek", "e-afp-crecer", "i-junta-monetaria", "p-hector-rizek"],
       panelId: "e-grupo-rizek",
     },

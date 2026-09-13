@@ -18,7 +18,11 @@ export const FAMILIAS_TOUR = {
       "e-grupo-marti",
       "e-grupo-bonetti",
       "e-grupo-rainieri",
-      "e-grupo-estrella",
+        "e-grupo-estrella",
+      "c-la-cupula",
+      "e-grupo-fanjul",
+      "e-grupo-ccn",
+      "e-grupo-ramos",
     ],
     line: null,
   },
@@ -27,8 +31,8 @@ export const FAMILIAS_TOUR = {
       id: 1,
       line: "Olvida el organigrama de empresas sueltas.",
       detail:
-        "En RD el poder económico se lee por casas: Vicini, Rizek, Corripio, Popular, BHD, Martí, Bonetti, Rainieri, Estrella. Cada una toca varios sectores a la vez. Esa es la unidad real.",
-      nodeIds: ["c-casas", "e-grupo-vicini", "e-grupo-rizek", "e-grupo-corripio", "e-grupo-estrella"],
+        "En RD el poder económico se lee por casas. Ese agrupamiento tiene nombre en el mapa: La Cúpula. Vicini, Corripio, Rainieri, Fanjul, Rizek, González Cuadra, Brache, Estrella, Félix García, Popular, BHD, Banreservas, La Sirena, El Nacional. Si buscas cualquiera de esos nombres, este nodo tiene que salir.",
+      nodeIds: ["c-casas", "c-la-cupula", "e-grupo-vicini", "e-grupo-rizek", "e-grupo-corripio"],
       panelId: "c-casas",
     },
     {
@@ -41,9 +45,9 @@ export const FAMILIAS_TOUR = {
     },
     {
       id: 3,
-      line: "Rizek: pensiones, combustible, cacao… y la Junta Monetaria.",
+      line: "Rizek: pensiones, combustible, cacao… y la Junta histórica.",
       detail:
-        "AFP Crecer. PATSA/Refidomsa. Rizek Cacao. Héctor José Rizek Llabaly: miembro de la Junta Monetaria desde 1985. Misma familia, cuatro venas. Si buscas “Rizek”, esto es lo que debe verse junto.",
+        "AFP Crecer. PATSA/Refidomsa. Rizek Cacao. Héctor José Rizek Llabaly integró la Junta Monetaria desde 1985 hasta su muerte (28 mar 2026): miembro histórico, no actual. Misma familia, varias venas. Si buscas “Rizek”, esto es lo que debe verse junto.",
       nodeIds: [
         "e-grupo-rizek",
         "e-afp-crecer",
@@ -87,11 +91,19 @@ export const FAMILIAS_TOUR = {
     },
     {
       id: 7,
-      line: "Bonetti / SID, Rainieri / Puntacana, Estrella.",
+      line: "Bonetti, Rainieri, Estrella — y también Fanjul, CCN, Rica, Linda, Sirena.",
       detail:
-        "Alimentos e industria (SID). Turismo e infraestructura propia (Puntacana). Construcción vertical: cemento, concreto, acero y obra (Estrella). Tres casas más que no viven de un solo negocio.",
-      nodeIds: ["e-grupo-bonetti", "e-grupo-rainieri", "e-grupo-estrella", "c-casas"],
-      panelId: "e-grupo-estrella",
+        "Azúcar y Este (Fanjul / Central Romana). Retail (González Cuadra / Jumbo y Nacional; Ramos / La Sirena). Lácteos (Brache / Rica, con asiento en Popular). Industria y medios del Cibao (Félix García / Linda: El Caribe, CDN, AES). El mapa creció: ya no son solo las casas de siempre.",
+      nodeIds: [
+        "e-grupo-fanjul",
+        "e-grupo-ccn",
+        "e-grupo-brache",
+        "e-grupo-linda",
+        "e-grupo-ramos",
+        "e-grupo-estrella",
+        "c-la-cupula",
+      ],
+      panelId: "c-la-cupula",
     },
     {
       id: 8,
