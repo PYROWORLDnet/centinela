@@ -7,17 +7,20 @@ import { useCuratedExplorer } from "../lib/useCurated";
 import { useJson } from "../lib/useGraph";
 
 const THEME_NAV = [
+  { id: "todo", label: "Todo", path: "/todo" },
   { id: "pensiones", label: "Pensiones", path: "/pensiones" },
   { id: "partidos", label: "Partidos", path: "/partidos" },
   { id: "gasolina", label: "Gasolina", path: "/gasolina" },
+  { id: "electricidad", label: "Electricidad", path: "/electricidad" },
   { id: "deuda", label: "Deuda", path: "/deuda" },
   { id: "familias", label: "Familias", path: "/familias" },
   { id: "medios", label: "Medios", path: "/medios" },
   { id: "banca", label: "Banca", path: "/banca" },
   { id: "aduana", label: "Aduana", path: "/aduana" },
+  { id: "construccion", label: "Construcción", path: "/construccion" },
 ];
 
-export default function CuratedView({ themeId = "pensiones", navigate }) {
+export default function CuratedView({ themeId = "todo", navigate }) {
   const [searchOpen, setSearchOpen] = useState(false);
   const [tourMode, setTourMode] = useState(false);
   const [stepIndex, setStepIndex] = useState(0);
@@ -238,7 +241,7 @@ export default function CuratedView({ themeId = "pensiones", navigate }) {
               <button
                 key={t.id}
                 type="button"
-                className={themeId === t.id ? "is-active" : undefined}
+                className={`${themeId === t.id ? "is-active" : ""}${t.id === "todo" ? " is-todo" : ""}`.trim() || undefined}
                 onClick={() => goTheme(t)}
               >
                 <span className="pill-full">{t.label}</span>

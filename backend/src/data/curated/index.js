@@ -1,41 +1,53 @@
 import { THEMES, THEME_COLORS, getTheme } from "./themes.js";
+import { TODO_NODES, TODO_EDGES } from "./todo.js";
 import { PENSIONES_NODES, PENSIONES_EDGES } from "./pensiones.js";
 import { PARTIDOS_NODES, PARTIDOS_EDGES } from "./partidos.js";
 import { GASOLINA_NODES, GASOLINA_EDGES } from "./gasolina.js";
+import { ELECTRICIDAD_NODES, ELECTRICIDAD_EDGES } from "./electricidad.js";
 import { DEUDA_NODES, DEUDA_EDGES } from "./deuda.js";
 import { FAMILIAS_NODES, FAMILIAS_EDGES } from "./familias.js";
 import { MEDIOS_NODES, MEDIOS_EDGES } from "./medios.js";
 import { BANCA_NODES, BANCA_EDGES } from "./banca.js";
 import { ADUANA_NODES, ADUANA_EDGES } from "./aduana.js";
+import { CONSTRUCCION_NODES, CONSTRUCCION_EDGES } from "./construccion.js";
+import { TODO_TOUR } from "./todoTour.js";
 import { getPensionesTour } from "./pensionesTour.js";
 import { PARTIDOS_TOUR } from "./partidosTour.js";
 import { GASOLINA_TOUR } from "./gasolinaTour.js";
+import { ELECTRICIDAD_TOUR } from "./electricidadTour.js";
 import { DEUDA_TOUR } from "./deudaTour.js";
 import { FAMILIAS_TOUR } from "./familiasTour.js";
 import { MEDIOS_TOUR } from "./mediosTour.js";
 import { BANCA_TOUR } from "./bancaTour.js";
 import { ADUANA_TOUR } from "./aduanaTour.js";
+import { CONSTRUCCION_TOUR } from "./construccionTour.js";
 
 const DATASETS = {
+  todo: { nodes: TODO_NODES, edges: TODO_EDGES },
   pensiones: { nodes: PENSIONES_NODES, edges: PENSIONES_EDGES },
   partidos: { nodes: PARTIDOS_NODES, edges: PARTIDOS_EDGES },
   gasolina: { nodes: GASOLINA_NODES, edges: GASOLINA_EDGES },
+  electricidad: { nodes: ELECTRICIDAD_NODES, edges: ELECTRICIDAD_EDGES },
   deuda: { nodes: DEUDA_NODES, edges: DEUDA_EDGES },
   familias: { nodes: FAMILIAS_NODES, edges: FAMILIAS_EDGES },
   medios: { nodes: MEDIOS_NODES, edges: MEDIOS_EDGES },
   banca: { nodes: BANCA_NODES, edges: BANCA_EDGES },
   aduana: { nodes: ADUANA_NODES, edges: ADUANA_EDGES },
+  construccion: { nodes: CONSTRUCCION_NODES, edges: CONSTRUCCION_EDGES },
 };
 
 const TOURS = {
+  todo: TODO_TOUR,
   pensiones: getPensionesTour(),
   partidos: PARTIDOS_TOUR,
   gasolina: GASOLINA_TOUR,
+  electricidad: ELECTRICIDAD_TOUR,
   deuda: DEUDA_TOUR,
   familias: FAMILIAS_TOUR,
   medios: MEDIOS_TOUR,
   banca: BANCA_TOUR,
   aduana: ADUANA_TOUR,
+  construccion: CONSTRUCCION_TOUR,
 };
 
 function degreeMap(edges) {
@@ -114,6 +126,7 @@ export function listThemes() {
 
 /**
  * Grafo del tema + 1 hop desde otras capas (una sola red; el tema es la ruta de entrada).
+ * Tema "todo": red completa — el roadmap visual de todo Centinela.
  */
 export function getCuratedGraph(themeId, pill = "all") {
   const theme = getTheme(themeId);
@@ -142,11 +155,16 @@ export function getCuratedGraph(themeId, pill = "all") {
   const seed = new Set(ds.nodes.map((n) => n.id));
   const keep = new Set(seed);
 
-  // 1 hop cross-theme: vecinos de nodos del tema en toda la red
-  for (const e of edges) {
-    if (seed.has(e.source) || seed.has(e.target)) {
-      keep.add(e.source);
-      keep.add(e.target);
+  if (themeId === "todo") {
+    // Plano completo: todas las capas
+    for (const id of nodeIndex.keys()) keep.add(id);
+  } else {
+    // 1 hop cross-theme: vecinos de nodos del tema en toda la red
+    for (const e of edges) {
+      if (seed.has(e.source) || seed.has(e.target)) {
+        keep.add(e.source);
+        keep.add(e.target);
+      }
     }
   }
 

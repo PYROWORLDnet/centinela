@@ -18,6 +18,7 @@ export const FAMILIAS_TOUR = {
       "e-grupo-marti",
       "e-grupo-bonetti",
       "e-grupo-rainieri",
+      "e-grupo-estrella",
     ],
     line: null,
   },
@@ -26,8 +27,8 @@ export const FAMILIAS_TOUR = {
       id: 1,
       line: "Olvida el organigrama de empresas sueltas.",
       detail:
-        "En RD el poder económico se lee por casas: Vicini, Rizek, Corripio, Popular, BHD, Martí, Bonetti, Rainieri. Cada una toca varios sectores a la vez. Esa es la unidad real.",
-      nodeIds: ["c-casas", "e-grupo-vicini", "e-grupo-rizek", "e-grupo-corripio"],
+        "En RD el poder económico se lee por casas: Vicini, Rizek, Corripio, Popular, BHD, Martí, Bonetti, Rainieri, Estrella. Cada una toca varios sectores a la vez. Esa es la unidad real.",
+      nodeIds: ["c-casas", "e-grupo-vicini", "e-grupo-rizek", "e-grupo-corripio", "e-grupo-estrella"],
       panelId: "c-casas",
     },
     {
@@ -86,11 +87,11 @@ export const FAMILIAS_TOUR = {
     },
     {
       id: 7,
-      line: "Bonetti / SID y Rainieri / Puntacana.",
+      line: "Bonetti / SID, Rainieri / Puntacana, Estrella.",
       detail:
-        "Alimentos e industria (SID). Turismo e infraestructura propia (Puntacana + aeropuerto). Dos casas más que no viven de un solo negocio.",
-      nodeIds: ["e-grupo-bonetti", "e-grupo-rainieri", "c-casas"],
-      panelId: "e-grupo-bonetti",
+        "Alimentos e industria (SID). Turismo e infraestructura propia (Puntacana). Construcción vertical: cemento, concreto, acero y obra (Estrella). Tres casas más que no viven de un solo negocio.",
+      nodeIds: ["e-grupo-bonetti", "e-grupo-rainieri", "e-grupo-estrella", "c-casas"],
+      panelId: "e-grupo-estrella",
     },
     {
       id: 8,

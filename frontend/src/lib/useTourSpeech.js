@@ -1,22 +1,19 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 
 const VOICE_KEY = "centinela-tts-voice";
-const DEFAULT_VOICE = "coral";
+const DEFAULT_VOICE = "nova";
+const ALLOWED_VOICES = new Set(["nova", "alloy"]);
 
 const FALLBACK_VOICES = [
-  { id: "coral", label: "Coral · cálida (recomendada)" },
   { id: "nova", label: "Nova · clara" },
-  { id: "sage", label: "Sage · serena" },
-  { id: "shimmer", label: "Shimmer · suave" },
   { id: "alloy", label: "Alloy · neutra" },
-  { id: "echo", label: "Echo · firme" },
-  { id: "fable", label: "Fable · expresiva" },
-  { id: "onyx", label: "Onyx · profunda" },
 ];
 
 function readStoredVoice() {
   try {
-    return localStorage.getItem(VOICE_KEY) || DEFAULT_VOICE;
+    const stored = localStorage.getItem(VOICE_KEY);
+    if (stored && ALLOWED_VOICES.has(stored)) return stored;
+    return DEFAULT_VOICE;
   } catch {
     return DEFAULT_VOICE;
   }
@@ -28,9 +25,9 @@ function stopBrowserSpeech() {
 }
 
 /**
- * Lectura por voz del tour — OpenAI TTS (prefetch + cache).
+ * Lectura por voz del tour — OpenAI TTS (prefetch + cache + autoavance).
  */
-export function useTourSpeech(text, { autoKey } = {}) {
+export function useTourSpeech(text, { autoKey, prefetchText, done = false, onAdvance } = {}) {
   const [speaking, setSpeaking] = useState(false);
   const [supported, setSupported] = useState(true);
   const [voices, setVoices] = useState(FALLBACK_VOICES);
@@ -40,6 +37,7 @@ export function useTourSpeech(text, { autoKey } = {}) {
 
   const textRef = useRef(text);
   const continueRef = useRef(false);
+  const autoplayRef = useRef(false);
   const speakingRef = useRef(false);
   const audioRef = useRef(null);
   const cacheRef = useRef(new Map()); // key → objectUrl
@@ -47,10 +45,14 @@ export function useTourSpeech(text, { autoKey } = {}) {
   const playAbortRef = useRef(null);
   const voiceIdRef = useRef(DEFAULT_VOICE);
   const prefetchGen = useRef(0);
+  const doneRef = useRef(done);
+  const onAdvanceRef = useRef(onAdvance);
 
   textRef.current = text;
   speakingRef.current = speaking;
   voiceIdRef.current = voiceId;
+  doneRef.current = done;
+  onAdvanceRef.current = onAdvance;
 
   useEffect(() => {
     setVoiceIdState(readStoredVoice());
@@ -117,7 +119,19 @@ export function useTourSpeech(text, { autoKey } = {}) {
     return promise;
   }, []);
 
-  // Prefetch en cuanto cambia el paso / texto / voz
+  const finishOrAdvance = useCallback(() => {
+    speakingRef.current = false;
+    setSpeaking(false);
+    if (!autoplayRef.current) return;
+    if (doneRef.current) {
+      autoplayRef.current = false;
+      return;
+    }
+    continueRef.current = true;
+    onAdvanceRef.current?.();
+  }, []);
+
+  // Prefetch paso actual
   useEffect(() => {
     const payload = String(text || "").trim();
     if (!payload) return undefined;
@@ -127,10 +141,16 @@ export function useTourSpeech(text, { autoKey } = {}) {
       /* prefetch fallido: speak hará fallback */
     });
     return () => {
-      // no cancelar: deja calentar cache para si el usuario vuelve
       void gen;
     };
   }, [text, voiceId, autoKey, ensureObjectUrl]);
+
+  // Prefetch siguiente paso mientras suena el actual
+  useEffect(() => {
+    const payload = String(prefetchText || "").trim();
+    if (!payload) return;
+    ensureObjectUrl(payload, voiceIdRef.current).catch(() => {});
+  }, [prefetchText, voiceId, ensureObjectUrl]);
 
   const setVoiceId = useCallback(
     (id) => {
@@ -142,6 +162,8 @@ export function useTourSpeech(text, { autoKey } = {}) {
       } catch {
         /* ignore */
       }
+      autoplayRef.current = false;
+      continueRef.current = false;
       stopPlayback();
       speakingRef.current = false;
       setSpeaking(false);
@@ -156,7 +178,7 @@ export function useTourSpeech(text, { autoKey } = {}) {
     if (!payload) return;
     stopBrowserSpeech();
     const u = new SpeechSynthesisUtterance(payload);
-    u.rate = 0.95;
+    u.rate = 1.05;
     u.lang = "es-MX";
     u.onstart = () => {
       speakingRef.current = true;
@@ -164,21 +186,22 @@ export function useTourSpeech(text, { autoKey } = {}) {
       setLoading(false);
     };
     u.onend = () => {
-      speakingRef.current = false;
-      setSpeaking(false);
+      finishOrAdvance();
     };
     u.onerror = () => {
       speakingRef.current = false;
       setSpeaking(false);
       setLoading(false);
+      autoplayRef.current = false;
     };
     window.speechSynthesis.speak(u);
-  }, []);
+  }, [finishOrAdvance]);
 
   const speak = useCallback(async () => {
     const payload = textRef.current?.trim();
     if (!payload) return;
 
+    autoplayRef.current = true;
     stopPlayback();
     setLoading(true);
     const ctrl = new AbortController();
@@ -197,8 +220,7 @@ export function useTourSpeech(text, { autoKey } = {}) {
         setLoading(false);
       };
       audio.onended = () => {
-        speakingRef.current = false;
-        setSpeaking(false);
+        finishOrAdvance();
       };
       audio.onerror = () => {
         speakingRef.current = false;
@@ -212,9 +234,10 @@ export function useTourSpeech(text, { autoKey } = {}) {
       setLoading(false);
       speakBrowser();
     }
-  }, [ensureObjectUrl, speakBrowser, stopPlayback]);
+  }, [ensureObjectUrl, finishOrAdvance, speakBrowser, stopPlayback]);
 
   const stop = useCallback(() => {
+    autoplayRef.current = false;
     continueRef.current = false;
     stopPlayback();
     speakingRef.current = false;
@@ -242,7 +265,7 @@ export function useTourSpeech(text, { autoKey } = {}) {
   }, [speak, stop, loading]);
 
   const markContinue = useCallback(() => {
-    if (speakingRef.current || loading) continueRef.current = true;
+    if (speakingRef.current || loading || autoplayRef.current) continueRef.current = true;
   }, [loading]);
 
   return {

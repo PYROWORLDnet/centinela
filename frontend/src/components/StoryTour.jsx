@@ -1,8 +1,9 @@
+import { useCallback } from "react";
 import { useTourSpeech, stepSpeechText } from "../lib/useTourSpeech";
 
 /**
  * Carril narrativo del recorrido curado.
- * Lectura por voz OpenAI + selector de voz.
+ * Lectura por voz OpenAI + selector de voz + autoavance al terminar audio.
  */
 export default function StoryTour({
   tour,
@@ -21,6 +22,12 @@ export default function StoryTour({
   const isLast = stepIndex >= total - 1;
   const speechKey = done ? "epilogue" : `step-${step?.id ?? stepIndex}`;
   const speechText = stepSpeechText(step, tour.epilogue, { done });
+  const nextStep = !done && !isLast ? tour.steps?.[stepIndex + 1] : null;
+  const prefetchText = done
+    ? ""
+    : isLast
+      ? stepSpeechText(null, tour.epilogue, { done: true })
+      : stepSpeechText(nextStep, tour.epilogue, { done: false });
 
   return (
     <StoryTourInner
@@ -32,6 +39,7 @@ export default function StoryTour({
       done={done}
       speechKey={speechKey}
       speechText={speechText}
+      prefetchText={prefetchText}
       onPrev={onPrev}
       onNext={onNext}
       onSkip={onSkip}
@@ -50,12 +58,18 @@ function StoryTourInner({
   done,
   speechKey,
   speechText,
+  prefetchText,
   onPrev,
   onNext,
   onSkip,
   onRestart,
   onExplore,
 }) {
+  const handleAdvance = useCallback(() => {
+    if (done) return;
+    onNext();
+  }, [done, onNext]);
+
   const {
     speaking,
     loading,
@@ -66,7 +80,12 @@ function StoryTourInner({
     toggle,
     stop,
     markContinue,
-  } = useTourSpeech(speechText, { autoKey: speechKey });
+  } = useTourSpeech(speechText, {
+    autoKey: speechKey,
+    prefetchText,
+    done,
+    onAdvance: handleAdvance,
+  });
 
   function handleNext() {
     markContinue();
@@ -100,7 +119,12 @@ function StoryTourInner({
 
   const voiceControls = supported && (
     <div className="story__voice">
-      <SpeakButton speaking={speaking} loading={loading} onClick={toggle} label="Escuchar este paso" />
+      <SpeakButton
+        speaking={speaking}
+        loading={loading}
+        onClick={toggle}
+        label={speaking || loading ? "Pausar recorrido" : "Escuchar recorrido"}
+      />
       <label className="story__voice-label">
         <span className="sr-only">Voz</span>
         <select

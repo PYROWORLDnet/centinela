@@ -35,15 +35,15 @@ export function usePathname() {
   return { path, navigate };
 }
 
-/** Parse theme from path: / → pensiones, /pensiones → pensiones, /archivo|/masivo → null (archive). */
+/** Parse theme from path: / → todo, /todo → todo, /archivo|/masivo → null (archive). */
 export function themeFromPath(path) {
   const clean = (path || "/").replace(/\/+$/, "") || "/";
   if (clean === "/archivo" || clean === "/masivo") return null;
-  // /todos era el archivo; ahora redirige al curado
-  if (clean === "/todos") return "pensiones";
-  if (clean === "/" || clean === "") return "pensiones";
+  if (clean === "/layouts") return "todo"; // lab no es tema; App lo intercepta
+  if (clean === "/todos") return "todo";
+  if (clean === "/" || clean === "") return "todo";
   const seg = clean.slice(1).split("/")[0];
-  return seg || "pensiones";
+  return seg || "todo";
 }
 
 export function useCuratedExplorer(themeId, pill = "all") {

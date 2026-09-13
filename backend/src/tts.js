@@ -4,15 +4,15 @@
  */
 
 export const TTS_VOICES = [
-  { id: "coral", label: "Coral · cálida (recomendada)" },
   { id: "nova", label: "Nova · clara" },
-  { id: "sage", label: "Sage · serena" },
-  { id: "shimmer", label: "Shimmer · suave" },
   { id: "alloy", label: "Alloy · neutra" },
-  { id: "echo", label: "Echo · firme" },
-  { id: "fable", label: "Fable · expresiva" },
-  { id: "onyx", label: "Onyx · profunda" },
 ];
+
+/** Algunas voces arrastran más; compensamos con speed. Rango API: 0.25–4.0 */
+const VOICE_SPEED = {
+  nova: 1.0,
+  alloy: 1.18,
+};
 
 /** gpt-4o-mini-tts = más natural; tts-1 = más rápido pero menos calidad */
 const DEFAULT_MODEL = process.env.OPENAI_TTS_MODEL || "gpt-4o-mini-tts";
@@ -25,14 +25,14 @@ export function listTtsVoices() {
   return {
     provider: "openai",
     configured: Boolean(process.env.OPENAI_API_KEY),
-    defaultVoice: "coral",
+    defaultVoice: "nova",
     model: DEFAULT_MODEL,
     voices: TTS_VOICES,
   };
 }
 
-function cacheKey(model, voice, text) {
-  return `${model}|${voice}|${text}`;
+function cacheKey(model, voice, speed, text) {
+  return `${model}|${voice}|${speed}|${text}`;
 }
 
 function remember(key, buf) {
@@ -48,7 +48,7 @@ function remember(key, buf) {
  * @param {string} voice
  * @returns {Promise<Buffer>}
  */
-export async function synthesizeSpeech(text, voice = "coral") {
+export async function synthesizeSpeech(text, voice = "nova") {
   const key = process.env.OPENAI_API_KEY;
   if (!key) {
     const err = new Error("OPENAI_API_KEY no configurada");
@@ -64,9 +64,10 @@ export async function synthesizeSpeech(text, voice = "coral") {
   }
 
   const allowed = new Set(TTS_VOICES.map((v) => v.id));
-  const voiceId = allowed.has(voice) ? voice : "coral";
+  const voiceId = allowed.has(voice) ? voice : "nova";
   const model = DEFAULT_MODEL;
-  const ck = cacheKey(model, voiceId, input);
+  const speed = VOICE_SPEED[voiceId] ?? 1.0;
+  const ck = cacheKey(model, voiceId, speed, input);
 
   const hit = audioCache.get(ck);
   if (hit) return hit;
@@ -76,12 +77,12 @@ export async function synthesizeSpeech(text, voice = "coral") {
     voice: voiceId,
     input,
     response_format: "mp3",
-    speed: 0.95,
+    speed,
   };
   // Instrucciones de estilo solo en el modelo natural
   if (model.includes("gpt-4o")) {
     body.instructions =
-      "Habla en español dominicano, clara y pausada, como una narradora de documental. Tono serio pero cercano, sin dramatizar.";
+      "Habla en español dominicano, clara y con ritmo natural de conversación, como una narradora de documental. Tono serio pero cercano. No alentes ni dramatizes.";
   }
 
   const res = await fetch("https://api.openai.com/v1/audio/speech", {

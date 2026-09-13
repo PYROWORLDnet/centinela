@@ -145,7 +145,7 @@ app.get("/api/tts/voices", (_req, res) => {
 app.post("/api/tts", async (req, res) => {
   try {
     const text = String(req.body?.text || "");
-    const voice = String(req.body?.voice || "coral");
+    const voice = String(req.body?.voice || "nova");
     const audio = await synthesizeSpeech(text, voice);
     res.setHeader("Content-Type", "audio/mpeg");
     res.setHeader("Cache-Control", "private, max-age=3600");

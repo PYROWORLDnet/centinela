@@ -3,14 +3,17 @@
  * El modo masivo queda archivado en /archivo y /masivo.
  */
 export const THEMES = [
+  { id: "todo", label: "Todo", ready: true, pills: [] },
   { id: "pensiones", label: "Pensiones", ready: true, pills: [] },
   { id: "partidos", label: "Partidos", ready: true, pills: [] },
   { id: "gasolina", label: "Gasolina", ready: true, pills: [] },
+  { id: "electricidad", label: "Electricidad", ready: true, pills: [] },
   { id: "deuda", label: "Deuda", ready: true, pills: [] },
   { id: "familias", label: "Familias", ready: true, pills: [] },
   { id: "medios", label: "Medios", ready: true, pills: [] },
   { id: "banca", label: "Banca", ready: true, pills: [] },
   { id: "aduana", label: "Aduana", ready: true, pills: [] },
+  { id: "construccion", label: "Construcción", ready: true, pills: [] },
 ];
 
 export const THEME_COLORS = {

@@ -1,0 +1,158 @@
+/**
+ * Recorrido narrativo — tema Todo.
+ * Roadmap del sistema: una historia que une las puertas.
+ */
+
+export const TODO_TOUR = {
+  id: "todo-roadmap",
+  theme: "todo",
+  title: "Cómo se sostiene el sistema",
+  epilogue:
+    "Ya viste el plano. Pensiones, deuda, banca, partidos, gasolina, electricidad, aduana, medios, construcción y familias no son silos: son la misma red vista por puertas distintas. Entra a cada tema para el detalle con fuentes. Cuando abramos inmigración u otras capas, aparecerán aquí. El mapa crece; el mecanismo es el mismo.",
+  entry: {
+    hubId: "c-sistema",
+    satelliteIds: [
+      "c-ocho-puertas",
+      "i-cnss",
+      "i-jce",
+      "i-micm",
+      "i-sie",
+      "i-hacienda",
+      "c-casas",
+      "c-filtros",
+      "i-junta-monetaria",
+      "i-dga",
+      "c-cadena-construccion",
+    ],
+    line: null,
+  },
+  steps: [
+    {
+      id: 1,
+      line: "Esto no son pantallas sueltas.",
+      detail:
+        "Es una sola red. Cada tema es una puerta. El Todo es el plano: cómo se conectan tu sueldo, el Estado, los bancos, los partidos, el combustible, la luz, la aduana, los medios, la construcción y las casas.",
+      nodeIds: ["c-sistema", "c-ocho-puertas"],
+      panelId: "c-sistema",
+    },
+    {
+      id: 2,
+      line: "Empieza por tu nómina.",
+      detail:
+        "Cada mes te descuentan. Ese dinero va a una AFP. Gran parte se presta al Estado. Tu pensión financia deuda pública. En Pensiones está el ciclo completo.",
+      nodeIds: ["i-cnss", "c-sistema", "e-afp-popular", "e-afp-crecer"],
+      panelId: "i-cnss",
+      pathFrom: ["c-sistema"],
+    },
+    {
+      id: 3,
+      line: "Esa deuda hay que pagarla.",
+      detail:
+        "Hacienda emite. AFP y bancos compran. Tú pagas impuestos que cubren intereses. El dinero da la vuelta y vuelve a los mismos nodos.",
+      nodeIds: ["i-hacienda", "c-sistema", "e-grupo-popular", "e-grupo-rizek"],
+      panelId: "i-hacienda",
+      pathFrom: ["c-sistema"],
+    },
+    {
+      id: 4,
+      line: "El corazón que bombea ese dinero es la banca.",
+      detail:
+        "Junta Monetaria, bancos y AFP del mismo capital. Popular, BHD, Banreservas: depósitos, pensiones y acceso a la deuda pública.",
+      nodeIds: ["i-junta-monetaria", "e-banco-popular", "e-banco-bhd", "e-banreservas"],
+      panelId: "i-junta-monetaria",
+      pathFrom: ["c-sistema"],
+    },
+    {
+      id: 5,
+      line: "¿Quién escribe las reglas del juego político?",
+      detail:
+        "Sin independientes (Ley 13-26). El dinero público premia a los grandes. El partido chico no gana: negocia e integra.",
+      nodeIds: ["i-jce", "c-sistema"],
+      panelId: "i-jce",
+      pathFrom: ["c-sistema"],
+    },
+    {
+      id: 6,
+      line: "Cada semana pagas en la bomba.",
+      detail:
+        "El MICM fija el precio. El Estado es dueño de la refinería. Rizek/PATSA y Martí tocan suministro y manguera. Tú pagas el subsidio.",
+      nodeIds: ["i-micm", "e-refidomsa", "e-grupo-rizek", "e-grupo-marti"],
+      panelId: "i-micm",
+      pathFrom: ["c-sistema"],
+    },
+    {
+      id: 7,
+      line: "Y cada mes, la luz.",
+      detail:
+        "SIE regula. Las EDE (estatales) reparte. Pérdidas enormes → subsidio del presupuesto. Punta Catalina y generación mixta. En el Este turístico, CEPM/InterEnergy. Misma lógica: Estado + privados + contribuyente.",
+      nodeIds: ["i-sie", "c-sistema", "e-edesur", "c-subsidio-electrico", "e-cepm"],
+      panelId: "i-sie",
+      pathFrom: ["c-sistema"],
+    },
+    {
+      id: 8,
+      line: "Por la aduana entra lo que consumes.",
+      detail:
+        "La DGA es la puerta. Martí, Corripio, Rizek, Bonetti — quien importa con volumen no llega solo.",
+      nodeIds: ["i-dga", "e-grupo-marti", "e-grupo-bonetti", "e-grupo-corripio"],
+      panelId: "i-dga",
+      pathFrom: ["c-sistema"],
+    },
+    {
+      id: 9,
+      line: "Con qué se construye el país.",
+      detail:
+        "Cemento, concreto, acero, obra. ADOCEM agrupa productores. Estrella integra la cadena. Multinacionales (Cemex, Domicem…) compiten en la materia prima.",
+      nodeIds: ["c-cadena-construccion", "e-grupo-estrella", "e-cemento-panam", "e-adocem"],
+      panelId: "c-cadena-construccion",
+      pathFrom: ["c-sistema"],
+    },
+    {
+      id: 10,
+      line: "Los medios filtran lo que ves.",
+      detail:
+        "Corripio concentra pantallas. Vicini y otros pesan en el papel. A menudo omiten el mapa.",
+      nodeIds: ["c-filtros", "e-grupo-corripio", "e-grupo-vicini", "m-listin"],
+      panelId: "c-filtros",
+      pathFrom: ["c-sistema"],
+    },
+    {
+      id: 11,
+      line: "Debajo de todo: las casas.",
+      detail:
+        "Vicini, Rizek, Corripio, Popular, BHD, Martí, Bonetti, Rainieri, Estrella. Familias es el mapa de apellidos; los otros temas son los sectores.",
+      nodeIds: [
+        "c-casas",
+        "c-casas-puente",
+        "e-grupo-vicini",
+        "e-grupo-rizek",
+        "e-grupo-estrella",
+        "e-grupo-rainieri",
+      ],
+      panelId: "c-casas",
+      pathFrom: ["c-sistema"],
+    },
+    {
+      id: 12,
+      line: "El puente no es solo Rizek.",
+      detail:
+        "Roryk cruza AFP, combustible y Junta Monetaria. Estrella cruza cemento y obra. Rainieri cruza turismo y la zona de CEPM. Cuando abramos más temas, aparecerán más puentes.",
+      nodeIds: [
+        "c-casas-puente",
+        "e-grupo-rizek",
+        "e-grupo-estrella",
+        "e-grupo-rainieri",
+        "e-afp-crecer",
+      ],
+      panelId: "c-casas-puente",
+    },
+    {
+      id: 13,
+      line: "Ahora elige una puerta.",
+      detail:
+        "Escuchaste el plano. En el navbar haz scroll: Electricidad y Construcción ya están. Dale play en cada tema. El Todo siempre será el resumen para entender el sistema de un tirón.",
+      nodeIds: ["c-ocho-puertas", "c-sistema"],
+      panelId: "c-ocho-puertas",
+    },
+  ],
+};

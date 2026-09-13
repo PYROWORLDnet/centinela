@@ -109,6 +109,58 @@ export const SRC_SHARED = {
     label: "DIGEPRES — Política presupuestaria 2026 (intereses)",
     url: "https://www.digepres.gob.do/wp-content/uploads/2025/08/Politica-Presupuestaria-Anual-2026.pdf",
   },
+  sie: {
+    label: "Superintendencia de Electricidad (SIE)",
+    url: "https://sie.gob.do/",
+  },
+  mem: {
+    label: "Ministerio de Energía y Minas",
+    url: "https://mem.gob.do/",
+  },
+  edePerdidas: {
+    label: "Diario Libre — pérdidas EDE 43.5% (ene–jun 2026) / subsidio",
+    url: "https://www.diariolibre.com/economia/finanzas/2026/09/10/las-perdidas-totales-de-las-ede/3654347",
+  },
+  fonperEde: {
+    label: "Hoy — traspaso acciones EDE a FONPER",
+    url: "https://hoy.com.do/economia/gobierno-traspasa-acciones-de-las-ede-al-fonper-por-mas-de-cinco-mil-noventa-millones-de-pesos_873005.html",
+  },
+  elCaribeElectrico: {
+    label: "El Caribe — sector público mayor dueño del mercado eléctrico",
+    url: "https://www.elcaribe.com.do/panorama/dinero/el-sector-publico-mayor-dueno-del-mercado-electrico/",
+  },
+  elDineroEstado: {
+    label: "El Dinero — Estado empresario (EGE Itabo / Haina / ETED)",
+    url: "https://eldinero.com.do/308266/el-estado-dominicano-sigue-siendo-empresario-pese-a-privatizaciones/",
+  },
+  puntaCatalina: {
+    label: "Presidencia — Decreto 142-23 · Empresa Generación Punta Catalina",
+    url: "https://presidencia.gob.do/sites/default/files/decree/2023-04/Decreto%20142-23.pdf",
+  },
+  cepm: {
+    label: "CEPM — Quiénes somos (InterEnergy)",
+    url: "https://cepm.com.do/quienes-somos/",
+  },
+  adocem: {
+    label: "ADOCEM — producción de cemento RD",
+    url: "https://adocem.org/produccion-de-cemento-ha-crecido-55-en-la-ultima-decada/",
+  },
+  estrella: {
+    label: "Grupo ESTRELLA",
+    url: "https://estrella.com.do/",
+  },
+  cementoPanam: {
+    label: "Grupo ESTRELLA — Cemento PANAM",
+    url: "https://estrella.com.do/empresas/cemento-panam/",
+  },
+  cementoNacional: {
+    label: "El Nacional — industria del cemento en RD",
+    url: "https://elnacional.com.do/fama-y-vida/resaltan-calidad-de-la-industria-del-cemento-en-republica-dominicana_500105.html",
+  },
+  cemexRd: {
+    label: "CEMEX — planta San Pedro de Macorís / capacidad",
+    url: "https://www.cemex.com/w/cemex-expands-capacity-in-the-dominican-republic-with-reopening-of-production-line",
+  },
 };
 
 /** Familias / grupos — IDs estables */
@@ -166,10 +218,10 @@ export const FAMILY_NODES = [
     kind: "familia",
     role: "Turismo · aeropuerto Punta Cana",
     summary:
-      "Grupo Puntacana: resort, destino y Aeropuerto Internacional de Punta Cana. Turismo de enclave con infraestructura propia.",
+      "Grupo Puntacana: resort, destino y Aeropuerto Internacional de Punta Cana. Turismo de enclave con infraestructura propia. El Este turístico depende de energía confiable (CEPM/InterEnergy opera en esa zona).",
     weight: 82,
     source: SRC_SHARED.puntacana,
-    themes: ["familias"],
+    themes: ["familias", "electricidad"],
   },
   {
     id: "e-grupo-popular",
@@ -203,6 +255,18 @@ export const FAMILY_NODES = [
     weight: 90,
     source: SRC_SHARED.bhd,
     themes: ["familias", "pensiones", "deuda", "banca"],
+  },
+  {
+    id: "e-grupo-estrella",
+    name: "Grupo Estrella",
+    kind: "familia",
+    role: "Construcción · cemento · acero",
+    summary:
+      "Conglomerado dominicano: Ingeniería Estrella (obras), Acero Estrella, y PANAM (cemento, concreto, agregados). Integración vertical de la cadena de la construcción (sitio corporativo).",
+    mechanism: "No solo construye: también fabrica la materia prima de la obra.",
+    weight: 90,
+    source: SRC_SHARED.estrella,
+    themes: ["familias", "construccion"],
   },
 ];
 
@@ -367,7 +431,7 @@ export const STATE_NODES = [
     summary: "Emite bonos del Gobierno Central y gestiona el presupuesto, incluidos intereses de la deuda.",
     weight: 96,
     source: SRC_SHARED.hacienda,
-    themes: ["deuda", "pensiones", "gasolina"],
+    themes: ["deuda", "pensiones", "gasolina", "electricidad"],
   },
   {
     id: "i-banco-central",
@@ -422,6 +486,40 @@ export const STATE_NODES = [
     weight: 85,
     source: SRC_SHARED.micm,
     themes: ["aduana", "gasolina"],
+  },
+  {
+    id: "i-sie",
+    name: "SIE",
+    kind: "estado",
+    role: "Regulador eléctrico",
+    summary:
+      "Superintendencia de Electricidad: fiscaliza el subsector eléctrico y el marco tarifario (sitio SIE).",
+    mechanism: "Quien fija y vigila las reglas de la luz pesa sobre lo que pagas en la factura.",
+    weight: 96,
+    source: SRC_SHARED.sie,
+    themes: ["electricidad"],
+  },
+  {
+    id: "i-mem",
+    name: "Energía y Minas",
+    kind: "estado",
+    role: "Política energética",
+    summary:
+      "Ministerio de Energía y Minas: política del sector. Publica desempeño de las EDE y el marco institucional post-CDEEE.",
+    weight: 88,
+    source: SRC_SHARED.mem,
+    themes: ["electricidad"],
+  },
+  {
+    id: "i-fonper",
+    name: "FONPER",
+    kind: "estado",
+    role: "Dueño patrimonial de las EDE",
+    summary:
+      "Fondo Patrimonial de las Empresas Reformadas: recibió las acciones de Edesur, Edenorte y Edeeste (prensa / acto notarial reportado).",
+    weight: 80,
+    source: SRC_SHARED.fonperEde,
+    themes: ["electricidad"],
   },
 ];
 

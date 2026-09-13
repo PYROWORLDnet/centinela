@@ -14,7 +14,7 @@ const LOCAL_NODES = [
     kind: "familia",
     role: "El mapa real del poder económico",
     summary:
-      "Vicini/INICIA, Rizek, Corripio, Popular, BHD, Martí, Bonetti/SID, Rainieri/Puntacana. No compiten solo en el mercado: se reparten banca, AFP, medios, combustible, alimentos, turismo.",
+      "Vicini/INICIA, Rizek, Corripio, Popular, BHD, Martí, Bonetti/SID, Rainieri/Puntacana, Estrella. No compiten solo en el mercado: se reparten banca, AFP, medios, combustible, alimentos, turismo, construcción.",
     mechanism: "El Estado no flota solo. Trabaja sobre una geografía de familias.",
     weight: 100,
     source: SRC.inicia,
@@ -63,6 +63,7 @@ const SHARED_IDS = [
   "e-grupo-popular",
   "e-grupo-marti",
   "e-grupo-bhd",
+  "e-grupo-estrella",
   "p-hector-rizek",
   "i-junta-monetaria",
   "e-afp-crecer",
@@ -135,6 +136,12 @@ export const FAMILIAS_EDGES = [
     target: "e-grupo-rainieri",
     type: "incluye",
     sourceRef: SRC.puntacana,
+  },
+  {
+    source: "c-casas",
+    target: "e-grupo-estrella",
+    type: "incluye",
+    sourceRef: SRC.estrella,
   },
   {
     source: "e-grupo-rizek",
