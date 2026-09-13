@@ -163,7 +163,7 @@ input {
 }
 
 .chrome-themes .pills--themes {
-  /* ~8 temas visibles; lo demás se desliza. Todo está fuera y no se mueve. */
+  /* ~8 temas visibles; lo demás se desliza. Guía está fuera y no se mueve. */
   flex: 1 1 auto;
   width: auto;
   min-width: 0;
