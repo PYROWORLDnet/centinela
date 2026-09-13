@@ -62,6 +62,11 @@ export default function SearchBar({
           ? `${searchUrl}${encodeURIComponent(q)}`
           : `/api/search?q=${encodeURIComponent(q)}`;
         const res = await fetch(url, { signal: ctrl.signal });
+        const type = res.headers.get("content-type") || "";
+        if (!res.ok || !type.includes("application/json")) {
+          setResults([]);
+          return;
+        }
         const data = await res.json();
         setResults(data.results || []);
       } catch (err) {

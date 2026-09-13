@@ -8,12 +8,30 @@ export function useJson(url, { skip = false } = {}) {
     if (skip || !url) return;
     let cancelled = false;
     fetch(url)
-      .then((r) => {
-        if (!r.ok) throw new Error(`Error cargando ${url}`);
-        return r.json();
+      .then(async (r) => {
+        const type = r.headers.get("content-type") || "";
+        if (!r.ok) throw new Error(`No se pudo cargar datos (${r.status})`);
+        if (!type.includes("application/json")) {
+          throw new Error("El API no respondió con datos. Revisa el deploy del backend.");
+        }
+        try {
+          return await r.json();
+        } catch {
+          throw new Error("Respuesta inválida del servidor.");
+        }
       })
       .then((d) => !cancelled && setData(d))
-      .catch((e) => !cancelled && setError(e.message));
+      .catch((e) => {
+        if (cancelled) return;
+        const raw = e?.message || "Error de red";
+        const friendly =
+          /expected pattern|Unexpected token|not valid JSON|is not valid JSON|Failed to fetch|Load failed/i.test(
+            raw,
+          )
+            ? "No se pudo cargar el mapa. El API no está disponible."
+            : raw;
+        setError(friendly);
+      });
     return () => {
       cancelled = true;
     };
