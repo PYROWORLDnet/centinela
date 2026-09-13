@@ -858,6 +858,18 @@ input {
   pointer-events: none;
 }
 
+/* Punto cuadrado amarillo al final del wordmark (baseline) */
+.wordmark::after {
+  content: "";
+  display: inline-block;
+  width: 0.28em;
+  height: 0.28em;
+  margin-left: 0.12em;
+  background: #f0c14a;
+  vertical-align: baseline;
+  transform: translateY(-0.02em);
+}
+
 .wordmark--footer {
   font-size: 1.35rem;
   letter-spacing: -0.05em;
