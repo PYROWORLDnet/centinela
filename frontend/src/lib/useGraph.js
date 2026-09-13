@@ -32,7 +32,7 @@ export function useGraphExplorer() {
   const focusRef = useRef(null);
   focusRef.current = focusId;
 
-  const graph = focusId && lens?.nodes?.length ? lens : galaxy;
+  const graph = focusId ? lens : galaxy;
 
   const neighbors = useMemo(() => {
     if (!graph || !focusId) return null;
@@ -61,7 +61,7 @@ export function useGraphExplorer() {
     try {
       const [nodeRes, subRes] = await Promise.all([
         fetch(`/api/nodes/${encodeURIComponent(id)}`),
-        fetch(`/api/subgraph?ids=${encodeURIComponent(id)}&hops=2&max=48`),
+        fetch(`/api/subgraph?ids=${encodeURIComponent(id)}&hops=2&max=24`),
       ]);
       if (nodeRes.ok) setDetail(await nodeRes.json());
       else setDetail(null);
@@ -91,6 +91,7 @@ export function useGraphExplorer() {
 
   return {
     graph,
+    galaxy,
     error,
     focusId,
     detail,

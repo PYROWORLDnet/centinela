@@ -82,37 +82,43 @@ export async function searchNodes(query) {
 let galaxyCache = null;
 let galaxyCacheAt = 0;
 const GALAXY_TTL_MS = 10 * 60 * 1000;
+const GALAXY_CACHE_VER = 2; // bump al cambiar tamaño/densidad
+let galaxyCacheVer = 0;
 
 /**
  * Galaxia real liviana: hubs + top por categoría (montos / patrimonio), sin escanear 2M edges.
  * UI equal: panel/browse siguen en /api/category y /api/nodes.
  */
-export async function getGraph(maxNodes = 400) {
+export async function getGraph(maxNodes = 700) {
   const pool = getPool();
   if (!pool) return null;
 
-  if (galaxyCache && Date.now() - galaxyCacheAt < GALAXY_TTL_MS) {
+  if (
+    galaxyCache &&
+    galaxyCacheVer === GALAXY_CACHE_VER &&
+    Date.now() - galaxyCacheAt < GALAXY_TTL_MS
+  ) {
     return galaxyCache;
   }
 
   const { rows: picked } = await pool.query(
     `SELECT id FROM (
        (SELECT id FROM nodes WHERE category = 'prestamo'
-         ORDER BY amount DESC NULLS LAST LIMIT 70)
+         ORDER BY amount DESC NULLS LAST LIMIT 90)
        UNION ALL
        (SELECT id FROM nodes
          WHERE category = 'persona' AND (net_worth IS NOT NULL OR salary IS NOT NULL)
-         ORDER BY COALESCE(net_worth, 0) DESC, COALESCE(salary, 0) DESC LIMIT 90)
+         ORDER BY COALESCE(net_worth, 0) DESC, COALESCE(salary, 0) DESC LIMIT 140)
        UNION ALL
        (SELECT id FROM nodes WHERE category = 'institucion'
-         ORDER BY name LIMIT 45)
+         ORDER BY name LIMIT 60)
        UNION ALL
        (SELECT id FROM nodes WHERE category = 'empresa' AND rnc IS NOT NULL
-         ORDER BY name LIMIT 50)
+         ORDER BY name LIMIT 120)
        UNION ALL
        (SELECT id FROM nodes WHERE category = 'contrato'
          ORDER BY COALESCE(extra->>'fecha', '') DESC NULLS LAST,
-                  amount DESC NULLS LAST LIMIT 40)
+                  amount DESC NULLS LAST LIMIT 80)
        UNION ALL
        (SELECT id FROM nodes WHERE category = 'caso' LIMIT 20)
        UNION ALL
@@ -172,6 +178,7 @@ export async function getGraph(maxNodes = 400) {
   };
   galaxyCache = graph;
   galaxyCacheAt = Date.now();
+  galaxyCacheVer = GALAXY_CACHE_VER;
   return graph;
 }
 

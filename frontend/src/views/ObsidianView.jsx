@@ -1,6 +1,7 @@
 import { useRef, useState } from "react";
 import AlertBell from "../components/AlertBell";
 import GalaxyGraph from "../components/GalaxyGraph";
+import LocalMindMap from "../components/LocalMindMap";
 import NodePanel from "../components/NodePanel";
 import SearchBar from "../components/SearchBar";
 import { CATEGORIES } from "../lib/categories";
@@ -16,7 +17,7 @@ const COLORS = {
 };
 
 export default function ObsidianView() {
-  const { graph, error, focusId, detail, neighbors, canGoBack, select, goBack } = useGraphExplorer();
+  const { graph, galaxy, error, focusId, detail, canGoBack, select, goBack } = useGraphExplorer();
   const [category, setCategory] = useState("all");
   const [searchOpen, setSearchOpen] = useState(false);
   const [browse, setBrowse] = useState(null);
@@ -24,6 +25,7 @@ export default function ObsidianView() {
   const [browseYears, setBrowseYears] = useState([]);
   const [browseYear, setBrowseYear] = useState(null);
   const galaxyRef = useRef(null);
+  const focused = Boolean(focusId);
 
   async function loadBrowse(catId, year = null) {
     const qs = year ? `?year=${encodeURIComponent(year)}` : "";
@@ -51,9 +53,13 @@ export default function ObsidianView() {
     try {
       await loadBrowse(cat.id, null);
     } catch {
-      const local = (graph?.nodes || [])
+      const local = (galaxy?.nodes || [])
         .filter((n) => n.category === cat.id)
-        .sort((a, b) => String(b.fecha || "").localeCompare(String(a.fecha || "")) || (b.degree || 0) - (a.degree || 0))
+        .sort(
+          (a, b) =>
+            String(b.fecha || "").localeCompare(String(a.fecha || "")) ||
+            (b.degree || 0) - (a.degree || 0),
+        )
         .slice(0, 40);
       setBrowse(local);
       setBrowseYears([]);
@@ -61,21 +67,33 @@ export default function ObsidianView() {
   }
 
   return (
-    <div className="view view--obsidian">
+    <div className={`view view--obsidian${focused ? " is-focused" : ""}`}>
       <main className="stage">
+        <div className="universe" aria-hidden />
         {error && <div className="banner">{error}</div>}
-        {!graph && !error && <div className="banner">Cargando galaxia…</div>}
-        {graph && (
+        {!galaxy && !error && <div className="banner">Cargando galaxia…</div>}
+        {galaxy && !focused && (
           <GalaxyGraph
             ref={galaxyRef}
-            graph={graph}
-            focusId={focusId}
+            graph={galaxy}
             category={category}
-            neighborIds={neighbors}
             onSelectNode={(id) => {
               setBrowse(null);
               select(id);
             }}
+          />
+        )}
+        {focused && !graph && <div className="banner">Cargando conexiones…</div>}
+        {focused && graph && (
+          <LocalMindMap
+            graph={graph}
+            focusId={focusId}
+            palette={COLORS}
+            onSelectNode={(id) => {
+              setBrowse(null);
+              select(id);
+            }}
+            onExit={() => select(null)}
           />
         )}
       </main>
@@ -87,7 +105,7 @@ export default function ObsidianView() {
               setBrowse(null);
               select(id);
             }}
-            disabled={!graph}
+            disabled={!galaxy}
             colors={COLORS}
             onOpenChange={setSearchOpen}
           />
@@ -120,26 +138,28 @@ export default function ObsidianView() {
         </div>
       </header>
 
-      <div className="zoom-toggle" role="group" aria-label="Zoom del mapa">
-        <button
-          type="button"
-          className="zoom-toggle__btn"
-          aria-label="Acercar"
-          disabled={!graph}
-          onClick={() => galaxyRef.current?.zoomBy(1)}
-        >
-          +
-        </button>
-        <button
-          type="button"
-          className="zoom-toggle__btn"
-          aria-label="Alejar"
-          disabled={!graph}
-          onClick={() => galaxyRef.current?.zoomBy(-1)}
-        >
-          −
-        </button>
-      </div>
+      {!focused && (
+        <div className="zoom-toggle" role="group" aria-label="Zoom del mapa">
+          <button
+            type="button"
+            className="zoom-toggle__btn"
+            aria-label="Acercar"
+            disabled={!galaxy}
+            onClick={() => galaxyRef.current?.zoomBy(1)}
+          >
+            +
+          </button>
+          <button
+            type="button"
+            className="zoom-toggle__btn"
+            aria-label="Alejar"
+            disabled={!galaxy}
+            onClick={() => galaxyRef.current?.zoomBy(-1)}
+          >
+            −
+          </button>
+        </div>
+      )}
 
       <NodePanel
         node={detail}
@@ -168,13 +188,14 @@ export default function ObsidianView() {
 
       <footer className="status">
         <div className="status__left">
-          {graph?.meta && (
+          {galaxy?.meta && !focused && (
             <>
-              <span>{graph.meta.nodeCount} nodos</span>
-              <span>{graph.meta.linkCount} vínculos</span>
-              {graph.meta.demo === false && <span>fuentes oficiales</span>}
+              <span>{galaxy.meta.nodeCount} nodos</span>
+              <span>{galaxy.meta.linkCount} vínculos</span>
+              {galaxy.meta.demo === false && <span>fuentes oficiales</span>}
             </>
           )}
+          {focused && graph?.nodes && <span>{graph.nodes.length} en foco</span>}
         </div>
         <p className="wordmark wordmark--footer">Centinela</p>
       </footer>
