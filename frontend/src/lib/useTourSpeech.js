@@ -6,7 +6,7 @@ const ALLOWED_VOICES = new Set(["nova", "alloy"]);
 
 const FALLBACK_VOICES = [
   { id: "nova", label: "Nova · clara" },
-  { id: "alloy", label: "Alloy · grave" },
+  { id: "alloy", label: "Alloy · neutra" },
 ];
 
 function readStoredVoice() {
@@ -236,9 +236,9 @@ export function useTourSpeech(text, { autoKey, prefetchText, done = false, onAdv
     stopBrowserSpeech();
     await waitForBrowserVoices();
     const u = new SpeechSynthesisUtterance(payload);
-    // Pitch/rate distintos: en iOS a menudo solo hay una voz ES y hay que separar personas.
-    u.rate = voiceIdRef.current === "alloy" ? 0.94 : 1.06;
-    u.pitch = voiceIdRef.current === "alloy" ? 0.72 : 1.12;
+    // Natural delivery — do not pitch/rate-hack; that sounded robotic vs OpenAI web TTS.
+    u.rate = 1;
+    u.pitch = 1;
     u.lang = "es-MX";
     const picked = pickBrowserVoice(voiceIdRef.current);
     if (picked) {
