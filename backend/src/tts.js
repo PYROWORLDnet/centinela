@@ -5,13 +5,20 @@
 
 export const TTS_VOICES = [
   { id: "nova", label: "Nova · clara" },
-  { id: "alloy", label: "Alloy · neutra" },
+  { id: "alloy", label: "Alloy · grave" },
 ];
 
 /** Algunas voces arrastran más; compensamos con speed. Rango API: 0.25–4.0 */
 const VOICE_SPEED = {
   nova: 1.0,
-  alloy: 1.18,
+  alloy: 1.05,
+};
+
+const VOICE_INSTRUCTIONS = {
+  nova:
+    "Habla en español dominicano, voz femenina clara y cercana, como narradora de documental. Ritmo natural de conversación. Tono serio pero cálido. No dramatizes.",
+  alloy:
+    "Habla en español dominicano, voz más grave y neutra (casi masculina), firme y documental. Ritmo calmado. Sin teatralidad ni tono infantil.",
 };
 
 /** gpt-4o-mini-tts = más natural; tts-1 = más rápido pero menos calidad */
@@ -79,10 +86,9 @@ export async function synthesizeSpeech(text, voice = "nova") {
     response_format: "mp3",
     speed,
   };
-  // Instrucciones de estilo solo en el modelo natural
+  // Instrucciones de estilo por voz (solo modelo natural)
   if (model.includes("gpt-4o")) {
-    body.instructions =
-      "Habla en español dominicano, clara y con ritmo natural de conversación, como una narradora de documental. Tono serio pero cercano. No alentes ni dramatizes.";
+    body.instructions = VOICE_INSTRUCTIONS[voiceId] || VOICE_INSTRUCTIONS.nova;
   }
 
   const res = await fetch("https://api.openai.com/v1/audio/speech", {
