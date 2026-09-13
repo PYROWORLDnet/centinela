@@ -2554,11 +2554,10 @@ input {
   border-bottom: 1px solid var(--line);
 }
 
-.dos__title h1 {
-  margin: 0;
-  font-family: "IBM Plex Serif", Georgia, serif;
+.dos__title .wordmark {
   font-size: 1.35rem;
-  font-weight: 600;
+  color: var(--ink);
+  pointer-events: auto;
 }
 
 .dos__title p {
