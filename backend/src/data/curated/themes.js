@@ -3,7 +3,7 @@
  * El modo masivo queda archivado en /archivo y /masivo.
  */
 export const THEMES = [
-  { id: "todo", label: "Todo", ready: true, pills: [] },
+  { id: "todo", label: "Guía", ready: true, pills: [] },
   { id: "pensiones", label: "Pensiones", ready: true, pills: [] },
   { id: "partidos", label: "Partidos", ready: true, pills: [] },
   { id: "gasolina", label: "Gasolina", ready: true, pills: [] },

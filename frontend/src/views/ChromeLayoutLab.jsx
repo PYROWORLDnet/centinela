@@ -1,7 +1,7 @@
 import { useState } from "react";
 
 const THEMES = [
-  "Todo",
+  "Guía",
   "Pensiones",
   "Partidos",
   "Gasolina",
@@ -38,7 +38,7 @@ const OPTIONS = [
  */
 export default function ChromeLayoutLab({ onBack }) {
   const [pick, setPick] = useState("a");
-  const [activeTheme, setActiveTheme] = useState("Todo");
+  const [activeTheme, setActiveTheme] = useState("Guía");
 
   return (
     <div className="layout-lab">

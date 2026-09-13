@@ -7,7 +7,7 @@ import { useCuratedExplorer } from "../lib/useCurated";
 import { useJson } from "../lib/useGraph";
 
 const THEME_NAV = [
-  { id: "todo", label: "Todo", path: "/todo" },
+  { id: "todo", label: "Guía", path: "/todo" },
   { id: "pensiones", label: "Pensiones", path: "/pensiones" },
   { id: "partidos", label: "Partidos", path: "/partidos" },
   { id: "gasolina", label: "Gasolina", path: "/gasolina" },
