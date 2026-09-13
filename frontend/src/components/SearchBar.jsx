@@ -82,7 +82,7 @@ export default function SearchBar({
   function choose(item) {
     setQuery(item.name);
     setSearchOpen(false);
-    onSelect(item.id);
+    onSelect(item);
   }
 
   return (

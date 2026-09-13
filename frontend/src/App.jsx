@@ -11,6 +11,7 @@ export default function App() {
   useEffect(() => {
     const clean = (path || "/").replace(/\/+$/, "") || "/";
     if (clean === "/") navigate("/pensiones", { replace: true });
+    if (clean === "/todos") navigate("/pensiones", { replace: true });
   }, [path, navigate]);
 
   if (isArchive) {

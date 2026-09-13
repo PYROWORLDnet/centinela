@@ -29,12 +29,13 @@ import {
   getCuratedTour,
   searchCurated,
 } from "./data/curated/index.js";
+import { listTtsVoices, synthesizeSpeech } from "./tts.js";
 
 const app = express();
 const port = process.env.PORT || 4000;
 
 app.use(cors());
-app.use(express.json());
+app.use(express.json({ limit: "32kb" }));
 
 app.get("/", (_req, res) => {
   res.type("html").send(`<!doctype html>
@@ -135,6 +136,24 @@ app.get("/api/alerts", async (_req, res) => {
 
 app.get("/api/curated/themes", (_req, res) => {
   res.json({ themes: listThemes(), defaultTheme: "pensiones" });
+});
+
+app.get("/api/tts/voices", (_req, res) => {
+  res.json(listTtsVoices());
+});
+
+app.post("/api/tts", async (req, res) => {
+  try {
+    const text = String(req.body?.text || "");
+    const voice = String(req.body?.voice || "coral");
+    const audio = await synthesizeSpeech(text, voice);
+    res.setHeader("Content-Type", "audio/mpeg");
+    res.setHeader("Cache-Control", "private, max-age=3600");
+    res.send(audio);
+  } catch (err) {
+    const status = err.status && Number.isInteger(err.status) ? err.status : 500;
+    res.status(status).json({ error: err.message || "Error de voz" });
+  }
 });
 
 app.get("/api/curated/:theme/tour", (req, res) => {

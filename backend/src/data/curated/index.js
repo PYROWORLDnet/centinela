@@ -2,20 +2,40 @@ import { THEMES, THEME_COLORS, getTheme } from "./themes.js";
 import { PENSIONES_NODES, PENSIONES_EDGES } from "./pensiones.js";
 import { PARTIDOS_NODES, PARTIDOS_EDGES } from "./partidos.js";
 import { GASOLINA_NODES, GASOLINA_EDGES } from "./gasolina.js";
+import { DEUDA_NODES, DEUDA_EDGES } from "./deuda.js";
+import { FAMILIAS_NODES, FAMILIAS_EDGES } from "./familias.js";
+import { MEDIOS_NODES, MEDIOS_EDGES } from "./medios.js";
+import { BANCA_NODES, BANCA_EDGES } from "./banca.js";
+import { ADUANA_NODES, ADUANA_EDGES } from "./aduana.js";
 import { getPensionesTour } from "./pensionesTour.js";
 import { PARTIDOS_TOUR } from "./partidosTour.js";
 import { GASOLINA_TOUR } from "./gasolinaTour.js";
+import { DEUDA_TOUR } from "./deudaTour.js";
+import { FAMILIAS_TOUR } from "./familiasTour.js";
+import { MEDIOS_TOUR } from "./mediosTour.js";
+import { BANCA_TOUR } from "./bancaTour.js";
+import { ADUANA_TOUR } from "./aduanaTour.js";
 
 const DATASETS = {
   pensiones: { nodes: PENSIONES_NODES, edges: PENSIONES_EDGES },
   partidos: { nodes: PARTIDOS_NODES, edges: PARTIDOS_EDGES },
   gasolina: { nodes: GASOLINA_NODES, edges: GASOLINA_EDGES },
+  deuda: { nodes: DEUDA_NODES, edges: DEUDA_EDGES },
+  familias: { nodes: FAMILIAS_NODES, edges: FAMILIAS_EDGES },
+  medios: { nodes: MEDIOS_NODES, edges: MEDIOS_EDGES },
+  banca: { nodes: BANCA_NODES, edges: BANCA_EDGES },
+  aduana: { nodes: ADUANA_NODES, edges: ADUANA_EDGES },
 };
 
 const TOURS = {
   pensiones: getPensionesTour(),
   partidos: PARTIDOS_TOUR,
   gasolina: GASOLINA_TOUR,
+  deuda: DEUDA_TOUR,
+  familias: FAMILIAS_TOUR,
+  medios: MEDIOS_TOUR,
+  banca: BANCA_TOUR,
+  aduana: ADUANA_TOUR,
 };
 
 function degreeMap(edges) {
@@ -51,6 +71,38 @@ function mapNode(n, degree = 1) {
   };
 }
 
+function allNodeIndex() {
+  const map = new Map();
+  for (const [tid, ds] of Object.entries(DATASETS)) {
+    for (const n of ds.nodes) {
+      if (!map.has(n.id)) {
+        map.set(n.id, { ...n, themes: [...(n.themes || []), tid] });
+      } else {
+        const prev = map.get(n.id);
+        const themes = Array.from(new Set([...(prev.themes || []), ...(n.themes || []), tid]));
+        const richer =
+          (n.summary || "").length >= (prev.summary || "").length ? { ...prev, ...n, themes } : { ...n, ...prev, themes };
+        map.set(n.id, richer);
+      }
+    }
+  }
+  return map;
+}
+
+function allEdges() {
+  const out = [];
+  const seen = new Set();
+  for (const [tid, ds] of Object.entries(DATASETS)) {
+    for (const e of ds.edges) {
+      const key = `${e.source}|${e.type}|${e.target}|${e.note || ""}`;
+      if (seen.has(key)) continue;
+      seen.add(key);
+      out.push({ ...e, theme: tid });
+    }
+  }
+  return out;
+}
+
 export function listThemes() {
   return THEMES.map((t) => ({
     id: t.id,
@@ -60,6 +112,9 @@ export function listThemes() {
   }));
 }
 
+/**
+ * Grafo del tema + 1 hop desde otras capas (una sola red; el tema es la ruta de entrada).
+ */
 export function getCuratedGraph(themeId, pill = "all") {
   const theme = getTheme(themeId);
   if (!theme) return null;
@@ -81,24 +136,46 @@ export function getCuratedGraph(themeId, pill = "all") {
   const ds = DATASETS[themeId];
   if (!ds) return null;
 
-  const deg = degreeMap(ds.edges);
-  let nodes = ds.nodes.map((n) => mapNode(n, deg.get(n.id) || 1));
-  if (pill && pill !== "all") {
-    nodes = nodes.filter((n) => n.kind === pill);
-  }
-  const keep = new Set(nodes.map((n) => n.id));
-  if (pill && pill !== "all") {
-    for (const e of ds.edges) {
-      if (keep.has(e.source) || keep.has(e.target)) {
-        keep.add(e.source);
-        keep.add(e.target);
-      }
+  const nodeIndex = allNodeIndex();
+  const edges = allEdges();
+
+  const seed = new Set(ds.nodes.map((n) => n.id));
+  const keep = new Set(seed);
+
+  // 1 hop cross-theme: vecinos de nodos del tema en toda la red
+  for (const e of edges) {
+    if (seed.has(e.source) || seed.has(e.target)) {
+      keep.add(e.source);
+      keep.add(e.target);
     }
-    nodes = ds.nodes.filter((n) => keep.has(n.id)).map((n) => mapNode(n, deg.get(n.id) || 1));
   }
 
-  const links = ds.edges
-    .filter((e) => keep.has(e.source) && keep.has(e.target))
+  let nodes = [...keep]
+    .map((id) => nodeIndex.get(id))
+    .filter(Boolean)
+    .map((n) => mapNode(n, 1));
+
+  if (pill && pill !== "all") {
+    const filtered = nodes.filter((n) => n.kind === pill);
+    const keepPill = new Set(filtered.map((n) => n.id));
+    for (const e of edges) {
+      if (keepPill.has(e.source) || keepPill.has(e.target)) {
+        keepPill.add(e.source);
+        keepPill.add(e.target);
+      }
+    }
+    nodes = [...keepPill]
+      .map((id) => nodeIndex.get(id))
+      .filter(Boolean)
+      .map((n) => mapNode(n, 1));
+  }
+
+  const keepFinal = new Set(nodes.map((n) => n.id));
+  const deg = degreeMap(edges.filter((e) => keepFinal.has(e.source) && keepFinal.has(e.target)));
+  nodes = nodes.map((n) => ({ ...n, degree: deg.get(n.id) || 1 }));
+
+  const links = edges
+    .filter((e) => keepFinal.has(e.source) && keepFinal.has(e.target))
     .map((e) => ({
       source: e.source,
       target: e.target,
@@ -124,12 +201,13 @@ export function getCuratedGraph(themeId, pill = "all") {
   };
 }
 
-/** Panel: fusiona el mismo id a través de temas (ej. Roryk → Crecer + PATSA). */
+/** Panel: fusiona el mismo id a través de temas (ej. Roryk → Crecer + PATSA + cacao). */
 export function getCuratedNode(id) {
   let self = null;
   const themesHit = [];
   const connections = [];
   const seen = new Set();
+  const nodeIndex = allNodeIndex();
 
   for (const [themeId, ds] of Object.entries(DATASETS)) {
     const raw = ds.nodes.find((n) => n.id === id);
@@ -173,13 +251,7 @@ export function getCuratedNode(id) {
       if (seen.has(key)) continue;
       seen.add(key);
 
-      let other = ds.nodes.find((n) => n.id === otherId);
-      if (!other) {
-        for (const otherDs of Object.values(DATASETS)) {
-          other = otherDs.nodes.find((n) => n.id === otherId);
-          if (other) break;
-        }
-      }
+      const other = nodeIndex.get(otherId) || ds.nodes.find((n) => n.id === otherId);
       if (!other) continue;
 
       connections.push({
@@ -228,6 +300,7 @@ export function searchCurated(q, themeId = null) {
   if (!query) return [];
   const out = [];
   const seen = new Set();
+  // Búsqueda global por defecto (themeId se ignora salvo filtro explícito raro)
   for (const [tid, ds] of Object.entries(DATASETS)) {
     if (themeId && tid !== themeId) continue;
     for (const n of ds.nodes) {

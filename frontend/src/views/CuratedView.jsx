@@ -11,16 +11,11 @@ const THEME_NAV = [
   { id: "partidos", label: "Partidos", path: "/partidos" },
   { id: "gasolina", label: "Gasolina", path: "/gasolina" },
   { id: "deuda", label: "Deuda", path: "/deuda" },
-  { id: "medios", label: "Medios", path: "/medios" },
   { id: "familias", label: "Familias", path: "/familias" },
-  { id: "todos", label: "Todos", path: "/todos" },
+  { id: "medios", label: "Medios", path: "/medios" },
+  { id: "banca", label: "Banca", path: "/banca" },
+  { id: "aduana", label: "Aduana", path: "/aduana" },
 ];
-
-const HUB_STATUS = {
-  pensiones: "CNSS · tripartismo",
-  partidos: "JCE · 80 / 12 / 8",
-  gasolina: "MICM · juego cerrado",
-};
 
 export default function CuratedView({ themeId = "pensiones", navigate }) {
   const [searchOpen, setSearchOpen] = useState(false);
@@ -28,7 +23,7 @@ export default function CuratedView({ themeId = "pensiones", navigate }) {
   const [stepIndex, setStepIndex] = useState(0);
   const [tourDone, setTourDone] = useState(false);
   const [exploring, setExploring] = useState(false);
-  const [pill, setPill] = useState("all");
+  const [pendingSelectId, setPendingSelectId] = useState(null);
   const galaxyRef = useRef(null);
   const hubInitRef = useRef(false);
 
@@ -36,19 +31,13 @@ export default function CuratedView({ themeId = "pensiones", navigate }) {
     setTourMode(false);
     setStepIndex(0);
     setTourDone(false);
-    setExploring(false);
-    setPill("all");
+    if (!pendingSelectId) setExploring(false);
     hubInitRef.current = false;
   }, [themeId]);
 
-  const { galaxy, error, themes, focusId, detail, neighbors, colors, canGoBack, select, goBack } =
-    useCuratedExplorer(themeId, pill);
+  const { galaxy, error, focusId, detail, neighbors, colors, canGoBack, select, goBack } =
+    useCuratedExplorer(themeId, "all");
 
-  const themeMeta = useMemo(
-    () => themes.find((t) => t.id === themeId) || THEME_NAV.find((t) => t.id === themeId),
-    [themes, themeId],
-  );
-  const pills = themeMeta?.pills || [];
   const ready = galaxy?.meta?.ready === true;
 
   const { data: tour } = useJson(
@@ -76,12 +65,13 @@ export default function CuratedView({ themeId = "pensiones", navigate }) {
 
   const spotlight = inStory || inHub;
 
-  // Entrada: foco en Fondos de Pensiones + 4 AFP
+  // Entrada hub: no pisar un salto desde búsqueda global
   useEffect(() => {
+    if (pendingSelectId) return;
     if (!ready || !inHub || !entry?.hubId || hubInitRef.current) return;
     hubInitRef.current = true;
     select(entry.hubId, { push: false });
-  }, [ready, inHub, entry?.hubId, select]);
+  }, [ready, inHub, entry?.hubId, select, pendingSelectId]);
 
   useEffect(() => {
     if (!inStory || !step?.panelId) return;
@@ -94,9 +84,22 @@ export default function CuratedView({ themeId = "pensiones", navigate }) {
     setTourMode(false);
     setTourDone(false);
     setStepIndex(0);
-    setPill("all");
     select(entry.hubId, { push: false });
   }, [entry?.hubId, select]);
+
+  // Tras saltar de tema por búsqueda global, enfocar el nodo
+  useEffect(() => {
+    if (!pendingSelectId || !ready || !galaxy) return;
+    const exists = galaxy.nodes?.some((n) => n.id === pendingSelectId);
+    if (!exists) {
+      setPendingSelectId(null);
+      return;
+    }
+    hubInitRef.current = true;
+    setExploring(true);
+    select(pendingSelectId, { push: false });
+    setPendingSelectId(null);
+  }, [pendingSelectId, ready, galaxy, select]);
 
   const exitTour = useCallback(() => {
     goToHub();
@@ -147,10 +150,6 @@ export default function CuratedView({ themeId = "pensiones", navigate }) {
   }, [tourMode, tour, tourDone, goNext, goPrev, exitTour]);
 
   function goTheme(item) {
-    if (item.id === "todos") {
-      navigate("/todos");
-      return;
-    }
     navigate(item.path);
   }
 
@@ -211,22 +210,25 @@ export default function CuratedView({ themeId = "pensiones", navigate }) {
       <header className={`chrome chrome--curated${searchOpen ? " is-searching" : ""}`}>
         <div className="chrome-search">
           <SearchBar
-            onSelect={(id) => {
+            onSelect={(item) => {
+              const id = typeof item === "string" ? item : item?.id;
+              const targetTheme = typeof item === "object" ? item?.theme : null;
+              if (!id) return;
               if (tourMode) exitTour();
+              if (targetTheme && targetTheme !== themeId) {
+                setExploring(true);
+                setPendingSelectId(id);
+                navigate(`/${targetTheme}`);
+                return;
+              }
               setExploring(true);
               select(id);
             }}
             disabled={!galaxy || !ready}
             colors={colors}
             onOpenChange={setSearchOpen}
-            searchUrl={`/api/curated/search?theme=${encodeURIComponent(themeId)}&q=`}
-            placeholder={
-              themeId === "partidos"
-                ? "JCE, PRM, Ley 33-18…"
-                : themeId === "gasolina"
-                  ? "Refidomsa, Rizek, Tropigas…"
-                  : "AFP Popular, Hacienda, SIPEN…"
-            }
+            searchUrl="/api/curated/search?q="
+            placeholder="Rizek, Banreservas, JCE, Refidomsa…"
           />
         </div>
 
@@ -236,7 +238,7 @@ export default function CuratedView({ themeId = "pensiones", navigate }) {
               <button
                 key={t.id}
                 type="button"
-                className={t.id !== "todos" && themeId === t.id ? "is-active" : undefined}
+                className={themeId === t.id ? "is-active" : undefined}
                 onClick={() => goTheme(t)}
               >
                 <span className="pill-full">{t.label}</span>
@@ -245,32 +247,6 @@ export default function CuratedView({ themeId = "pensiones", navigate }) {
             ))}
           </div>
         </nav>
-
-        {ready &&
-          (themeId === "partidos" || themeId === "gasolina") &&
-          pills.length > 0 &&
-          !inHub &&
-          !inStory &&
-          !tourDone && (
-          <nav className="chrome-pills" aria-label="Filtros del tema">
-            <div className="pills">
-              {pills.map((p) => (
-                <button
-                  key={p.id}
-                  type="button"
-                  className={pill === p.id ? "is-active" : undefined}
-                  onClick={() => {
-                    setExploring(true);
-                    setPill(p.id);
-                  }}
-                >
-                  <span className="pill-full">{p.label}</span>
-                  <span className="pill-short">{p.label}</span>
-                </button>
-              ))}
-            </div>
-          </nav>
-        )}
       </header>
 
       {inHub && (
@@ -346,26 +322,6 @@ export default function CuratedView({ themeId = "pensiones", navigate }) {
       />
 
       <footer className="status">
-        <div className="status__left">
-          {galaxy?.meta?.ready && (
-            <>
-              <span>{themeMeta?.label || themeId}</span>
-              {inStory ? (
-                <span>
-                  Recorrido · {stepIndex + 1}/{tour.steps.length}
-                </span>
-              ) : inHub ? (
-                <span>{HUB_STATUS[themeId] || themeMeta?.label}</span>
-              ) : (
-                <>
-                  <span>{galaxy.meta.nodeCount} nodos</span>
-                  <span>{galaxy.meta.linkCount} vínculos</span>
-                </>
-              )}
-              <span>fuentes verificables</span>
-            </>
-          )}
-        </div>
         <p className="wordmark wordmark--footer">Centinela</p>
       </footer>
     </div>

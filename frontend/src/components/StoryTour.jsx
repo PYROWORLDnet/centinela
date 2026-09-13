@@ -2,7 +2,7 @@ import { useTourSpeech, stepSpeechText } from "../lib/useTourSpeech";
 
 /**
  * Carril narrativo del recorrido curado.
- * Título corto + detalle + lectura por voz (Paulina es-MX).
+ * Lectura por voz OpenAI + selector de voz.
  */
 export default function StoryTour({
   tour,
@@ -56,9 +56,17 @@ function StoryTourInner({
   onRestart,
   onExplore,
 }) {
-  const { speaking, supported, toggle, stop, markContinue } = useTourSpeech(speechText, {
-    autoKey: speechKey,
-  });
+  const {
+    speaking,
+    loading,
+    supported,
+    voices,
+    voiceId,
+    setVoiceId,
+    toggle,
+    stop,
+    markContinue,
+  } = useTourSpeech(speechText, { autoKey: speechKey });
 
   function handleNext() {
     markContinue();
@@ -85,14 +93,39 @@ function StoryTourInner({
     onRestart();
   }
 
+  function handleVoiceChange(e) {
+    stop();
+    setVoiceId(e.target.value);
+  }
+
+  const voiceControls = supported && (
+    <div className="story__voice">
+      <SpeakButton speaking={speaking} loading={loading} onClick={toggle} label="Escuchar este paso" />
+      <label className="story__voice-label">
+        <span className="sr-only">Voz</span>
+        <select
+          className="story__voice-select"
+          value={voiceId}
+          onChange={handleVoiceChange}
+          aria-label="Elegir voz"
+          title="Elegir voz"
+        >
+          {voices.map((v) => (
+            <option key={v.id} value={v.id}>
+              {v.label}
+            </option>
+          ))}
+        </select>
+      </label>
+    </div>
+  );
+
   if (done) {
     return (
       <div className="story" role="region" aria-label="Cierre del recorrido">
         <div className="story__top">
           <p className="story__eyebrow">Fin del recorrido</p>
-          {supported && (
-            <SpeakButton speaking={speaking} onClick={toggle} label="Escuchar el cierre" />
-          )}
+          {voiceControls}
         </div>
         <p className="story__line story__line--epilogue">{tour.epilogue}</p>
         <div className="story__actions">
@@ -115,16 +148,16 @@ function StoryTourInner({
         <p className="story__eyebrow">
           Paso {stepIndex + 1} de {total}
         </p>
-        <button type="button" className="story__skip" onClick={handleSkip}>
-          Explorar libre
-        </button>
+        <div className="story__top-right">
+          {voiceControls}
+          <button type="button" className="story__skip" onClick={handleSkip}>
+            Explorar libre
+          </button>
+        </div>
       </div>
       <div className="story__copy" key={step.id}>
         <div className="story__title-row">
           <p className="story__line">{step.line}</p>
-          {supported && (
-            <SpeakButton speaking={speaking} onClick={toggle} label="Escuchar este paso" />
-          )}
         </div>
         {step.detail && <p className="story__detail">{step.detail}</p>}
       </div>
@@ -153,17 +186,20 @@ function StoryTourInner({
   );
 }
 
-function SpeakButton({ speaking, onClick, label }) {
+function SpeakButton({ speaking, loading, onClick, label }) {
   return (
     <button
       type="button"
-      className={`story__speak${speaking ? " is-speaking" : ""}`}
+      className={`story__speak${speaking || loading ? " is-speaking" : ""}`}
       onClick={onClick}
       aria-label={label}
       aria-pressed={speaking}
       title={label}
+      disabled={loading}
     >
-      {speaking ? (
+      {loading ? (
+        <span className="story__speak-dot" aria-hidden />
+      ) : speaking ? (
         <svg viewBox="0 0 24 24" width="16" height="16" aria-hidden>
           <rect x="6" y="5" width="4" height="14" rx="1" fill="currentColor" />
           <rect x="14" y="5" width="4" height="14" rx="1" fill="currentColor" />

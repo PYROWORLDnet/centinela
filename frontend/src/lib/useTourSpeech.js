@@ -1,124 +1,263 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 
-function stopSpeaking() {
+const VOICE_KEY = "centinela-tts-voice";
+const DEFAULT_VOICE = "coral";
+
+const FALLBACK_VOICES = [
+  { id: "coral", label: "Coral · cálida (recomendada)" },
+  { id: "nova", label: "Nova · clara" },
+  { id: "sage", label: "Sage · serena" },
+  { id: "shimmer", label: "Shimmer · suave" },
+  { id: "alloy", label: "Alloy · neutra" },
+  { id: "echo", label: "Echo · firme" },
+  { id: "fable", label: "Fable · expresiva" },
+  { id: "onyx", label: "Onyx · profunda" },
+];
+
+function readStoredVoice() {
+  try {
+    return localStorage.getItem(VOICE_KEY) || DEFAULT_VOICE;
+  } catch {
+    return DEFAULT_VOICE;
+  }
+}
+
+function stopBrowserSpeech() {
   if (typeof window === "undefined" || !window.speechSynthesis) return;
   window.speechSynthesis.cancel();
 }
 
-/** Voz fija: Paulina es-MX (con fallbacks). */
-function pickPaulina(voices) {
-  const list = voices || [];
-  const paulinaMx = list.find(
-    (v) => /paulina/i.test(v.name) && /^es(-|_)?mx/i.test(v.lang || ""),
-  );
-  if (paulinaMx) return paulinaMx;
-  const paulina = list.find((v) => /paulina/i.test(v.name) && /^es/i.test(v.lang || ""));
-  if (paulina) return paulina;
-  const mx = list.find((v) => /^es(-|_)?mx/i.test(v.lang || ""));
-  if (mx) return mx;
-  return list.find((v) => /^es/i.test(v.lang || "")) || list[0] || null;
-}
-
 /**
- * Lectura por voz del tour (Web Speech API) — Paulina es-MX.
+ * Lectura por voz del tour — OpenAI TTS (prefetch + cache).
  */
 export function useTourSpeech(text, { autoKey } = {}) {
   const [speaking, setSpeaking] = useState(false);
   const [supported, setSupported] = useState(true);
-  const utteranceRef = useRef(null);
+  const [voices, setVoices] = useState(FALLBACK_VOICES);
+  const [voiceId, setVoiceIdState] = useState(DEFAULT_VOICE);
+  const [loading, setLoading] = useState(false);
+  const [provider, setProvider] = useState("openai");
+
   const textRef = useRef(text);
   const continueRef = useRef(false);
   const speakingRef = useRef(false);
+  const audioRef = useRef(null);
+  const cacheRef = useRef(new Map()); // key → objectUrl
+  const inflightRef = useRef(new Map()); // key → Promise<objectUrl>
+  const playAbortRef = useRef(null);
+  const voiceIdRef = useRef(DEFAULT_VOICE);
+  const prefetchGen = useRef(0);
+
   textRef.current = text;
   speakingRef.current = speaking;
+  voiceIdRef.current = voiceId;
 
   useEffect(() => {
-    setSupported(typeof window !== "undefined" && "speechSynthesis" in window);
+    setVoiceIdState(readStoredVoice());
+    let cancelled = false;
+    fetch("/api/tts/voices")
+      .then((r) => r.json())
+      .then((data) => {
+        if (cancelled) return;
+        if (data?.voices?.length) setVoices(data.voices);
+        setProvider(data?.configured ? "openai" : "browser");
+        setSupported(true);
+      })
+      .catch(() => {
+        if (!cancelled) {
+          setProvider("browser");
+          setSupported(typeof window !== "undefined" && "speechSynthesis" in window);
+        }
+      });
+    return () => {
+      cancelled = true;
+    };
   }, []);
 
-  const speak = useCallback(() => {
+  const stopPlayback = useCallback(() => {
+    playAbortRef.current?.abort();
+    playAbortRef.current = null;
+    if (audioRef.current) {
+      audioRef.current.onended = null;
+      audioRef.current.onerror = null;
+      audioRef.current.onplay = null;
+      audioRef.current.pause();
+      audioRef.current.src = "";
+      audioRef.current = null;
+    }
+    stopBrowserSpeech();
+  }, []);
+
+  const ensureObjectUrl = useCallback(async (payload, voice) => {
+    const cacheKey = `${voice}::${payload}`;
+    const cached = cacheRef.current.get(cacheKey);
+    if (cached) return cached;
+
+    const inflight = inflightRef.current.get(cacheKey);
+    if (inflight) return inflight;
+
+    const promise = (async () => {
+      const res = await fetch("/api/tts", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ text: payload, voice }),
+      });
+      if (!res.ok) throw new Error(`TTS ${res.status}`);
+      const blob = await res.blob();
+      const objectUrl = URL.createObjectURL(blob);
+      cacheRef.current.set(cacheKey, objectUrl);
+      inflightRef.current.delete(cacheKey);
+      return objectUrl;
+    })().catch((err) => {
+      inflightRef.current.delete(cacheKey);
+      throw err;
+    });
+
+    inflightRef.current.set(cacheKey, promise);
+    return promise;
+  }, []);
+
+  // Prefetch en cuanto cambia el paso / texto / voz
+  useEffect(() => {
+    const payload = String(text || "").trim();
+    if (!payload) return undefined;
+    const voice = voiceIdRef.current;
+    const gen = ++prefetchGen.current;
+    ensureObjectUrl(payload, voice).catch(() => {
+      /* prefetch fallido: speak hará fallback */
+    });
+    return () => {
+      // no cancelar: deja calentar cache para si el usuario vuelve
+      void gen;
+    };
+  }, [text, voiceId, autoKey, ensureObjectUrl]);
+
+  const setVoiceId = useCallback(
+    (id) => {
+      const next = id || DEFAULT_VOICE;
+      setVoiceIdState(next);
+      voiceIdRef.current = next;
+      try {
+        localStorage.setItem(VOICE_KEY, next);
+      } catch {
+        /* ignore */
+      }
+      stopPlayback();
+      speakingRef.current = false;
+      setSpeaking(false);
+      setLoading(false);
+    },
+    [stopPlayback],
+  );
+
+  const speakBrowser = useCallback(() => {
     if (typeof window === "undefined" || !("speechSynthesis" in window)) return;
     const payload = textRef.current?.trim();
     if (!payload) return;
-    stopSpeaking();
-
+    stopBrowserSpeech();
     const u = new SpeechSynthesisUtterance(payload);
     u.rate = 0.95;
-    u.pitch = 1;
-
-    const start = () => {
-      const voice = pickPaulina(window.speechSynthesis.getVoices());
-      if (voice) {
-        u.voice = voice;
-        u.lang = voice.lang || "es-MX";
-      } else {
-        u.lang = "es-MX";
-      }
-      utteranceRef.current = u;
-      window.speechSynthesis.speak(u);
-    };
-
+    u.lang = "es-MX";
     u.onstart = () => {
       speakingRef.current = true;
       setSpeaking(true);
+      setLoading(false);
     };
     u.onend = () => {
       speakingRef.current = false;
       setSpeaking(false);
-      utteranceRef.current = null;
     };
     u.onerror = () => {
       speakingRef.current = false;
       setSpeaking(false);
-      utteranceRef.current = null;
+      setLoading(false);
     };
-
-    if (!window.speechSynthesis.getVoices().length) {
-      const onVoices = () => {
-        window.speechSynthesis.removeEventListener("voiceschanged", onVoices);
-        start();
-      };
-      window.speechSynthesis.addEventListener("voiceschanged", onVoices);
-      window.setTimeout(() => {
-        if (!utteranceRef.current) start();
-      }, 250);
-      return;
-    }
-    start();
+    window.speechSynthesis.speak(u);
   }, []);
+
+  const speak = useCallback(async () => {
+    const payload = textRef.current?.trim();
+    if (!payload) return;
+
+    stopPlayback();
+    setLoading(true);
+    const ctrl = new AbortController();
+    playAbortRef.current = ctrl;
+
+    try {
+      const objectUrl = await ensureObjectUrl(payload, voiceIdRef.current);
+      if (ctrl.signal.aborted) return;
+
+      const audio = new Audio(objectUrl);
+      audioRef.current = audio;
+      audio.preload = "auto";
+      audio.onplay = () => {
+        speakingRef.current = true;
+        setSpeaking(true);
+        setLoading(false);
+      };
+      audio.onended = () => {
+        speakingRef.current = false;
+        setSpeaking(false);
+      };
+      audio.onerror = () => {
+        speakingRef.current = false;
+        setSpeaking(false);
+        setLoading(false);
+        speakBrowser();
+      };
+      await audio.play();
+    } catch (err) {
+      if (err?.name === "AbortError" || ctrl.signal.aborted) return;
+      setLoading(false);
+      speakBrowser();
+    }
+  }, [ensureObjectUrl, speakBrowser, stopPlayback]);
 
   const stop = useCallback(() => {
     continueRef.current = false;
-    stopSpeaking();
+    stopPlayback();
     speakingRef.current = false;
     setSpeaking(false);
-    utteranceRef.current = null;
-  }, []);
+    setLoading(false);
+  }, [stopPlayback]);
 
   useEffect(() => {
     const shouldContinue = continueRef.current || speakingRef.current;
-    stopSpeaking();
+    stopPlayback();
     speakingRef.current = false;
     setSpeaking(false);
-    utteranceRef.current = null;
+    setLoading(false);
     if (!shouldContinue) return undefined;
     continueRef.current = false;
-    const t = window.setTimeout(() => speak(), 60);
+    const t = window.setTimeout(() => speak(), 40);
     return () => window.clearTimeout(t);
-  }, [autoKey, speak]);
+  }, [autoKey, speak, stopPlayback]);
 
-  useEffect(() => () => stopSpeaking(), []);
+  useEffect(() => () => stopPlayback(), [stopPlayback]);
 
   const toggle = useCallback(() => {
-    if (speakingRef.current) stop();
+    if (speakingRef.current || loading) stop();
     else speak();
-  }, [speak, stop]);
+  }, [speak, stop, loading]);
 
   const markContinue = useCallback(() => {
-    if (speakingRef.current) continueRef.current = true;
-  }, []);
+    if (speakingRef.current || loading) continueRef.current = true;
+  }, [loading]);
 
-  return { speaking, supported, toggle, stop, speak, markContinue };
+  return {
+    speaking,
+    loading,
+    supported,
+    provider,
+    voices,
+    voiceId,
+    setVoiceId,
+    toggle,
+    stop,
+    speak,
+    markContinue,
+  };
 }
 
 export function stepSpeechText(step, epilogue, { done = false } = {}) {

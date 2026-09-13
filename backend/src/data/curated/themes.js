@@ -1,86 +1,16 @@
 /**
  * Temas curados de Centinela.
- * Cada tema tiene pills propios; "todos" (ruta /todos) es el modo masivo archivado.
+ * El modo masivo queda archivado en /archivo y /masivo.
  */
 export const THEMES = [
-  {
-    id: "pensiones",
-    label: "Pensiones",
-    ready: true,
-    pills: [
-      { id: "all", label: "Todos" },
-      { id: "estado", label: "Estado" },
-      { id: "afp", label: "AFP" },
-      { id: "banco", label: "Bancos" },
-      { id: "familia", label: "Familias" },
-      { id: "empresa", label: "Empleadores" },
-      { id: "persona", label: "Trabajadores" },
-      { id: "fondo", label: "Fondos" },
-    ],
-  },
-  {
-    id: "partidos",
-    label: "Partidos",
-    ready: true,
-    pills: [
-      { id: "all", label: "Todos" },
-      { id: "partido", label: "Partidos" },
-      { id: "financiador", label: "Financiadores" },
-      { id: "estado", label: "JCE" },
-      { id: "persona", label: "Personas" },
-      { id: "medio", label: "Medios" },
-    ],
-  },
-  {
-    id: "gasolina",
-    label: "Gasolina",
-    ready: true,
-    pills: [
-      { id: "all", label: "Todos" },
-      { id: "estado", label: "Estado" },
-      { id: "familia", label: "Familias" },
-      { id: "empresa", label: "Empresas" },
-      { id: "afp", label: "AFP" },
-      { id: "financiador", label: "Subsidios" },
-      { id: "persona", label: "Personas" },
-    ],
-  },
-  {
-    id: "deuda",
-    label: "Deuda",
-    ready: false,
-    pills: [
-      { id: "all", label: "Todos" },
-      { id: "estado", label: "Estado" },
-      { id: "banco", label: "Bancos" },
-      { id: "afp", label: "AFP" },
-      { id: "prestamo", label: "Prestamistas" },
-    ],
-  },
-  {
-    id: "medios",
-    label: "Medios",
-    ready: false,
-    pills: [
-      { id: "all", label: "Todos" },
-      { id: "medio", label: "Medios" },
-      { id: "familia", label: "Familias" },
-      { id: "empresa", label: "Empresas" },
-      { id: "persona", label: "Personas" },
-    ],
-  },
-  {
-    id: "familias",
-    label: "Familias",
-    ready: false,
-    pills: [
-      { id: "all", label: "Todos" },
-      { id: "familia", label: "Familias" },
-      { id: "empresa", label: "Empresas" },
-      { id: "persona", label: "Personas" },
-      { id: "medio", label: "Medios" },
-    ],
-  },
+  { id: "pensiones", label: "Pensiones", ready: true, pills: [] },
+  { id: "partidos", label: "Partidos", ready: true, pills: [] },
+  { id: "gasolina", label: "Gasolina", ready: true, pills: [] },
+  { id: "deuda", label: "Deuda", ready: true, pills: [] },
+  { id: "familias", label: "Familias", ready: true, pills: [] },
+  { id: "medios", label: "Medios", ready: true, pills: [] },
+  { id: "banca", label: "Banca", ready: true, pills: [] },
+  { id: "aduana", label: "Aduana", ready: true, pills: [] },
 ];
 
 export const THEME_COLORS = {
