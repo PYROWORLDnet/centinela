@@ -20,6 +20,9 @@ const THEME_NAV = [
   { id: "construccion", label: "Construcción", path: "/construccion" },
 ];
 
+const THEME_TODO = THEME_NAV[0];
+const THEME_SLIDE = THEME_NAV.slice(1);
+
 export default function CuratedView({ themeId = "todo", navigate }) {
   const [searchOpen, setSearchOpen] = useState(false);
   const [tourMode, setTourMode] = useState(false);
@@ -29,6 +32,7 @@ export default function CuratedView({ themeId = "todo", navigate }) {
   const [pendingSelectId, setPendingSelectId] = useState(null);
   const galaxyRef = useRef(null);
   const hubInitRef = useRef(false);
+  const themesRailRef = useRef(null);
 
   useEffect(() => {
     setTourMode(false);
@@ -36,6 +40,16 @@ export default function CuratedView({ themeId = "todo", navigate }) {
     setTourDone(false);
     if (!pendingSelectId) setExploring(false);
     hubInitRef.current = false;
+  }, [themeId]);
+
+  // Mantén el tema activo visible dentro del slider
+  useEffect(() => {
+    const rail = themesRailRef.current;
+    if (!rail) return;
+    const btn = rail.querySelector(`[data-theme-id="${themeId}"]`);
+    if (btn && typeof btn.scrollIntoView === "function") {
+      btn.scrollIntoView({ inline: "nearest", block: "nearest", behavior: "smooth" });
+    }
   }, [themeId]);
 
   const { galaxy, error, focusId, detail, neighbors, colors, canGoBack, select, goBack } =
@@ -236,18 +250,29 @@ export default function CuratedView({ themeId = "todo", navigate }) {
         </div>
 
         <nav className="chrome-themes" aria-label="Temas">
-          <div className="pills pills--themes">
-            {THEME_NAV.map((t) => (
-              <button
-                key={t.id}
-                type="button"
-                className={`${themeId === t.id ? "is-active" : ""}${t.id === "todo" ? " is-todo" : ""}`.trim() || undefined}
-                onClick={() => goTheme(t)}
-              >
-                <span className="pill-full">{t.label}</span>
-                <span className="pill-short">{t.label}</span>
-              </button>
-            ))}
+          <div className="chrome-themes__dock">
+            <button
+              type="button"
+              className={`chrome-themes__todo${themeId === THEME_TODO.id ? " is-active" : ""}`}
+              onClick={() => goTheme(THEME_TODO)}
+            >
+              <span className="pill-full">{THEME_TODO.label}</span>
+              <span className="pill-short">{THEME_TODO.label}</span>
+            </button>
+            <div className="pills pills--themes" ref={themesRailRef}>
+              {THEME_SLIDE.map((t) => (
+                <button
+                  key={t.id}
+                  type="button"
+                  data-theme-id={t.id}
+                  className={themeId === t.id ? "is-active" : undefined}
+                  onClick={() => goTheme(t)}
+                >
+                  <span className="pill-full">{t.label}</span>
+                  <span className="pill-short">{t.label}</span>
+                </button>
+              ))}
+            </div>
           </div>
         </nav>
       </header>
