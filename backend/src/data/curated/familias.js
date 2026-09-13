@@ -4,8 +4,9 @@
  */
 
 import { SRC_SHARED, pickNodes, SHARED_EDGES } from "./shared.js";
+import { SRC_CUPULA } from "./cupula.js";
 
-const SRC = { ...SRC_SHARED };
+const SRC = { ...SRC_SHARED, ...SRC_CUPULA };
 
 const LOCAL_NODES = [
   {
@@ -14,7 +15,7 @@ const LOCAL_NODES = [
     kind: "familia",
     role: "El mapa real del poder económico",
     summary:
-      "Vicini/INICIA, Rizek, Corripio, Popular, BHD, Martí, Bonetti/SID, Rainieri/Puntacana, Estrella. No compiten solo en el mercado: se reparten banca, AFP, medios, combustible, alimentos, turismo, construcción.",
+      "La Cúpula: Vicini, Corripio, Rainieri, Fanjul, Rizek, González Cuadra, Brache, Estrella, Félix García, Popular, BHD, Banreservas, La Sirena, El Nacional. No compiten solo en el mercado: se reparten banca, AFP, medios, combustible, alimentos, turismo, retail y construcción.",
     mechanism: "El Estado no flota solo. Trabaja sobre una geografía de familias.",
     weight: 100,
     source: SRC.inicia,
@@ -55,23 +56,38 @@ const LOCAL_NODES = [
 ];
 
 const SHARED_IDS = [
+  "c-la-cupula",
   "e-grupo-vicini",
   "e-grupo-rizek",
   "e-grupo-corripio",
   "e-grupo-bonetti",
   "e-grupo-rainieri",
+  "e-grupo-fanjul",
+  "e-grupo-ccn",
+  "e-grupo-brache",
+  "e-grupo-linda",
+  "e-grupo-ramos",
   "e-grupo-popular",
   "e-grupo-marti",
   "e-grupo-bhd",
   "e-grupo-estrella",
   "p-hector-rizek",
+  "p-felix-garcia",
   "i-junta-monetaria",
   "e-afp-crecer",
   "e-afp-popular",
   "e-banco-popular",
   "e-banco-bhd",
   "e-banreservas",
+  "e-central-romana",
+  "e-jumbo",
+  "e-nacional-super",
+  "e-la-sirena",
+  "e-rica",
   "m-listin",
+  "m-el-nacional",
+  "m-el-caribe",
+  "m-cdn",
 ];
 
 function dedupe(nodes) {
@@ -142,6 +158,49 @@ export const FAMILIAS_EDGES = [
     target: "e-grupo-estrella",
     type: "incluye",
     sourceRef: SRC.estrella,
+  },
+  {
+    source: "c-casas",
+    target: "c-la-cupula",
+    type: "nombra",
+    note: "El mismo mapa, un solo nodo transversal",
+    sourceRef: SRC.elCaribeSolidarios,
+  },
+  {
+    source: "c-casas",
+    target: "e-grupo-fanjul",
+    type: "incluye",
+    sourceRef: SRC.fanjulListin,
+  },
+  {
+    source: "c-casas",
+    target: "e-grupo-ccn",
+    type: "incluye",
+    sourceRef: SRC.ccn,
+  },
+  {
+    source: "c-casas",
+    target: "e-grupo-brache",
+    type: "incluye",
+    sourceRef: SRC.rica,
+  },
+  {
+    source: "c-casas",
+    target: "e-grupo-linda",
+    type: "incluye",
+    sourceRef: SRC.elDineroEmporios,
+  },
+  {
+    source: "c-casas",
+    target: "e-grupo-ramos",
+    type: "incluye",
+    sourceRef: SRC.ramos,
+  },
+  {
+    source: "c-casas",
+    target: "e-banreservas",
+    type: "incluye",
+    sourceRef: SRC.banreservas,
   },
   {
     source: "e-grupo-rizek",

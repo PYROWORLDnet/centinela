@@ -164,11 +164,14 @@ const LOCAL_NODES = [
 ];
 
 const SHARED_IDS = [
+  "c-la-cupula",
   "i-sie",
   "i-mem",
   "i-fonper",
   "i-hacienda",
   "e-grupo-rainieri",
+  "e-grupo-linda",
+  "p-felix-garcia",
 ];
 
 function dedupe(nodes) {
@@ -349,6 +352,12 @@ export const ELECTRICIDAD_EDGES = [
     source: "e-edeeste",
     target: "c-factura-luz",
     type: "factura_a",
+    sourceRef: SRC.sie,
+  },
+  {
+    source: "c-sistema-electrico",
+    target: "c-la-cupula",
+    type: "atraviesa",
     sourceRef: SRC.sie,
   },
 ];

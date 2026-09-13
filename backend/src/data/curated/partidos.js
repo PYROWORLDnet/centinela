@@ -10,6 +10,8 @@
  * Ratio grande/nuevo ≈ 110× (432 / 3.927)
  */
 
+import { CUPULA_NODE } from "./cupula.js";
+
 const SRC = {
   ley3318: {
     label: "Ley 33-18 — Partidos, Agrupaciones y Movimientos Políticos (PDF CEPAL)",
@@ -83,6 +85,7 @@ const SRC = {
 
 /** @type {Array<object>} */
 export const PARTIDOS_NODES = [
+  CUPULA_NODE,
   // —— Hub ——
   {
     id: "i-jce",
@@ -701,5 +704,12 @@ export const PARTIDOS_EDGES = [
     type: "integra",
     note: "Cuando cobra, entra al mismo sistema",
     sourceRef: SRC.nDigitalPequenos,
+  },
+  {
+    source: "c-precio",
+    target: "c-la-cupula",
+    type: "atraviesa",
+    note: "Las casas del mapa también operan sobre el tablero político",
+    sourceRef: SRC.acentoAlianzas,
   },
 ];

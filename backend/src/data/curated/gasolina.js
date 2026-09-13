@@ -7,6 +7,8 @@
  * El contribuyente paga el subsidio que estabiliza el precio.
  */
 
+import { CUPULA_NODE } from "./cupula.js";
+
 const SRC = {
   haciendaRefidomsa: {
     label: "Hacienda — Estado adquiere 100% Refidomsa (PATSA / Grupo Rizek)",
@@ -48,6 +50,7 @@ const SRC = {
 
 /** @type {Array<object>} */
 export const GASOLINA_NODES = [
+  CUPULA_NODE,
   // —— Hub ——
   {
     id: "i-micm",
@@ -410,5 +413,12 @@ export const GASOLINA_EDGES = [
     type: "opera_sobre",
     note: "Fija precio · no abre el mercado",
     sourceRef: SRC.diarioLibreSubsidio,
+  },
+  {
+    source: "c-juego-cerrado",
+    target: "c-la-cupula",
+    type: "atraviesa",
+    note: "Rizek es una de las casas de La Cúpula",
+    sourceRef: SRC.haciendaRefidomsa,
   },
 ];

@@ -21,6 +21,7 @@ import { MEDIOS_TOUR } from "./mediosTour.js";
 import { BANCA_TOUR } from "./bancaTour.js";
 import { ADUANA_TOUR } from "./aduanaTour.js";
 import { CONSTRUCCION_TOUR } from "./construccionTour.js";
+import { CUPULA_ID, CUPULA_NODE, queryHitsCupula } from "./cupula.js";
 
 const DATASETS = {
   todo: { nodes: TODO_NODES, edges: TODO_EDGES },
@@ -98,6 +99,9 @@ function allNodeIndex() {
       }
     }
   }
+  if (!map.has(CUPULA_ID)) {
+    map.set(CUPULA_ID, { ...CUPULA_NODE });
+  }
   return map;
 }
 
@@ -159,14 +163,19 @@ export function getCuratedGraph(themeId, pill = "all") {
     // Plano completo: todas las capas
     for (const id of nodeIndex.keys()) keep.add(id);
   } else {
-    // 1 hop cross-theme: vecinos de nodos del tema en toda la red
+    // 1 hop cross-theme: vecinos de nodos del tema en toda la red.
+    // La Cúpula no se expande aquí: si lo hiciera, arrastraría todas las casas a cada tema.
+    const expandCupula = themeId === "familias";
     for (const e of edges) {
+      const touchesCupula = e.source === CUPULA_ID || e.target === CUPULA_ID;
+      if (touchesCupula && !expandCupula) continue;
       if (seed.has(e.source) || seed.has(e.target)) {
         keep.add(e.source);
         keep.add(e.target);
       }
     }
   }
+  keep.add(CUPULA_ID);
 
   let nodes = [...keep]
     .map((id) => nodeIndex.get(id))
@@ -313,6 +322,17 @@ export function getCuratedTour(themeId) {
   };
 }
 
+function nodeMatchesQuery(n, query) {
+  if (!n) return false;
+  if (n.name && n.name.toLowerCase().includes(query)) return true;
+  if (n.role && n.role.toLowerCase().includes(query)) return true;
+  if (n.summary && n.summary.toLowerCase().includes(query)) return true;
+  if (Array.isArray(n.aliases) && n.aliases.some((a) => String(a).toLowerCase().includes(query))) {
+    return true;
+  }
+  return false;
+}
+
 export function searchCurated(q, themeId = null) {
   const query = String(q || "").trim().toLowerCase();
   if (!query) return [];
@@ -323,11 +343,7 @@ export function searchCurated(q, themeId = null) {
     if (themeId && tid !== themeId) continue;
     for (const n of ds.nodes) {
       if (seen.has(n.id)) continue;
-      if (
-        n.name.toLowerCase().includes(query) ||
-        (n.role && n.role.toLowerCase().includes(query)) ||
-        (n.summary && n.summary.toLowerCase().includes(query))
-      ) {
+      if (nodeMatchesQuery(n, query)) {
         seen.add(n.id);
         out.push({
           id: n.id,
@@ -339,6 +355,24 @@ export function searchCurated(q, themeId = null) {
       }
     }
   }
+
+  // La Cúpula no es un tema: sale al buscar cualquiera de las casas que agrupa.
+  if (!seen.has(CUPULA_ID) && (queryHitsCupula(query) || nodeMatchesQuery(CUPULA_NODE, query))) {
+    out.unshift({
+      id: CUPULA_NODE.id,
+      name: CUPULA_NODE.name,
+      category: CUPULA_NODE.kind,
+      role: CUPULA_NODE.role,
+      theme: "familias",
+    });
+  } else if (seen.has(CUPULA_ID) && queryHitsCupula(query)) {
+    const idx = out.findIndex((r) => r.id === CUPULA_ID);
+    if (idx > 0) {
+      const [hit] = out.splice(idx, 1);
+      out.unshift(hit);
+    }
+  }
+
   return out.slice(0, 12);
 }
 

@@ -54,9 +54,9 @@ const LOCAL_NODES = [
     id: "c-importadores",
     name: "Grandes importadores",
     kind: "empresa",
-    role: "Martí · Corripio · Rizek · otros",
+    role: "Martí · Corripio · Rizek · CCN · Sirena · Fanjul · Brache",
     summary:
-      "Combustibles (Martí), distribución comercial (Corripio), cacao/export (Rizek). Distintos rubros, misma lógica: la puerta del comercio la cruzan las casas con escala.",
+      "Combustibles (Martí), distribución comercial (Corripio), cacao/export (Rizek), retail (CCN / La Sirena), azúcar (Fanjul / Central Romana), lácteos (Brache / Rica). Distintos rubros, misma lógica: la puerta del comercio la cruzan las casas con escala.",
     weight: 88,
     source: SRC.marti,
     themes: ["aduana"],
@@ -64,6 +64,7 @@ const LOCAL_NODES = [
 ];
 
 const SHARED_IDS = [
+  "c-la-cupula",
   "i-dga",
   "i-micm",
   "e-grupo-marti",
@@ -71,6 +72,15 @@ const SHARED_IDS = [
   "e-grupo-rizek",
   "e-grupo-bonetti",
   "e-grupo-vicini",
+  "e-grupo-fanjul",
+  "e-grupo-ccn",
+  "e-grupo-ramos",
+  "e-grupo-brache",
+  "e-central-romana",
+  "e-jumbo",
+  "e-nacional-super",
+  "e-la-sirena",
+  "e-rica",
 ];
 
 function dedupe(nodes) {
@@ -170,5 +180,39 @@ export const ADUANA_EDGES = [
     target: "i-dga",
     type: "importa_via",
     sourceRef: SRC.marti,
+  },
+  {
+    source: "c-importadores",
+    target: "e-grupo-ccn",
+    type: "incluye",
+    note: "Retail Jumbo / Nacional",
+    sourceRef: SRC.dga,
+  },
+  {
+    source: "c-importadores",
+    target: "e-grupo-ramos",
+    type: "incluye",
+    note: "La Sirena",
+    sourceRef: SRC.dga,
+  },
+  {
+    source: "c-importadores",
+    target: "e-grupo-fanjul",
+    type: "incluye",
+    note: "Azúcar / Central Romana",
+    sourceRef: SRC.dga,
+  },
+  {
+    source: "c-importadores",
+    target: "e-grupo-brache",
+    type: "incluye",
+    note: "Lácteos / Rica",
+    sourceRef: SRC.dga,
+  },
+  {
+    source: "c-comercio-puerta",
+    target: "c-la-cupula",
+    type: "atraviesa",
+    sourceRef: SRC.dga,
   },
 ];

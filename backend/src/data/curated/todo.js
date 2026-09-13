@@ -33,7 +33,7 @@ export const TODO_NODES = [
     kind: "familia",
     role: "El patrón que se repite",
     summary:
-      "Rizek no es el único puente. Vicini, Corripio, Popular, BHD, Martí, Bonetti, Rainieri, Estrella — y otras — tocan varios sectores a la vez. Cuando abrimos un tema nuevo, muchas de estas casas vuelven a aparecer.",
+      "La Cúpula: Vicini, Corripio, Rainieri, Fanjul, Rizek, González Cuadra, Brache, Estrella, Félix García, Popular, BHD, Banreservas, La Sirena, El Nacional. No es un tema: es el nodo que agrupa las casas que cruzan todos los sectores.",
     mechanism: "El mismo apellido en AFP, combustible, medios, turismo o cemento no es casualidad: es arquitectura.",
     weight: 92,
     themes: ["todo"],
@@ -61,4 +61,10 @@ export const TODO_EDGES = [
   { source: "c-casas-puente", target: "e-grupo-bonetti", type: "ejemplo", note: "Alimentos / escala" },
   { source: "c-casas-puente", target: "e-grupo-rainieri", type: "ejemplo", note: "Turismo" },
   { source: "c-casas-puente", target: "e-grupo-estrella", type: "ejemplo", note: "Construcción / cemento" },
+  { source: "c-casas-puente", target: "c-la-cupula", type: "nombra", note: "El agrupamiento transversal" },
+  { source: "c-casas-puente", target: "e-grupo-fanjul", type: "ejemplo", note: "Azúcar / Este" },
+  { source: "c-casas-puente", target: "e-grupo-ccn", type: "ejemplo", note: "Retail CCN" },
+  { source: "c-casas-puente", target: "e-grupo-brache", type: "ejemplo", note: "Rica + consejo Popular" },
+  { source: "c-casas-puente", target: "e-grupo-linda", type: "ejemplo", note: "Medios + AES" },
+  { source: "c-casas-puente", target: "e-grupo-ramos", type: "ejemplo", note: "La Sirena" },
 ];

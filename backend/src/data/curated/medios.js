@@ -24,16 +24,22 @@ const LOCAL_NODES = [
 ];
 
 const SHARED_IDS = [
+  "c-la-cupula",
   "e-grupo-corripio",
   "e-grupo-vicini",
   "e-grupo-rizek",
   "e-grupo-popular",
+  "e-grupo-linda",
+  "e-grupo-estrella",
+  "p-felix-garcia",
   "m-listin",
   "m-hoy",
   "m-telesistema",
   "m-teleantillas",
   "m-el-dia",
   "m-el-nacional",
+  "m-el-caribe",
+  "m-cdn",
 ];
 
 function dedupe(nodes) {
@@ -82,5 +88,25 @@ export const MEDIOS_EDGES = [
     target: "e-grupo-rizek",
     type: "incluye",
     sourceRef: SRC.listin2010,
+  },
+  {
+    source: "c-filtros",
+    target: "m-el-nacional",
+    type: "incluye",
+    note: "Periódico · Corripio",
+    sourceRef: SRC.corripioWiki,
+  },
+  {
+    source: "c-filtros",
+    target: "e-grupo-linda",
+    type: "incluye",
+    note: "El Caribe + CDN",
+    sourceRef: SRC.corripioWiki,
+  },
+  {
+    source: "c-filtros",
+    target: "c-la-cupula",
+    type: "atraviesa",
+    sourceRef: SRC.corripioWiki,
   },
 ];

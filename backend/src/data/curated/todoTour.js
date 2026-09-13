@@ -120,10 +120,11 @@ export const TODO_TOUR = {
       id: 11,
       line: "Debajo de todo: las casas.",
       detail:
-        "Vicini, Rizek, Corripio, Popular, BHD, Martí, Bonetti, Rainieri, Estrella. Familias es el mapa de apellidos; los otros temas son los sectores.",
+        "La Cúpula agrupa las casas: Vicini, Corripio, Rainieri, Fanjul, Rizek, González Cuadra, Brache, Estrella, Félix García, Popular, BHD, Banreservas, La Sirena, El Nacional. Familias es el mapa de apellidos; los otros temas son los sectores. La Cúpula no es un tema: es el nodo que aparece al buscar cualquiera de esos nombres.",
       nodeIds: [
         "c-casas",
         "c-casas-puente",
+        "c-la-cupula",
         "e-grupo-vicini",
         "e-grupo-rizek",
         "e-grupo-estrella",
@@ -136,15 +137,16 @@ export const TODO_TOUR = {
       id: 12,
       line: "El puente no es solo Rizek.",
       detail:
-        "Roryk cruza AFP, combustible y Junta Monetaria. Estrella cruza cemento y obra. Rainieri cruza turismo y la zona de CEPM. Cuando abramos más temas, aparecerán más puentes.",
+        "Rizek cruza AFP, combustible y —históricamente— la Junta Monetaria (Héctor José falleció en 2026). Estrella cruza cemento, obra y CDN. Linda cruza medios y AES. Brache cruza Rica y el consejo de Popular. Rainieri cruza turismo y la zona de CEPM.",
       nodeIds: [
         "c-casas-puente",
+        "c-la-cupula",
         "e-grupo-rizek",
         "e-grupo-estrella",
-        "e-grupo-rainieri",
-        "e-afp-crecer",
+        "e-grupo-linda",
+        "e-grupo-brache",
       ],
-      panelId: "c-casas-puente",
+      panelId: "c-la-cupula",
     },
     {
       id: 13,
