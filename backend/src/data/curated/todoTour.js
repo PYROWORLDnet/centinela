@@ -8,7 +8,7 @@ export const TODO_TOUR = {
   theme: "todo",
   title: "Cómo se sostiene el sistema",
   epilogue:
-    "Ya viste el plano. Pensiones, deuda, banca, partidos, gasolina, electricidad, aduana, medios, construcción y familias no son silos: son la misma red vista por puertas distintas. Entra a cada tema para el detalle con fuentes. Cuando abramos inmigración u otras capas, aparecerán aquí. El mapa crece; el mecanismo es el mismo.",
+    "Ya viste el plano. Pensiones, deuda, banca, partidos, gasolina, electricidad, aduana, medios, construcción, migración y familias no son silos: son la misma red vista por puertas distintas. Entra a cada tema para el detalle con fuentes. El mapa crece; el mecanismo es el mismo.",
   entry: {
     hubId: "c-sistema",
     satelliteIds: [
@@ -23,6 +23,7 @@ export const TODO_TOUR = {
       "i-junta-monetaria",
       "i-dga",
       "c-cadena-construccion",
+      "i-dgm",
     ],
     line: null,
   },
@@ -31,7 +32,7 @@ export const TODO_TOUR = {
       id: 1,
       line: "Esto no son pantallas sueltas.",
       detail:
-        "Es una sola red. Cada tema es una puerta. El Todo es el plano: cómo se conectan tu sueldo, el Estado, los bancos, los partidos, el combustible, la luz, la aduana, los medios, la construcción y las casas.",
+        "Es una sola red. Cada tema es una puerta. El Todo es el plano: cómo se conectan tu sueldo, el Estado, los bancos, los partidos, el combustible, la luz, la aduana, los medios, la construcción, la migración y las casas.",
       nodeIds: ["c-sistema", "c-ocho-puertas"],
       panelId: "c-sistema",
     },
@@ -150,9 +151,18 @@ export const TODO_TOUR = {
     },
     {
       id: 13,
+      line: "Y la frontera también es un negocio.",
+      detail:
+        "Migración: deportan 670,500 y el ciclo sigue. Camiones, retenes, agro y construcción. Misma lógica de juego cerrado — con la logística del Estado en el medio. En Migración está el mapa.",
+      nodeIds: ["i-dgm", "c-sistema", "c-negocio-cerrado", "e-jad"],
+      panelId: "i-dgm",
+      pathFrom: ["c-sistema"],
+    },
+    {
+      id: 14,
       line: "Ahora elige una puerta.",
       detail:
-        "Escuchaste el plano. En el navbar haz scroll: Electricidad y Construcción ya están. Dale play en cada tema. El Todo siempre será el resumen para entender el sistema de un tirón.",
+        "Escuchaste el plano. En el navbar haz scroll: Migración ya está. Dale play en cada tema. El Todo siempre será el resumen para entender el sistema de un tirón.",
       nodeIds: ["c-ocho-puertas", "c-sistema"],
       panelId: "c-ocho-puertas",
     },

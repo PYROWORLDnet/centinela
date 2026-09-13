@@ -12,6 +12,7 @@ const THEMES = [
   "Banca",
   "Aduana",
   "Construcción",
+  "Migración",
 ];
 
 const OPTIONS = [

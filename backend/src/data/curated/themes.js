@@ -14,6 +14,7 @@ export const THEMES = [
   { id: "banca", label: "Banca", ready: true, pills: [] },
   { id: "aduana", label: "Aduana", ready: true, pills: [] },
   { id: "construccion", label: "Construcción", ready: true, pills: [] },
+  { id: "migracion", label: "Migración", ready: true, pills: [] },
 ];
 
 export const THEME_COLORS = {
