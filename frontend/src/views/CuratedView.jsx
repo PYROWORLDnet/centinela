@@ -7,8 +7,8 @@ import { useCuratedExplorer } from "../lib/useCurated";
 import { useJson } from "../lib/useGraph";
 
 const THEME_NAV = [
-  { id: "nucleo", label: "El Núcleo", path: "/nucleo" },
   { id: "todo", label: "Guía", path: "/todo" },
+  { id: "nucleo", label: "El Núcleo", path: "/nucleo" },
   { id: "pensiones", label: "Pensiones", path: "/pensiones" },
   { id: "partidos", label: "Partidos", path: "/partidos" },
   { id: "gasolina", label: "Gasolina", path: "/gasolina" },
@@ -31,8 +31,8 @@ const THEME_NAV = [
   { id: "juego", label: "Juego", path: "/juego" },
 ];
 
-const THEME_NUCLEO = THEME_NAV[0];
-const THEME_TODO = THEME_NAV[1];
+const THEME_TODO = THEME_NAV[0];
+const THEME_NUCLEO = THEME_NAV[1];
 const THEME_SLIDE = THEME_NAV.slice(2);
 
 export default function CuratedView({ themeId = "todo", navigate }) {
@@ -265,19 +265,19 @@ export default function CuratedView({ themeId = "todo", navigate }) {
           <div className="chrome-themes__dock">
             <button
               type="button"
-              className={`chrome-themes__todo${themeId === THEME_NUCLEO.id ? " is-active" : ""}`}
-              onClick={() => goTheme(THEME_NUCLEO)}
-            >
-              <span className="pill-full">{THEME_NUCLEO.label}</span>
-              <span className="pill-short">Núcleo</span>
-            </button>
-            <button
-              type="button"
               className={`chrome-themes__todo${themeId === THEME_TODO.id ? " is-active" : ""}`}
               onClick={() => goTheme(THEME_TODO)}
             >
               <span className="pill-full">{THEME_TODO.label}</span>
               <span className="pill-short">{THEME_TODO.label}</span>
+            </button>
+            <button
+              type="button"
+              className={`chrome-themes__todo${themeId === THEME_NUCLEO.id ? " is-active" : ""}`}
+              onClick={() => goTheme(THEME_NUCLEO)}
+            >
+              <span className="pill-full">{THEME_NUCLEO.label}</span>
+              <span className="pill-short">Núcleo</span>
             </button>
             <div className="pills pills--themes" ref={themesRailRef}>
               {THEME_SLIDE.map((t) => (
@@ -296,14 +296,6 @@ export default function CuratedView({ themeId = "todo", navigate }) {
           </div>
         </nav>
       </header>
-
-      {inHub && (
-        <div className="hub-intro" role="note">
-          <button type="button" className="hub-intro__cta" onClick={restartTour}>
-            Ver el mecanismo →
-          </button>
-        </div>
-      )}
 
       {ready && hasTour && exploring && !tourMode && (
         <button type="button" className="story-start" onClick={goToHub}>

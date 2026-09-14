@@ -569,38 +569,7 @@ input {
   transform: scale(1.25);
 }
 
-.hub-intro {
-  position: absolute;
-  z-index: 12;
-  left: 50%;
-  bottom: 3.6rem;
-  transform: translateX(-50%);
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 0.65rem;
-  max-width: min(92vw, 28rem);
-  text-align: center;
-  pointer-events: none;
-}
-
-.hub-intro p {
-  margin: 0;
-  font-size: clamp(1rem, 2vw, 1.18rem);
-  font-weight: 500;
-  line-height: 1.4;
-  color: rgba(245, 247, 250, 0.92);
-  text-shadow: 0 2px 16px rgba(0, 0, 0, 0.6);
-}
-
 /* —— Texto curado: estilo A (suave) —— */
-.view--curated .hub-intro p {
-  font-size: clamp(0.82rem, 1.4vw, 0.95rem);
-  font-weight: 400;
-  color: rgba(168, 176, 190, 0.88);
-  text-shadow: 0 1px 10px rgba(0, 0, 0, 0.55);
-}
-
 .view--curated .story__line {
   font-size: clamp(0.92rem, 1.7vw, 1.12rem);
   font-weight: 500;
@@ -622,7 +591,6 @@ input {
   opacity: 0.55;
 }
 
-.hub-intro__cta,
 .story-start {
   pointer-events: auto;
   border: 1px solid rgba(240, 193, 74, 0.45);
@@ -638,13 +606,11 @@ input {
   transition: background 140ms var(--ease), transform 120ms var(--ease);
 }
 
-.hub-intro__cta:hover,
 .story-start:hover {
   background: rgba(40, 36, 22, 0.95);
   transform: translateY(-1px);
 }
 
-.hub-intro__cta:active,
 .story-start:active {
   transform: scale(0.98);
 }
@@ -2178,13 +2144,6 @@ input {
     font-size: 1.05rem;
   }
 
-  /* Mobile: hide only the floating bottom-center hub CTA.
-     Keep "Ver el mecanismo" inside the topic info panel so tours can start. */
-  .hub-intro,
-  .hub-intro__cta {
-    display: none !important;
-  }
-
   .story-start {
     bottom: max(3.2rem, calc(env(safe-area-inset-bottom, 0px) + 2.4rem));
     max-width: min(94vw, 28rem);
@@ -2235,7 +2194,6 @@ input {
     transform: translateY(8px);
   }
 
-  .view--curated.is-searching .hub-intro,
   .view--curated.is-searching .story-start,
   .view--curated.is-searching .story {
     opacity: 0.35;
