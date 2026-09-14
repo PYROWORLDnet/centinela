@@ -81,6 +81,74 @@ const SRC = {
     label: "Acento — alianzas y doble vuelta (Ley 20-23)",
     url: "https://acento.com.do/opinion/alianzas-y-doble-vuelta-9256107.html",
   },
+  constitucion212: {
+    label: "Constitución RD — Art. 212 (composición y elección de la JCE · Justia)",
+    url: "https://republica-dominicana.justia.com/nacionales/constitucion-de-la-republica-dominicana/titulo-x/capitulo-ii/seccion-i/articulo-212/",
+  },
+  constitucion80: {
+    label: "Constitución RD — Art. 80.4 (Senado elige a la JCE · PDF SGN)",
+    url: "https://sgn.gob.do/transparencia/images/docs/base_legal/constitucion_politica.pdf",
+  },
+  elDiaJceRequisitos: {
+    label: "El Día — requisitos constitucionales y legales para miembros de la JCE",
+    url: "https://eldia.com.do/cuales-requisitos-establecen-la-constitucion-y-las-leyes-para-ser-miembro-de-la-jce/",
+  },
+  jceSuspende2020: {
+    label: "JCE — suspensión de las elecciones municipales (16 feb 2020)",
+    url: "https://jce.gob.do/Noticias/pleno-jce-suspende-proceso-de-elecciones-municipales-en-todo-el-pais",
+  },
+  diarioLibreReacciones2020: {
+    label: "Diario Libre — reacciones a la suspensión de 2020 (Abinader / PLD)",
+    url: "https://www.diariolibre.com/actualidad/politica/las-reacciones-a-decision-de-jce-de-suspender-elecciones-IG17115159",
+  },
+  elNacionalAbinader2020: {
+    label: "El Nacional — Abinader: JCE fracasó; rechazo a suspensión parcial",
+    url: "https://elnacional.com.do/abinader-afirma-jce-fracaso-y-lleva-pais-a-crisis-institucional/",
+  },
+  jceEdet2024: {
+    label: "JCE — clonado de equipos EDET (escaneo, digitalización, impresión y transmisión)",
+    url: "https://jce.gob.do/Noticias/jce-inicia-proceso-de-clonado-de-los-equipos-edet-que-se-usaran-en-las-elecciones-municipales",
+  },
+  cdnEdetRed: {
+    label: "Noticentro — JCE dispone laptops/multifuncionales EDET (digitalización, escaneo y transmisión)",
+    url: "https://noticentro.com.do/jce-dispone-uso-laptops-y-multifuncionales-para-digitalizacion-escaneo-y-transmision-de-resultados-elecciones-2024/",
+  },
+  diarioLibreEdet: {
+    label: "Diario Libre — clonación de equipos EDET para municipales 2024",
+    url: "https://www.diariolibre.com/actualidad/politica/2024/01/29/arranca-clonacion-de-equipos-que-se-usaran-en-elecciones-municipales/2591074",
+  },
+  jceEscrutinio2020: {
+    label: "JCE — Resoluciones sobre observación y grabación del escrutinio (julio 2020)",
+    url: "https://jce.gob.do/Noticias/pleno-jce-aprueba-resoluciones-sobre-observacion-y-grabacion-de-fase-de-escrutinio-en-elecciones-de-julio",
+  },
+  jceComputo2020: {
+    label: "JCE — procedimiento de cómputo julio 2020 (copias a delegados / escaneo)",
+    url: "https://jce.gob.do/Noticias/pleno-jce-aprueba-procedimiento-de-computo-electoral-de-elecciones-del-5-de-julio",
+  },
+  nDigitalAbstencion: {
+    label: "El Nuevo Diario — JCE: abstención municipal 2024 = 53.33% (datos preliminares)",
+    url: "https://elnuevodiario.com.do/abstencion-en-elecciones-fue-del-53-33-de-acuerdo-a-datos-preliminares-de-la-jce/",
+  },
+  noticiasSinAbstencion: {
+    label: "Noticias SIN — abstención récord 53.33% (datos preliminares JCE)",
+    url: "https://noticiassin.com/elecciones-municipales-registran-abstencion-record-de-53-33-a-nivel-general/",
+  },
+  alMomentoTsa: {
+    label: "AlMomento — TSA fija audiencia de amparo El Faro Latino vs JCE (gastos exterior 2024)",
+    url: "https://almomento.net/el-faro-latino-lleva-a-jce-ante-el-tsa-rd-por-falta-transparencia/",
+  },
+  elFaroOpacidad: {
+    label: "El Faro Latino — entrega parcial sobre fondos del voto exterior 2024",
+    url: "https://elfarolatino.com/jce-interfiere-y-distrae-investigacion-sobre-fondos-elecciones-en-el-exterior-2024/",
+  },
+  jceInformeExterior: {
+    label: "JCE — informe investigación voto exterior 2020; desvinculaciones",
+    url: "https://jce.gob.do/Noticias/pleno-de-la-jce-aprueba-informe-presentado-sobre-investigacion-del-voto-dominicano-en-el-exterior-dispone-desvinculacion-de-varios-funcionarios",
+  },
+  precisionExterior: {
+    label: "Precision — JCE: manejo inadecuado de US$4,083,762.64 en OPREE/OCLEE (2020)",
+    url: "https://precision.com.do/jce-aprueba-informe-de-investigacion-del-voto-en-el-exterior-y-bota-a-varios-funcionarios/",
+  },
 };
 
 /** @type {Array<object>} */
@@ -91,14 +159,155 @@ export const PARTIDOS_NODES = [
     id: "i-jce",
     name: "JCE",
     kind: "estado",
-    role: "Junta Central Electoral",
+    role: "Junta Central Electoral · árbitro",
     summary:
-      "Órgano constitucional que reconoce partidos y distribuye la contribución económica del Estado. Resolución 01-2026: RD$1,620 millones entre 41 organizaciones para 2026.",
+      "Órgano constitucional que organiza y certifica elecciones, reconoce partidos y reparte la contribución estatal. Sus miembros los elige el Senado. También distribuye RD$1,620 MM (Resolución 01-2026).",
     mechanism:
-      "Quien controla el registro y el reparto del dinero público define quién puede competir de verdad.",
+      "El Senado elige al árbitro. El árbitro organiza y certifica las elecciones — y reparte el dinero de los partidos. No es un detalle administrativo: es la cadena de poder electoral.",
     weight: 100,
     amount: 1_620_000_000,
-    source: SRC.jceRes012026,
+    source: SRC.constitucion212,
+    themes: ["partidos"],
+  },
+
+
+  // —— Cadena del árbitro: Senado → JCE → elecciones ——
+  {
+    id: "i-senado",
+    name: "Senado",
+    kind: "estado",
+    role: "Cámara Alta · elige a la JCE",
+    summary:
+      "Art. 80.4 de la Constitución: el Senado elige a los miembros de la Junta Central Electoral y a sus suplentes, con el voto de las dos terceras partes de los presentes.",
+    mechanism:
+      "Quien manda en el Senado manda en quién arbitra las elecciones. No es un rumor: está en el texto constitucional.",
+    weight: 92,
+    source: SRC.constitucion80,
+    themes: ["partidos"],
+  },
+  {
+    id: "c-eleccion-jce",
+    name: "Elección de la JCE",
+    kind: "estado",
+    role: "Presidente + 4 titulares + suplentes · 2/3 del Senado",
+    summary:
+      "Art. 212: la JCE se integra por un presidente y cuatro miembros, con sus suplentes, elegidos por cuatro años por el Senado con dos terceras partes de los senadores presentes. El Día resume los mismos requisitos constitucionales.",
+    mechanism:
+      "Cinco titulares (incluido el presidente) y sus suplentes. No son nueve puestos sueltos: son un pleno de cinco con banco de suplentes, todos salidos del Senado.",
+    weight: 88,
+    source: SRC.constitucion212,
+    themes: ["partidos"],
+  },
+  {
+    id: "c-elecciones",
+    name: "Elecciones",
+    kind: "estado",
+    role: "Lo que la JCE organiza y certifica",
+    summary:
+      "Art. 212: la finalidad principal de la JCE es organizar y dirigir las asambleas electorales. También certifica resultados y reconoce a los partidos que compiten.",
+    mechanism:
+      "Senado → elige → JCE → organiza y certifica → elecciones. Esa es la cadena.",
+    weight: 90,
+    source: SRC.constitucion212,
+    themes: ["partidos"],
+  },
+
+  // —— Crisis 2020 y lo que vino después ——
+  {
+    id: "c-colapso-2020",
+    name: "Colapso municipal 2020",
+    kind: "estado",
+    role: "Suspensión total · 16 feb 2020",
+    summary:
+      "El 16 de febrero de 2020 la JCE suspendió las elecciones municipales en todo el país tras fallas en boletas del voto automatizado (boletas incompletas en más de la mitad de los colegios automatizados).",
+    mechanism:
+      "El árbitro detuvo el partido a mitad de juego. La causa oficial: error técnico en el sistema automatizado.",
+    weight: 86,
+    source: SRC.jceSuspende2020,
+    themes: ["partidos"],
+  },
+  {
+    id: "c-posiciones-2020",
+    name: "Abinader / PLD · 2020",
+    kind: "partido",
+    role: "Posiciones documentadas en la crisis",
+    summary:
+      "Abinader (entonces candidato) rechazó suspender solo los centros automatizados y exigió respuesta total; calificó el episodio de fracaso institucional. El PLD, en el gobierno, planteó que no debió suspenderse todo el territorio y habló de sabotaje (Diario Libre / El Nacional).",
+    mechanism:
+      "Misma crisis, dos lecturas de poder. Lo verificable es qué pidió cada bando — no una teoría de conspiración.",
+    weight: 70,
+    source: SRC.diarioLibreReacciones2020,
+    themes: ["partidos"],
+  },
+  {
+    id: "c-transparencia-post-2020",
+    name: "Controles post-2020",
+    kind: "estado",
+    role: "Escrutinio visible · copias de actas · menos automatización del voto",
+    summary:
+      "Tras la crisis, la JCE aprobó resoluciones que reforzaron observación y grabación del escrutinio, entrega de copias de relaciones de votación a delegados, y escaneo/transmisión de actas. El voto volvió a ser manual; la tecnología quedó para transmitir resultados (EDET).",
+    mechanism:
+      "La respuesta institucional no fue “confía en la máquina”. Fue: que se vea el conteo y que cada partido se lleve su copia.",
+    weight: 74,
+    source: SRC.jceEscrutinio2020,
+    themes: ["partidos"],
+  },
+
+  // —— Opacidad financiera (exterior) ——
+  {
+    id: "c-opacidad-exterior",
+    name: "Opacidad · voto exterior",
+    kind: "estado",
+    role: "Gastos 2024 · amparo en el TSA",
+    summary:
+      "El Faro Latino documentó prórrogas y entregas parciales de la JCE ante pedidos de información (Portal SAIP) sobre el presupuesto y gastos del voto en el exterior 2024. El caso llegó al Tribunal Superior Administrativo en recurso de amparo (AlMomento).",
+    mechanism:
+      "El árbitro organiza el voto afuera. Cuando piden la factura completa, entrega a medias — y el conflicto termina en el TSA.",
+    weight: 82,
+    source: SRC.alMomentoTsa,
+    themes: ["partidos"],
+  },
+  {
+    id: "c-irregularidades-exterior-2020",
+    name: "Exterior 2020 · US$4.08 MM",
+    kind: "financiador",
+    role: "Manejo inadecuado (informe JCE)",
+    summary:
+      "El propio informe de investigación de la JCE sobre el voto exterior 2020 determinó manejo inadecuado de fondos por US$4,083,762.64 en OPREE/OCLEE de la Circunscripción 1 y dispuso desvinculaciones (Precision / comunicado JCE). No es una condena penal: es el hallazgo administrativo del órgano.",
+    mechanism:
+      "Antes de la pelea de 2024 por documentos, ya había un expediente interno de plata mal llevada en el exterior.",
+    weight: 80,
+    source: SRC.precisionExterior,
+    themes: ["partidos"],
+  },
+
+  // —— Abstención ——
+  {
+    id: "c-abstencion-2024",
+    name: "Abstención municipal 2024",
+    kind: "estado",
+    role: "53.33% · dato preliminar JCE",
+    summary:
+      "En las municipales del 18 de febrero de 2024 la JCE reportó participación del 46.67% del padrón: abstención del 53.33% (N Digital / Noticias SIN sobre datos preliminares de la JCE). Varios medios la describieron como la más alta del ciclo municipal reciente.",
+    mechanism:
+      "Más de la mitad no fue a votar. El árbitro certifica el resultado; la urna vacía también habla.",
+    weight: 78,
+    source: SRC.nDigitalAbstencion,
+    themes: ["partidos"],
+  },
+
+  // —— Lo que sí existe: verificación ——
+  {
+    id: "c-sistema-edet",
+    name: "Sistema EDET",
+    kind: "estado",
+    role: "Escaneo · digitación · impresión · transmisión",
+    summary:
+      "Equipos EDET de la JCE: escanean, digitalizan, imprimen y transmiten actas desde los colegios electorales. El escrutinio es manual (Resolución 28-2023); después se digita/imprime el acta, se firma y se transmite. La JCE dispuso laptops y multifuncionales para ese flujo en 2024 (Noticentro / Diario Libre).",
+    mechanism:
+      "No es voto electrónico. Es conteo a mano + digitalización y transmisión del acta.",
+    weight: 76,
+    source: SRC.jceEdet2024,
     themes: ["partidos"],
   },
 
@@ -711,5 +920,153 @@ export const PARTIDOS_EDGES = [
     type: "atraviesa",
     note: "Las casas del mapa también operan sobre el tablero político",
     sourceRef: SRC.acentoAlianzas,
+  },
+
+  // —— Cadena del árbitro ——
+  {
+    source: "i-senado",
+    target: "c-eleccion-jce",
+    type: "elige",
+    note: "Art. 80.4 / 212 · dos terceras partes de los presentes",
+    sourceRef: SRC.constitucion80,
+  },
+  {
+    source: "c-eleccion-jce",
+    target: "i-jce",
+    type: "integra",
+    note: "Presidente + 4 miembros + suplentes · 4 años",
+    sourceRef: SRC.constitucion212,
+  },
+  {
+    source: "i-senado",
+    target: "i-jce",
+    type: "elige",
+    note: "El Senado nombra al árbitro electoral",
+    sourceRef: SRC.constitucion212,
+  },
+  {
+    source: "i-jce",
+    target: "c-elecciones",
+    type: "organiza",
+    note: "Art. 212 · organiza y dirige las asambleas electorales",
+    sourceRef: SRC.constitucion212,
+  },
+  {
+    source: "i-jce",
+    target: "c-elecciones",
+    type: "certifica",
+    note: "Certifica resultados y reconoce competidores",
+    sourceRef: SRC.constitucion212,
+  },
+  {
+    source: "l-15-19",
+    target: "c-eleccion-jce",
+    type: "marco_historico",
+    note: "Ley 15-19 · régimen electoral que rodea a la JCE",
+    sourceRef: SRC.ley1519,
+  },
+
+  // —— 2020 ——
+  {
+    source: "i-jce",
+    target: "c-colapso-2020",
+    type: "suspendio",
+    note: "16 feb 2020 · fallo de boletas automatizadas",
+    sourceRef: SRC.jceSuspende2020,
+  },
+  {
+    source: "c-colapso-2020",
+    target: "c-elecciones",
+    type: "interrompio",
+    note: "Suspensión total del proceso municipal",
+    sourceRef: SRC.jceSuspende2020,
+  },
+  {
+    source: "c-colapso-2020",
+    target: "c-posiciones-2020",
+    type: "provoco",
+    note: "Abinader: suspensión total · PLD: no generalizar",
+    sourceRef: SRC.diarioLibreReacciones2020,
+  },
+  {
+    source: "c-posiciones-2020",
+    target: "p-prm",
+    type: "posicion_de",
+    note: "Abinader / PRM en la crisis",
+    sourceRef: SRC.elNacionalAbinader2020,
+  },
+  {
+    source: "c-posiciones-2020",
+    target: "p-pld",
+    type: "posicion_de",
+    note: "PLD en el gobierno · continuidad parcial",
+    sourceRef: SRC.diarioLibreReacciones2020,
+  },
+  {
+    source: "c-colapso-2020",
+    target: "c-transparencia-post-2020",
+    type: "derivo_en",
+    note: "Más control visual del escrutinio y copias de actas",
+    sourceRef: SRC.jceEscrutinio2020,
+  },
+  {
+    source: "c-transparencia-post-2020",
+    target: "c-sistema-edet",
+    type: "refuerza",
+    note: "Voto manual + transmisión verificable de actas",
+    sourceRef: SRC.jceComputo2020,
+  },
+
+  // —— Opacidad / exterior ——
+  {
+    source: "i-jce",
+    target: "c-opacidad-exterior",
+    type: "retiene",
+    note: "Prórrogas y documentos parciales · amparo TSA",
+    sourceRef: SRC.alMomentoTsa,
+  },
+  {
+    source: "c-opacidad-exterior",
+    target: "c-irregularidades-exterior-2020",
+    type: "recuerda",
+    note: "Antecedente 2020 · US$4.08 MM mal manejados (informe JCE)",
+    sourceRef: SRC.precisionExterior,
+  },
+  {
+    source: "i-jce",
+    target: "c-irregularidades-exterior-2020",
+    type: "investigo",
+    note: "Informe propio · desvinculaciones",
+    sourceRef: SRC.jceInformeExterior,
+  },
+
+  // —— Abstención y verificación ——
+  {
+    source: "c-elecciones",
+    target: "c-abstencion-2024",
+    type: "registro",
+    note: "Municipales 2024 · 53.33% de abstención",
+    sourceRef: SRC.nDigitalAbstencion,
+  },
+  {
+    source: "i-jce",
+    target: "c-abstencion-2024",
+    type: "reporta",
+    note: "Dato preliminar del órgano electoral",
+    sourceRef: SRC.noticiasSinAbstencion,
+  },
+  {
+    source: "i-jce",
+    target: "c-sistema-edet",
+    type: "opera",
+    note: "Escaneo, digitación, impresión y transmisión de actas",
+    sourceRef: SRC.jceEdet2024,
+  },
+  {
+    source: "c-sistema-edet",
+    target: "c-elecciones",
+    type: "verifica",
+    note: "Digitalización, escaneo y transmisión de actas firmadas",
+    sourceRef: SRC.cdnEdetRed,
   },
 ];
