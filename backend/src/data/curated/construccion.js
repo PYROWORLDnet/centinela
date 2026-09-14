@@ -137,6 +137,66 @@ const LOCAL_NODES = [
     source: SRC.estrella,
     themes: ["construccion"],
   },
+  {
+    id: "i-mivhed",
+    name: "MIVHED",
+    kind: "estado",
+    role: "Licencias de construcción · Ventanilla Única",
+    aliases: ["mivhed", "mived", "ministerio de vivienda"],
+    summary:
+      "Ministerio de la Vivienda, Hábitat y Edificaciones (Ley 160-21). Emite la Licencia de Construcción y concentra trámites vía Ventanilla Única (Decreto 806-21). Sin esa licencia, la obra es irregular — sujeta a paralización. El boom inmobiliario pasa por este sello.",
+    mechanism: "Quien firma la licencia decide qué se levanta en legalidad.",
+    weight: 94,
+    source: {
+      label: "MIVHED — Licencia de Construcción y permisos asociados",
+      url: "https://mivhed.gob.do/permisos-y-licencias-de-construccion/licencia-de-construccion-y-permisos-asociados/",
+    },
+    themes: ["construccion"],
+  },
+  {
+    id: "c-uso-suelo",
+    name: "Uso de suelo",
+    kind: "estado",
+    role: "Certificación municipal · primer candado",
+    summary:
+      "La Certificación de Uso de Suelo y Retiro de Edificaciones la emite el ayuntamiento. Es requisito previo a la licencia MIVHED (Ley 176-07 / Ley 368-22). Cambiar el uso de un solar —de residencial a torre— es poder urbano antes de poner un ladrillo.",
+    mechanism: "Sin uso de suelo favorable, no hay licencia que valga.",
+    weight: 88,
+    source: {
+      label: "MIVHED — requisitos: certificación de uso de suelo municipal",
+      url: "https://mivhed.gob.do/permisos-y-licencias-de-construccion/licencia-de-construccion-y-permisos-asociados/",
+    },
+    themes: ["construccion"],
+  },
+  {
+    id: "c-ley-160-21",
+    name: "Ley 160-21",
+    kind: "estado",
+    role: "Crea el MIVHED · concentra permisos",
+    summary:
+      "Crea el Ministerio de la Vivienda, Hábitat y Edificaciones y concentra funciones de tramitación de planos y licencias que antes estaban dispersas (incl. MOPC). El Decreto 806-21 crea la Ventanilla Única de Permisos de Construcción.",
+    weight: 76,
+    source: {
+      label: "MIVHED Transparencia — Ley 160-21 y Decreto 806-21",
+      url: "https://transparencia.mived.gob.do/",
+    },
+    themes: ["construccion"],
+  },
+  {
+    id: "c-permiso-obra",
+    name: "El permiso",
+    kind: "estado",
+    role: "Llave del boom inmobiliario",
+    summary:
+      "Licencia + uso de suelo + no objeciones (ayuntamiento, ambiente, bomberos, eléctricas…). El Inmobiliario resume el cuello de botella: sin licencia MIVHED, la torre —por bien financiada que esté— es irregular. El permiso no es trámite burocrático inocente: es el peaje entre capital y cielo.",
+    mechanism: "La materia prima construye; el permiso legaliza.",
+    weight: 90,
+    source: {
+      label: "El Inmobiliario — paso a paso licencia de construcción / MIVHED",
+      url: "https://inmobiliario.do/paso-a-paso-como-obtener-una-licencia-de-construccion-para-tu-proyecto-inmobiliario/",
+    },
+    themes: ["construccion"],
+  },
 ];
 
 const SHARED_IDS = [
@@ -309,5 +369,50 @@ export const CONSTRUCCION_EDGES = [
     type: "toca",
     note: "El Dinero: García y Corripio coinciden en ferretería y cemento",
     sourceRef: SRC.elDineroEmporios,
+  },
+  {
+    source: "c-cadena-construccion",
+    target: "c-permiso-obra",
+    type: "requiere",
+    note: "Sin permiso no hay obra legal",
+    sourceRef: {
+      label: "El Inmobiliario — licencia MIVHED",
+      url: "https://inmobiliario.do/paso-a-paso-como-obtener-una-licencia-de-construccion-para-tu-proyecto-inmobiliario/",
+    },
+  },
+  {
+    source: "i-mivhed",
+    target: "c-permiso-obra",
+    type: "emite",
+    sourceRef: {
+      label: "MIVHED — Licencia de Construcción",
+      url: "https://mivhed.gob.do/permisos-y-licencias-de-construccion/licencia-de-construccion-y-permisos-asociados/",
+    },
+  },
+  {
+    source: "c-uso-suelo",
+    target: "c-permiso-obra",
+    type: "condiciona",
+    note: "Certificación municipal previa",
+    sourceRef: {
+      label: "MIVHED — uso de suelo como requisito",
+      url: "https://mivhed.gob.do/permisos-y-licencias-de-construccion/licencia-de-construccion-y-permisos-asociados/",
+    },
+  },
+  {
+    source: "c-ley-160-21",
+    target: "i-mivhed",
+    type: "crea",
+    sourceRef: {
+      label: "Ley 160-21 / transparencia MIVHED",
+      url: "https://transparencia.mived.gob.do/",
+    },
+  },
+  {
+    source: "e-grupo-estrella",
+    target: "c-permiso-obra",
+    type: "necesita",
+    note: "Integrar material + obra aún pasa por el sello estatal",
+    sourceRef: SRC.estrella,
   },
 ];

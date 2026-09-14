@@ -21,6 +21,10 @@ export const THEMES = [
   { id: "adp", label: "ADP", ready: true, pills: [] },
   { id: "salud", label: "Salud", ready: true, pills: [] },
   { id: "agua", label: "Agua", ready: true, pills: [] },
+  { id: "azucar", label: "Azúcar", ready: true, pills: [] },
+  { id: "transporte", label: "Transporte", ready: true, pills: [] },
+  { id: "basura", label: "Basura", ready: true, pills: [] },
+  { id: "juego", label: "Juego", ready: true, pills: [] },
 ];
 
 export const THEME_COLORS = {

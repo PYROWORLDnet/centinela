@@ -19,6 +19,10 @@ const THEMES = [
   "ADP",
   "Salud",
   "Agua",
+  "Azúcar",
+  "Transporte",
+  "Basura",
+  "Juego",
 ];
 
 const OPTIONS = [
