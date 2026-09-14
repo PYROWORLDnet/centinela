@@ -19,6 +19,7 @@ export const THEMES = [
   { id: "ong", label: "ONU/ONG", ready: true, pills: [] },
   { id: "adp", label: "ADP", ready: true, pills: [] },
   { id: "salud", label: "Salud", ready: true, pills: [] },
+  { id: "agua", label: "Agua", ready: true, pills: [] },
 ];
 
 export const THEME_COLORS = {

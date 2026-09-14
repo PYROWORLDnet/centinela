@@ -23,6 +23,7 @@ const THEME_NAV = [
   { id: "ong", label: "ONU/ONG", path: "/ong" },
   { id: "adp", label: "ADP", path: "/adp" },
   { id: "salud", label: "Salud", path: "/salud" },
+  { id: "agua", label: "Agua", path: "/agua" },
 ];
 
 const THEME_TODO = THEME_NAV[0];

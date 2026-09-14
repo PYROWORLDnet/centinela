@@ -15,6 +15,7 @@ import { MINERIA_NODES, MINERIA_EDGES } from "./mineria.js";
 import { ONG_NODES, ONG_EDGES } from "./ong.js";
 import { ADP_NODES, ADP_EDGES } from "./adp.js";
 import { SALUD_NODES, SALUD_EDGES } from "./salud.js";
+import { AGUA_NODES, AGUA_EDGES } from "./agua.js";
 import { TODO_TOUR } from "./todoTour.js";
 import { getPensionesTour } from "./pensionesTour.js";
 import { PARTIDOS_TOUR } from "./partidosTour.js";
@@ -31,6 +32,7 @@ import { MINERIA_TOUR } from "./mineriaTour.js";
 import { ONG_TOUR } from "./ongTour.js";
 import { ADP_TOUR } from "./adpTour.js";
 import { SALUD_TOUR } from "./saludTour.js";
+import { AGUA_TOUR } from "./aguaTour.js";
 import { CUPULA_ID, CUPULA_NODE, queryHitsCupula } from "./cupula.js";
 
 const DATASETS = {
@@ -50,6 +52,7 @@ const DATASETS = {
   ong: { nodes: ONG_NODES, edges: ONG_EDGES },
   adp: { nodes: ADP_NODES, edges: ADP_EDGES },
   salud: { nodes: SALUD_NODES, edges: SALUD_EDGES },
+  agua: { nodes: AGUA_NODES, edges: AGUA_EDGES },
 };
 
 const TOURS = {
@@ -69,6 +72,7 @@ const TOURS = {
   ong: ONG_TOUR,
   adp: ADP_TOUR,
   salud: SALUD_TOUR,
+  agua: AGUA_TOUR,
 };
 
 function degreeMap(edges) {
