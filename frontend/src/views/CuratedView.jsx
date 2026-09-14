@@ -18,6 +18,7 @@ const THEME_NAV = [
   { id: "banca", label: "Banca", path: "/banca" },
   { id: "aduana", label: "Aduana", path: "/aduana" },
   { id: "construccion", label: "Construcción", path: "/construccion" },
+  { id: "migracion", label: "Migración", path: "/migracion" },
 ];
 
 const THEME_TODO = THEME_NAV[0];
