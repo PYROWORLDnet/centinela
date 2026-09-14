@@ -21,6 +21,7 @@ const THEME_NAV = [
   { id: "migracion", label: "Migración", path: "/migracion" },
   { id: "mineria", label: "Minería", path: "/mineria" },
   { id: "ong", label: "ONU/ONG", path: "/ong" },
+  { id: "adp", label: "ADP", path: "/adp" },
 ];
 
 const THEME_TODO = THEME_NAV[0];
