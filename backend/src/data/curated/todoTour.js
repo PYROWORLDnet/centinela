@@ -8,7 +8,7 @@ export const TODO_TOUR = {
   theme: "todo",
   title: "Cómo se sostiene el sistema",
   epilogue:
-    "Ya viste el plano. Pensiones, deuda, banca, partidos, gasolina, electricidad, aduana, medios, construcción, migración, minería y familias no son silos: son la misma red vista por puertas distintas. Entra a cada tema para el detalle con fuentes. El mapa crece; el mecanismo es el mismo.",
+    "Ya viste el plano. Pensiones, deuda, banca, partidos, gasolina, electricidad, aduana, medios, construcción, migración, minería, ONU/ONG y familias no son silos: son la misma red vista por puertas distintas. Entra a cada tema para el detalle con fuentes. El mapa crece; el mecanismo es el mismo.",
   entry: {
     hubId: "c-sistema",
     satelliteIds: [
@@ -25,6 +25,7 @@ export const TODO_TOUR = {
       "c-cadena-construccion",
       "i-dgm",
       "c-pueblo-viejo",
+      "c-mecanismo-ong",
     ],
     line: null,
   },
@@ -33,7 +34,7 @@ export const TODO_TOUR = {
       id: 1,
       line: "Esto no son pantallas sueltas.",
       detail:
-        "Es una sola red. Cada tema es una puerta. El Todo es el plano: cómo se conectan tu sueldo, el Estado, los bancos, los partidos, el combustible, la luz, la aduana, los medios, la construcción, la migración, la minería y las casas.",
+        "Es una sola red. Cada tema es una puerta. El Todo es el plano: cómo se conectan tu sueldo, el Estado, los bancos, los partidos, el combustible, la luz, la aduana, los medios, la construcción, la migración, la minería, la cooperación internacional y las casas.",
       nodeIds: ["c-sistema", "c-ocho-puertas"],
       panelId: "c-sistema",
     },
@@ -120,6 +121,21 @@ export const TODO_TOUR = {
     },
     {
       id: 11,
+      line: "Quién financia la presión internacional.",
+      detail:
+        "USAID pone cientos de millones; socios locales (FINJUS, IDDI) y agencias ONU (OIM, PNUD) ejecutan; Amnistía empuja con informes; el Estado responde con soberanía. En ONU/ONG está el circuito — y la cortina que a veces tapa otras cuentas.",
+      nodeIds: [
+        "c-mecanismo-ong",
+        "i-usaid",
+        "o-amnistia",
+        "c-backlash-soberania",
+        "c-cortina-soberania",
+      ],
+      panelId: "c-mecanismo-ong",
+      pathFrom: ["c-sistema"],
+    },
+    {
+      id: 12,
       line: "Los medios filtran lo que ves.",
       detail:
         "Corripio concentra pantallas. Vicini y otros pesan en el papel. A menudo omiten el mapa.",
@@ -128,7 +144,7 @@ export const TODO_TOUR = {
       pathFrom: ["c-sistema"],
     },
     {
-      id: 12,
+      id: 13,
       line: "Debajo de todo: las casas.",
       detail:
         "La Cúpula agrupa las casas: Vicini, Corripio, Rainieri, Fanjul, Rizek, González Cuadra, Brache, Estrella, Félix García, Popular, BHD, Banreservas, La Sirena, El Nacional. Familias es el mapa de apellidos; los otros temas son los sectores. La Cúpula no es un tema: es el nodo que aparece al buscar cualquiera de esos nombres.",
@@ -145,10 +161,10 @@ export const TODO_TOUR = {
       pathFrom: ["c-sistema"],
     },
     {
-      id: 13,
+      id: 14,
       line: "El puente no es solo Rizek.",
       detail:
-        "Rizek cruza AFP, combustible y —históricamente— la Junta Monetaria (Héctor José falleció en 2026). Estrella cruza cemento, obra y CDN. Linda cruza medios y AES. Brache cruza Rica y el consejo de Popular. Rainieri cruza turismo y la zona de CEPM.",
+        "Roryk cruza AFP, combustible y —históricamente— la Junta Monetaria (Héctor José falleció en 2026). Estrella cruza cemento, obra y CDN. Linda cruza medios y AES. Brache cruza Rica y el consejo de Popular. Rainieri cruza turismo y la zona de CEPM.",
       nodeIds: [
         "c-casas-puente",
         "c-la-cupula",
@@ -160,7 +176,7 @@ export const TODO_TOUR = {
       panelId: "c-la-cupula",
     },
     {
-      id: 14,
+      id: 15,
       line: "Y la frontera también es un negocio.",
       detail:
         "Migración: deportan 670,500 y el ciclo sigue. Camiones, retenes, agro y construcción. Misma lógica de juego cerrado — con la logística del Estado en el medio. En Migración está el mapa.",
@@ -169,10 +185,10 @@ export const TODO_TOUR = {
       pathFrom: ["c-sistema"],
     },
     {
-      id: 15,
+      id: 16,
       line: "Ahora elige una puerta.",
       detail:
-        "Escuchaste el plano. En el navbar haz scroll: Migración y Minería ya están. Dale play en cada tema. El Todo siempre será el resumen para entender el sistema de un tirón.",
+        "Escuchaste el plano. En el navbar haz scroll: Migración, Minería y ONU/ONG ya están. Dale play en cada tema. El Todo siempre será el resumen para entender el sistema de un tirón.",
       nodeIds: ["c-ocho-puertas", "c-sistema"],
       panelId: "c-ocho-puertas",
     },
