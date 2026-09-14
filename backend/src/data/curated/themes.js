@@ -18,6 +18,7 @@ export const THEMES = [
   { id: "mineria", label: "Minería", ready: true, pills: [] },
   { id: "ong", label: "ONU/ONG", ready: true, pills: [] },
   { id: "adp", label: "ADP", ready: true, pills: [] },
+  { id: "salud", label: "Salud", ready: true, pills: [] },
 ];
 
 export const THEME_COLORS = {
