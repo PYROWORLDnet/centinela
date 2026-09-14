@@ -7,6 +7,7 @@ import { useCuratedExplorer } from "../lib/useCurated";
 import { useJson } from "../lib/useGraph";
 
 const THEME_NAV = [
+  { id: "nucleo", label: "El Núcleo", path: "/nucleo" },
   { id: "todo", label: "Guía", path: "/todo" },
   { id: "pensiones", label: "Pensiones", path: "/pensiones" },
   { id: "partidos", label: "Partidos", path: "/partidos" },
@@ -26,8 +27,9 @@ const THEME_NAV = [
   { id: "agua", label: "Agua", path: "/agua" },
 ];
 
-const THEME_TODO = THEME_NAV[0];
-const THEME_SLIDE = THEME_NAV.slice(1);
+const THEME_NUCLEO = THEME_NAV[0];
+const THEME_TODO = THEME_NAV[1];
+const THEME_SLIDE = THEME_NAV.slice(2);
 
 export default function CuratedView({ themeId = "todo", navigate }) {
   const [searchOpen, setSearchOpen] = useState(false);
@@ -257,6 +259,14 @@ export default function CuratedView({ themeId = "todo", navigate }) {
 
         <nav className="chrome-themes" aria-label="Temas">
           <div className="chrome-themes__dock">
+            <button
+              type="button"
+              className={`chrome-themes__todo${themeId === THEME_NUCLEO.id ? " is-active" : ""}`}
+              onClick={() => goTheme(THEME_NUCLEO)}
+            >
+              <span className="pill-full">{THEME_NUCLEO.label}</span>
+              <span className="pill-short">Núcleo</span>
+            </button>
             <button
               type="button"
               className={`chrome-themes__todo${themeId === THEME_TODO.id ? " is-active" : ""}`}

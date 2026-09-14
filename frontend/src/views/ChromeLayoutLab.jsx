@@ -1,6 +1,7 @@
 import { useState } from "react";
 
 const THEMES = [
+  "El Núcleo",
   "Guía",
   "Pensiones",
   "Partidos",

@@ -16,6 +16,7 @@ import { ONG_NODES, ONG_EDGES } from "./ong.js";
 import { ADP_NODES, ADP_EDGES } from "./adp.js";
 import { SALUD_NODES, SALUD_EDGES } from "./salud.js";
 import { AGUA_NODES, AGUA_EDGES } from "./agua.js";
+import { NUCLEO_NODES, NUCLEO_EDGES } from "./nucleo.js";
 import { TODO_TOUR } from "./todoTour.js";
 import { getPensionesTour } from "./pensionesTour.js";
 import { PARTIDOS_TOUR } from "./partidosTour.js";
@@ -33,9 +34,11 @@ import { ONG_TOUR } from "./ongTour.js";
 import { ADP_TOUR } from "./adpTour.js";
 import { SALUD_TOUR } from "./saludTour.js";
 import { AGUA_TOUR } from "./aguaTour.js";
+import { NUCLEO_TOUR } from "./nucleoTour.js";
 import { CUPULA_ID, CUPULA_NODE, queryHitsCupula } from "./cupula.js";
 
 const DATASETS = {
+  nucleo: { nodes: NUCLEO_NODES, edges: NUCLEO_EDGES },
   todo: { nodes: TODO_NODES, edges: TODO_EDGES },
   pensiones: { nodes: PENSIONES_NODES, edges: PENSIONES_EDGES },
   partidos: { nodes: PARTIDOS_NODES, edges: PARTIDOS_EDGES },
@@ -56,6 +59,7 @@ const DATASETS = {
 };
 
 const TOURS = {
+  nucleo: NUCLEO_TOUR,
   todo: TODO_TOUR,
   pensiones: getPensionesTour(),
   partidos: PARTIDOS_TOUR,
