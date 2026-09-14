@@ -40,6 +40,9 @@ const SHARED_IDS = [
   "m-el-nacional",
   "m-el-caribe",
   "m-cdn",
+  "e-distribuidora-corripio",
+  "e-pinturas-tropical",
+  "e-isla-petroleo",
 ];
 
 function dedupe(nodes) {

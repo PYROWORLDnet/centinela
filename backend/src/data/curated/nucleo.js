@@ -67,6 +67,7 @@ const SHARED_IDS = [
   "e-grupo-vicini",
   "e-grupo-corripio",
   "e-grupo-estrella",
+  "e-grupo-bonetti",
   "i-hacienda",
   "m-listin",
 ];
@@ -355,6 +356,7 @@ export const NUCLEO_EDGES = [
   spoke("e-grupo-vicini"),
   spoke("e-grupo-rizek"),
   spoke("e-grupo-estrella"),
+  spoke("e-grupo-bonetti"),
   spoke("c-la-cupula", "La Cúpula es la cara del Núcleo. No se toca."),
 
   {

@@ -87,6 +87,46 @@ export const SRC_SHARED = {
     label: "Grupo SID / Bonetti",
     url: "https://www.gruposid.com.do/",
   },
+  sidAbout: {
+    label: "Grupo SID — About us (MercaSID, Induveca, Induspalma, Ligia Bonetti)",
+    url: "https://gruposid.com.do/en/about-us/",
+  },
+  sidTrayectoria: {
+    label: "Grupo SID — Nuestra trayectoria (Ligia Bonetti presidenta ejecutiva)",
+    url: "https://gruposid.com.do/nuestra-trayectoria/",
+  },
+  mercasid: {
+    label: "Grupo SID — MercaSID / La Manicera",
+    url: "https://gruposid.com.do/empresas/mercasid/",
+  },
+  caei: {
+    label: "CAEI — About us (Putney / INICIA · ingenio Cristóbal Colón)",
+    url: "https://caei.com/en/about-us/",
+  },
+  caeiDiarioLibre: {
+    label: "Diario Libre — Colón es propiedad de Vicini / CAEI",
+    url: "https://www.diariolibre.com/actualidad/coln-es-propiedad-de-vicini-ECDL23372",
+  },
+  parval: {
+    label: "PARVAL — Nosotros (Grupo Rizek)",
+    url: "https://parval.com.do/nosotros/",
+  },
+  distribuidoraCorripio: {
+    label: "Listín Diario — Distribuidora Corripio (Grupo Corripio, +50 años)",
+    url: "https://listindiario.com/las-sociales/20260608/distribuidora-corripio-presenta-delovita-nueva-marca-categoria-snacks-dulces_909036.html",
+  },
+  pinturasTropical: {
+    label: "Listín Diario — Pinturas Tropical (Corripio)",
+    url: "https://listindiario.com/las-sociales/2022/10/19/744061/pinturas-tropical-estrena-campana-publicitaria.html",
+  },
+  islaPetroleo: {
+    label: "Listín Diario — Grupo Corripio entra como accionista de Isla Dominicana de Petróleo (2017)",
+    url: "https://listindiario.com/economia/2017/06/16/470332/isla-se-convierte-en-representante-de-shell.html",
+  },
+  popularAsamblea2026: {
+    label: "Grupo Popular — Asamblea 2026 (Qik / Popular Bank Panamá)",
+    url: "https://grupopopular.com/Noticias/Pages/Grupo-Popular-celebra-Asamblea-General-de-Accionistas-2026.aspx",
+  },
   hacienda: {
     label: "Ministerio de Hacienda",
     url: "https://www.hacienda.gob.do/",
@@ -187,11 +227,11 @@ export const FAMILY_NODES = [
     id: "e-grupo-vicini",
     name: "Grupo Vicini / INICIA",
     kind: "familia",
-    role: "Capital histórico · medios y activos",
-    aliases: ["vicini", "inicia"],
+    role: "Capital histórico · azúcar · medios y activos",
+    aliases: ["vicini", "inicia", "grupo vicini"],
     summary:
-      "Familia Vicini: más de un siglo en RD. En 2016 la firma VICINI pasó a llamarse INICIA (gestión de activos). Juan Bautista Vicini Lluberes fue uno de los accionistas que asumieron Listín Diario en 2010.",
-    mechanism: "Capital viejo + medios + influencia. No es una empresa suelta: es una casa.",
+      "Familia Vicini: más de un siglo en RD. En 2016 VICINI pasó a llamarse INICIA. Opera azúcar vía CAEI (ingenio Cristóbal Colón / Putney afiliado a INICIA). Juan Bautista Vicini Lluberes fue accionista de Listín Diario en 2010.",
+    mechanism: "Capital viejo + agroindustria + medios. No es una empresa suelta: es una casa.",
     weight: 96,
     source: SRC_SHARED.inicia,
     themes: ["familias", "medios", "deuda", "banca"],
@@ -200,10 +240,11 @@ export const FAMILY_NODES = [
     id: "e-grupo-rizek",
     name: "Grupo Rizek",
     kind: "familia",
-    role: "Pensiones · combustible · cacao · asiento histórico en la Junta",
+    role: "Pensiones · combustible · cacao · valores · Junta histórica",
+    aliases: ["rizek", "grupo rizek", "roryk"],
     summary:
-      "Controla AFP Crecer; facilitó Refidomsa vía PATSA (2021); exporta cacao (Rizek Cacao). Héctor José Rizek Llabaly fue miembro de la Junta Monetaria desde 1985 hasta su muerte (28 mar 2026): miembro histórico, no actual. También accionista histórico de Listín Diario (2010).",
-    mechanism: "Misma familia, varias venas: tu pensión, el combustible, el cacao y —durante cuatro décadas— la mesa monetaria.",
+      "Controla AFP Crecer; facilitó Refidomsa vía PATSA (2021); exporta cacao (Roryk Cacao); opera PARVAL (puesto de bolsa). Héctor José Rizek Llabaly integró la Junta Monetaria (1985–2026): histórico, no actual. Accionista histórico de Listín Diario (2010).",
+    mechanism: "Misma familia, varias venas: pensión, combustible, cacao, mercado de valores y —durante cuatro décadas— la mesa monetaria.",
     weight: 98,
     source: SRC_SHARED.rizekFallece,
     themes: ["familias", "pensiones", "gasolina", "deuda", "medios", "banca", "aduana"],
@@ -212,23 +253,25 @@ export const FAMILY_NODES = [
     id: "e-grupo-corripio",
     name: "Grupo Corripio",
     kind: "familia",
-    role: "Medios · distribución · industria",
-    aliases: ["corripio", "pepín corripio", "pepin corripio"],
+    role: "Medios · distribución · industria · energía",
+    aliases: ["corripio", "pepín corripio", "pepin corripio", "grupo corripio"],
     summary:
-      "Conglomerado con fuerte brazo mediático: Hoy, Telesistema, Teleantillas, El Día, El Nacional, Radio Listín y participación en Listín Diario, además de distribución e industria.",
-    mechanism: "Quien controla pantallas y titulares filtra lo que el país discute.",
+      "Brazo mediático: Hoy, Telesistema, Teleantillas, El Día, El Nacional y participación en Listín Diario. También Distribuidora Corripio, Pinturas Tropical y participación accionaria en Isla Dominicana de Petróleo (Shell, 2017).",
+    mechanism: "Pantallas, anaquel y combustible: la misma casa toca lo que ves, lo que compras y lo que echas al tanque.",
     weight: 94,
     source: SRC_SHARED.corripioWiki,
-    themes: ["familias", "medios", "aduana"],
+    themes: ["familias", "medios", "aduana", "gasolina"],
   },
   {
     id: "e-grupo-bonetti",
     name: "Grupo Bonetti / SID",
     kind: "familia",
     role: "Alimentos · industria (SID)",
+    aliases: ["bonetti", "grupo sid", "sid", "grupo bonetti", "la manicera"],
     summary:
-      "Grupo SID (familia Bonetti): industria de alimentos y marcas de consumo masivo (sitio corporativo). Uno de los conglomerados industriales históricos del país.",
-    weight: 88,
+      "Grupo SID (familia Bonetti): MercaSID (heredera de “La Manicera”), Induveca, Induspalma y otras filiales de consumo masivo. Ligia Bonetti es presidenta ejecutiva (sitio corporativo). Casa industrial histórica del país.",
+    mechanism: "Del aceite Manicero al anaquel: una casa, varias marcas de lo que comes.",
+    weight: 90,
     source: SRC_SHARED.sid,
     themes: ["familias", "aduana"],
   },
@@ -248,9 +291,11 @@ export const FAMILY_NODES = [
     id: "e-grupo-popular",
     name: "Grupo Popular",
     kind: "familia",
-    role: "Banco Popular · AFP Popular · seguros",
+    role: "Banco Popular · AFP Popular · banca digital · Panamá",
+    aliases: ["popular", "grullón", "grullon", "grupo popular", "familia grullón"],
     summary:
-      "Conglomerado financiero: Banco Popular Dominicano y AFP Popular forman parte del mismo ecosistema (sitios corporativos).",
+      "Casa Grullón / Grupo Popular: Banco Popular Dominicano, AFP Popular, Qik Banco Digital y Popular Bank (Panamá). Conglomerado financiero documentado en sitios e informes corporativos.",
+    mechanism: "Tu depósito, tu pensión y el neobanco: mismo ecosistema.",
     weight: 95,
     source: SRC_SHARED.popular,
     themes: ["familias", "pensiones", "deuda", "banca", "medios"],
@@ -304,6 +349,18 @@ export const PERSON_NODES = [
     weight: 70,
     source: SRC_SHARED.rizekFallece,
     themes: ["familias", "banca"],
+  },
+  {
+    id: "p-ligia-bonetti",
+    name: "Ligia Bonetti",
+    kind: "persona",
+    role: "Presidenta ejecutiva · Grupo SID",
+    aliases: ["ligia bonetti", "ligia bonetti du-breil"],
+    summary:
+      "Presidenta ejecutiva de Grupo SID y sus empresas (sitio corporativo / trayectoria). Liderazgo visible de la casa Bonetti en alimentos e industria.",
+    weight: 72,
+    source: SRC_SHARED.sidTrayectoria,
+    themes: ["familias"],
   },
 ];
 
@@ -550,6 +607,131 @@ export const STATE_NODES = [
 ];
 
 /** Edges estructurales entre familias y sus venas (reutilizables). */
+
+/** Empresas / filiales documentadas de las casas (IDs estables). */
+export const COMPANY_NODES = [
+  {
+    id: "e-mercasid",
+    name: "MercaSID",
+    kind: "empresa",
+    role: "Alimentos · distribución · Grupo SID",
+    aliases: ["mercasid", "la manicera", "manicera"],
+    summary:
+      "Filial de Grupo SID. Continuidad de la Sociedad Industrial Dominicana (“La Manicera”): aceites, grasas, cereales y distribución de marcas de consumo masivo.",
+    weight: 80,
+    source: SRC_SHARED.mercasid,
+    themes: ["familias", "aduana"],
+  },
+  {
+    id: "e-induveca",
+    name: "Induveca",
+    kind: "empresa",
+    role: "Cárnicos · lácteos · jugos · Grupo SID",
+    aliases: ["induveca"],
+    summary:
+      "Empresa del Grupo SID: productos cárnicos procesados, lácteos y jugos (sitio corporativo SID).",
+    weight: 76,
+    source: SRC_SHARED.sidAbout,
+    themes: ["familias", "aduana"],
+  },
+  {
+    id: "e-induspalma",
+    name: "Induspalma",
+    kind: "empresa",
+    role: "Palma aceitera · Grupo SID",
+    aliases: ["induspalma"],
+    summary:
+      "Proyecto agroindustrial de aceite de palma del Grupo SID en el Caribe (sitio corporativo).",
+    weight: 70,
+    source: SRC_SHARED.sidAbout,
+    themes: ["familias"],
+  },
+  {
+    id: "e-caei",
+    name: "CAEI / Ingenio Cristóbal Colón",
+    kind: "empresa",
+    role: "Azúcar · Vicini / INICIA",
+    aliases: ["caei", "cristóbal colón", "cristobal colon", "ingenio colón"],
+    summary:
+      "Consorcio Azucarero de Empresas Industriales: opera el ingenio Cristóbal Colón. Activo administrado por Putney Capital Management, gestor afiliado a INICIA (familia Vicini). Diario Libre documentó la propiedad Vicini/CAEI.",
+    weight: 84,
+    source: SRC_SHARED.caei,
+    themes: ["familias"],
+  },
+  {
+    id: "e-parval",
+    name: "PARVAL",
+    kind: "empresa",
+    role: "Puesto de bolsa · Grupo Rizek",
+    aliases: ["parval", "parallax valores"],
+    summary:
+      "Parallax Valores (PARVAL): puesto de bolsa del Grupo Rizek (sitio corporativo). Brazo de mercado de valores de la casa.",
+    weight: 78,
+    source: SRC_SHARED.parval,
+    themes: ["familias", "banca", "deuda"],
+  },
+  {
+    id: "e-distribuidora-corripio",
+    name: "Distribuidora Corripio",
+    kind: "empresa",
+    role: "Distribución · importación · Grupo Corripio",
+    aliases: ["distribuidora corripio"],
+    summary:
+      "Empresa del Grupo Corripio dedicada a comercialización, fabricación, importación y exportación de marcas (sitio corporativo).",
+    weight: 80,
+    source: SRC_SHARED.distribuidoraCorripio,
+    themes: ["familias", "aduana"],
+  },
+  {
+    id: "e-pinturas-tropical",
+    name: "Pinturas Tropical",
+    kind: "empresa",
+    role: "Pinturas · Grupo Corripio",
+    aliases: ["pinturas tropical", "tropical"],
+    summary:
+      "Marca industrial de pinturas del ecosistema Corripio. Listín Diario documenta a José Alfredo Corripio como vicepresidente de Pinturas Tropical.",
+    weight: 68,
+    source: SRC_SHARED.pinturasTropical,
+    themes: ["familias"],
+  },
+  {
+    id: "e-isla-petroleo",
+    name: "Isla Dominicana de Petróleo",
+    kind: "empresa",
+    role: "Combustibles · Shell · Corripio accionista",
+    aliases: ["isla", "isla dominicana de petróleo", "isla petroleo"],
+    summary:
+      "Distribuidora de combustibles (marca Shell). En 2017 Listín Diario reportó la entrada del Grupo Corripio como accionista junto a la familia Moller.",
+    weight: 82,
+    source: SRC_SHARED.islaPetroleo,
+    themes: ["familias", "gasolina"],
+  },
+  {
+    id: "e-qik",
+    name: "Qik Banco Digital",
+    kind: "banco",
+    role: "Neobanco · Grupo Popular",
+    aliases: ["qik", "qik banco", "qik banco digital"],
+    summary:
+      "Filial de banca digital del Grupo Popular. La asamblea corporativa de 2026 reporta a Qik como neobanco del ecosistema Popular.",
+    weight: 78,
+    source: SRC_SHARED.popularAsamblea2026,
+    themes: ["familias", "banca"],
+  },
+  {
+    id: "e-popular-bank-panama",
+    name: "Popular Bank (Panamá)",
+    kind: "banco",
+    role: "Filial internacional · Grupo Popular",
+    aliases: ["popular bank", "popular bank panamá", "popular bank panama"],
+    summary:
+      "Filial bancaria internacional del Grupo Popular en Panamá. Reportada en la asamblea corporativa de 2026 (activos y utilidades).",
+    weight: 74,
+    source: SRC_SHARED.popularAsamblea2026,
+    themes: ["familias", "banca"],
+  },
+];
+
 export const SHARED_EDGES = [
   {
     source: "e-grupo-rizek",
@@ -684,6 +866,89 @@ export const SHARED_EDGES = [
     type: "supervisa",
     sourceRef: SRC_SHARED.sb,
   },
+
+  // --- Expansión casas: SID / Bonetti ---
+  {
+    source: "e-grupo-bonetti",
+    target: "e-mercasid",
+    type: "controla",
+    note: "Alimentos y distribución · “La Manicera”",
+    sourceRef: SRC_SHARED.mercasid,
+  },
+  {
+    source: "e-grupo-bonetti",
+    target: "e-induveca",
+    type: "controla",
+    note: "Cárnicos, lácteos y jugos",
+    sourceRef: SRC_SHARED.sidAbout,
+  },
+  {
+    source: "e-grupo-bonetti",
+    target: "e-induspalma",
+    type: "controla",
+    note: "Palma aceitera",
+    sourceRef: SRC_SHARED.sidAbout,
+  },
+  {
+    source: "e-grupo-bonetti",
+    target: "p-ligia-bonetti",
+    type: "liderado_por",
+    note: "Presidenta ejecutiva",
+    sourceRef: SRC_SHARED.sidTrayectoria,
+  },
+  // --- Vicini / CAEI ---
+  {
+    source: "e-grupo-vicini",
+    target: "e-caei",
+    type: "controla",
+    note: "Azúcar · ingenio Cristóbal Colón",
+    sourceRef: SRC_SHARED.caei,
+  },
+  // --- Rizek / PARVAL ---
+  {
+    source: "e-grupo-rizek",
+    target: "e-parval",
+    type: "controla",
+    note: "Puesto de bolsa",
+    sourceRef: SRC_SHARED.parval,
+  },
+  // --- Corripio industria / energía ---
+  {
+    source: "e-grupo-corripio",
+    target: "e-distribuidora-corripio",
+    type: "controla",
+    note: "Distribución e importación",
+    sourceRef: SRC_SHARED.distribuidoraCorripio,
+  },
+  {
+    source: "e-grupo-corripio",
+    target: "e-pinturas-tropical",
+    type: "controla",
+    note: "Pinturas",
+    sourceRef: SRC_SHARED.pinturasTropical,
+  },
+  {
+    source: "e-grupo-corripio",
+    target: "e-isla-petroleo",
+    type: "participa_en",
+    note: "Accionista · Shell (2017)",
+    sourceRef: SRC_SHARED.islaPetroleo,
+  },
+  // --- Popular / Grullón ---
+  {
+    source: "e-grupo-popular",
+    target: "e-qik",
+    type: "controla",
+    note: "Neobanco",
+    sourceRef: SRC_SHARED.popularAsamblea2026,
+  },
+  {
+    source: "e-grupo-popular",
+    target: "e-popular-bank-panama",
+    type: "controla",
+    note: "Filial Panamá",
+    sourceRef: SRC_SHARED.popularAsamblea2026,
+  },
   ...CUPULA_EDGES,
 ];
 
@@ -694,6 +959,7 @@ export function pickNodes(ids) {
     ...MEDIA_NODES,
     ...BANK_AFP_NODES,
     ...STATE_NODES,
+    ...COMPANY_NODES,
     ...cupulaNodes(),
   ];
   const set = new Set(ids);
