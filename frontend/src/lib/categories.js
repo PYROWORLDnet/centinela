@@ -1,20 +1,17 @@
-export const CATEGORIES = [
-  { id: "all", label: "Todos", short: "Todos" },
-  { id: "caso", label: "Casos", short: "Casos" },
-  { id: "persona", label: "Personas", short: "Pers." },
-  { id: "empresa", label: "Empresas", short: "Emp." },
-  { id: "institucion", label: "Instituciones", short: "Inst." },
-  { id: "contrato", label: "Contratos", short: "Contr." },
-  { id: "prestamo", label: "Préstamos", short: "Prést." },
-];
-
+/** Colores de respaldo para el panel (el tema curado suele pasar su propia paleta). */
 export const CATEGORY_COLOR = {
-  caso: "#f0c14a",
-  persona: "#5ec8e8",
-  empresa: "#3d9b8f",
-  institucion: "#7b8cff",
-  contrato: "#e07a5f",
-  prestamo: "#c4a882",
+  afp: "#f0c14a",
+  banco: "#3d7cff",
+  financiador: "#3d7cff",
+  familia: "#e8364f",
+  partido: "#3ecf8e",
+  estado: "#9aa3b2",
+  medio: "#a78bfa",
+  persona: "#f5f7fa",
+  fondo: "#e8d48b",
+  empresa: "#5ecfc4",
+  empleador: "#e8a87c",
+  trabajador: "#7ec8e3",
 };
 
 export function formatMoney(n, currency = "DOP") {

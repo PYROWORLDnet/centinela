@@ -35,10 +35,10 @@ export function usePathname() {
   return { path, navigate };
 }
 
-/** Parse theme from path: / → todo, /todo → todo, /archivo|/masivo → null (archive). */
+/** Parse theme from path: / → todo, /todo → todo. */
 export function themeFromPath(path) {
   const clean = (path || "/").replace(/\/+$/, "") || "/";
-  if (clean === "/archivo" || clean === "/masivo") return null;
+  if (clean === "/archivo" || clean === "/masivo") return "todo";
   if (clean === "/layouts") return "todo"; // lab no es tema; App lo intercepta
   if (clean === "/todos") return "todo";
   if (clean === "/" || clean === "") return "todo";

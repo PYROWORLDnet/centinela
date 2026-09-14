@@ -1,6 +1,5 @@
 /**
  * Temas curados de Centinela.
- * El modo masivo queda archivado en /archivo y /masivo.
  */
 export const THEMES = [
   { id: "nucleo", label: "El Núcleo", ready: true, pills: [] },

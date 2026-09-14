@@ -1,13 +1,13 @@
 # Centinela
 
-Plataforma de transparencia gubernamental RD — grafo navegable de personas, empresas, contratos e instituciones.
+Mapa curado de transparencia en República Dominicana — temas, nodos y recorridos con fuentes.
 
 Ver [PRODUCT.md](./PRODUCT.md) para la especificación completa.
 
-## Stack (fase demo)
+## Stack
 
-- **backend** — Express + grafo demo en memoria
-- **frontend** — Vite + React + `react-force-graph-2d` (vista galaxia estilo Obsidian)
+- **backend** — Express + datos curados (`backend/src/data/curated`)
+- **frontend** — Vite + React + `react-force-graph-2d`
 
 ## Desarrollo
 
@@ -21,4 +21,4 @@ cd frontend && npm install && npm run dev
 
 Abre http://localhost:5173
 
-Prueba buscar: **Horizonte**, **Ramírez**, **Constructora Norte**.
+Empieza en **Guía** (`/todo`) o **El Núcleo** (`/nucleo`). Busca p. ej. Rizek, Cúpula, SeNaSa.
