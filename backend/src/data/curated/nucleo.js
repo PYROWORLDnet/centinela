@@ -5,8 +5,8 @@
  * Conclusión: ningún presidente puede tocar el Núcleo mientras el Núcleo
  * siga en venta. Votar por un partido nuevo no cambia el sistema.
  *
- * Nodos institucionales/empresariales con fuente.
- * Comparativos (Singapur, China, Tailandia, Bukele) = ilustración del tour.
+ * Comparativos externos (Singapur, China, Tailandia, Bukele) sirven de contraste
+ * en el recorrido — no como modelo a copiar.
  */
 
 import { CUPULA_NODE } from "./cupula.js";
@@ -231,11 +231,11 @@ const LOCAL_NODES = [
   },
   {
     id: "c-ejemplo-singapur",
-    name: "Singapur (ilustración)",
+    name: "Singapur",
     kind: "estado",
-    role: "Comparación · núcleo no se vende",
+    role: "Contraste · el centro no se vende",
     summary:
-      "Ilustración del recorrido: apertura económica con un núcleo estatal-político que no se negocia como mercancía electoral. Contraste — no receta: el capital no compra la soberanía del centro.",
+      "Abrió la economía, pero el centro del poder no se negocia como mercancía electoral. Aquí el contraste es claro: mucho capital extranjero no significa que el núcleo del Estado esté en venta.",
     mechanism: "Mucho capital extranjero ≠ núcleo en venta.",
     weight: 70,
     source: SRC.singapurMom,
@@ -243,11 +243,11 @@ const LOCAL_NODES = [
   },
   {
     id: "c-ejemplo-china",
-    name: "China / Xu Jiayin (ilustración)",
+    name: "China · Xu Jiayin",
     kind: "estado",
-    role: "Comparación · dinero ≠ inmunidad soberana",
+    role: "Contraste · el dinero no compra inmunidad",
     summary:
-      "Ilustración: cobertura del caso Xu Jiayin (Evergrande) como contraste — el dinero extremo no compra inmunidad frente al núcleo del Estado. No equivale sistemas; marca la idea: soberanía ≠ cheque.",
+      "El caso de Xu Jiayin (Evergrande): fortuna extrema y aun así enfrentó al Estado. No es para igualar países — es para marcar la idea: si el cheque comprara el núcleo, el más rico nunca caería.",
     mechanism: "Si el dinero comprara el núcleo, no habría castigo al más rico.",
     weight: 68,
     source: SRC.xuReuters,
@@ -255,11 +255,11 @@ const LOCAL_NODES = [
   },
   {
     id: "c-ejemplo-tailandia",
-    name: "Tailandia (ilustración)",
+    name: "Tailandia",
     kind: "estado",
-    role: "Comparación · filtros al capital",
+    role: "Contraste · filtros al capital",
     summary:
-      "Ilustración: restricciones a la propiedad extranjera de tierra. Contraste con el relato de que en RD el dinero abre casi todas las puertas.",
+      "Hay restricciones históricas a que el capital extranjero compre tierra a voluntad. Contrasta con el relato de que en RD el dinero abre casi todas las puertas.",
     mechanism: "Primero demuestras valor al sistema; no al revés.",
     weight: 66,
     source: SRC.tailandiaLand,
@@ -267,11 +267,11 @@ const LOCAL_NODES = [
   },
   {
     id: "p-bukele",
-    name: "Bukele (ilustración)",
+    name: "Nayib Bukele",
     kind: "persona",
-    role: "Comparación · llegar sin deber al establishment",
+    role: "Contraste · llegar sin deberle al circuito",
     summary:
-      "Ilustración política (no endoso): condiciones de ruptura — pueblo sin miedo, establishment desacreditado, liderazgo que no llega debiendo al mismo circuito. No es receta; es contraste con la alternancia que no toca el Núcleo.",
+      "El contraste no es “copiar a Bukele”. Es la condición: un pueblo que ya no tiene miedo, un establishment desacreditado, y alguien que no llega debiendo el poder al mismo circuito. Sin eso, “un nuevo” es solo otra cara.",
     mechanism: "No basta ser “nuevo”. Hay que no deberle al Núcleo.",
     weight: 72,
     source: SRC.bukeleAp,
@@ -441,28 +441,28 @@ export const NUCLEO_EDGES = [
     source: "c-nucleo",
     target: "c-ejemplo-singapur",
     type: "contrasta",
-    note: "Ilustración: núcleo no se vende",
+    note: "Contraste: el centro no se vende",
     sourceRef: SRC.singapurMom,
   },
   {
     source: "c-nucleo",
     target: "c-ejemplo-china",
     type: "contrasta",
-    note: "Ilustración: dinero ≠ soberanía",
+    note: "Contraste: dinero ≠ soberanía",
     sourceRef: SRC.xuReuters,
   },
   {
     source: "c-nucleo",
     target: "c-ejemplo-tailandia",
     type: "contrasta",
-    note: "Ilustración: filtros al capital",
+    note: "Contraste: filtros al capital",
     sourceRef: SRC.tailandiaLand,
   },
   {
     source: "c-voto-no-basta",
     target: "p-bukele",
     type: "contrasta",
-    note: "Ilustración: llegar sin deber",
+    note: "Contraste: llegar sin deber",
     sourceRef: SRC.bukeleAp,
   },
   {

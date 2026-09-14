@@ -74,9 +74,9 @@ export const NUCLEO_TOUR = {
     },
     {
       id: 5,
-      line: "Ejemplos del mundo: el núcleo no se vende.",
+      line: "Otros países: el centro no se vende.",
       detail:
-        "Ilustraciones — no recetas. Singapur: apertura con núcleo estatal que no se negocia como mercancía. China: el dinero extremo (Xu Jiayin / Evergrande) no compra inmunidad soberana. Tailandia: filtros históricos a la tierra extranjera. ¿RD? En este mapa, el dinero abre casi todas las puertas.",
+        "Singapur abrió la economía sin poner el núcleo del Estado en remate. En el caso Xu Jiayin (Evergrande), la fortuna extrema no compró inmunidad. Tailandia filtra quién compra tierra. ¿RD? En este mapa, el dinero abre casi todas las puertas.",
       nodeIds: [
         "c-nucleo",
         "c-ejemplo-singapur",
@@ -87,9 +87,9 @@ export const NUCLEO_TOUR = {
     },
     {
       id: 6,
-      line: "El ejemplo de Bukele.",
+      line: "El contraste de Bukele.",
       detail:
-        "Ilustración — no endoso. No es que sea “nuevo”. Es la narrativa de llegar cuando el pueblo ya no tiene miedo, el establishment está desacreditado, y él no le debe el poder al mismo circuito. Sin esas condiciones, “un nuevo” es solo otra cara.",
+        "No es que sea “nuevo”. Es llegar cuando el pueblo ya no tiene miedo, el establishment está desacreditado, y él no le debe el poder al mismo circuito. Sin esas condiciones, “un nuevo” es solo otra cara.",
       nodeIds: ["p-bukele", "c-voto-no-basta", "c-pueblo", "c-nucleo"],
       panelId: "p-bukele",
     },
