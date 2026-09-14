@@ -11,6 +11,7 @@ import { BANCA_NODES, BANCA_EDGES } from "./banca.js";
 import { ADUANA_NODES, ADUANA_EDGES } from "./aduana.js";
 import { CONSTRUCCION_NODES, CONSTRUCCION_EDGES } from "./construccion.js";
 import { MIGRACION_NODES, MIGRACION_EDGES } from "./migracion.js";
+import { MINERIA_NODES, MINERIA_EDGES } from "./mineria.js";
 import { TODO_TOUR } from "./todoTour.js";
 import { getPensionesTour } from "./pensionesTour.js";
 import { PARTIDOS_TOUR } from "./partidosTour.js";
@@ -23,6 +24,7 @@ import { BANCA_TOUR } from "./bancaTour.js";
 import { ADUANA_TOUR } from "./aduanaTour.js";
 import { CONSTRUCCION_TOUR } from "./construccionTour.js";
 import { MIGRACION_TOUR } from "./migracionTour.js";
+import { MINERIA_TOUR } from "./mineriaTour.js";
 import { CUPULA_ID, CUPULA_NODE, queryHitsCupula } from "./cupula.js";
 
 const DATASETS = {
@@ -38,6 +40,7 @@ const DATASETS = {
   aduana: { nodes: ADUANA_NODES, edges: ADUANA_EDGES },
   construccion: { nodes: CONSTRUCCION_NODES, edges: CONSTRUCCION_EDGES },
   migracion: { nodes: MIGRACION_NODES, edges: MIGRACION_EDGES },
+  mineria: { nodes: MINERIA_NODES, edges: MINERIA_EDGES },
 };
 
 const TOURS = {
@@ -53,6 +56,7 @@ const TOURS = {
   aduana: ADUANA_TOUR,
   construccion: CONSTRUCCION_TOUR,
   migracion: MIGRACION_TOUR,
+  mineria: MINERIA_TOUR,
 };
 
 function degreeMap(edges) {

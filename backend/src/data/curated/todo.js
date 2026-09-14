@@ -1,6 +1,6 @@
 /**
  * Modo curado — tema Todo.
- * Hub de entrada al mapa completo: una sola red, diez puertas (y las que vengan).
+ * Hub de entrada al mapa completo: una sola red, puertas (y las que vengan).
  */
 
 export const TODO_NODES = [
@@ -10,7 +10,7 @@ export const TODO_NODES = [
     kind: "estado",
     role: "Una sola red",
     summary:
-      "Centinela no es mapas sueltos. Es una red: tu sueldo, la deuda, los bancos, los partidos, la gasolina, la luz, la aduana, los medios, la construcción, la migración y las casas que los cruzan. Cada tema es una puerta. El Todo es el plano.",
+      "Centinela no es mapas sueltos. Es una red: tu sueldo, la deuda, los bancos, los partidos, la gasolina, la luz, la aduana, los medios, la construcción, la migración, la minería y las casas que los cruzan. Cada tema es una puerta. El Todo es el plano.",
     mechanism:
       "Empiezas aquí para entender el mecanismo completo. Luego entras a cada tema para ver el detalle con fuentes.",
     weight: 100,
@@ -22,7 +22,7 @@ export const TODO_NODES = [
     kind: "estado",
     role: "Roadmap del mapa",
     summary:
-      "Pensiones · Partidos · Gasolina · Electricidad · Deuda · Familias · Medios · Banca · Aduana · Construcción · Migración. El navbar hace scroll; el Todo se queda como resumen.",
+      "Pensiones · Partidos · Gasolina · Electricidad · Deuda · Familias · Medios · Banca · Aduana · Construcción · Migración · Minería. El navbar hace scroll; el Todo se queda como resumen.",
     mechanism: "Cada puerta cuenta un mecanismo. Juntas cuentan el país.",
     weight: 88,
     themes: ["todo"],
@@ -54,6 +54,7 @@ export const TODO_EDGES = [
   { source: "c-sistema", target: "i-dga", type: "abre", note: "Puerta · Aduana" },
   { source: "c-sistema", target: "c-cadena-construccion", type: "abre", note: "Puerta · Construcción" },
   { source: "c-sistema", target: "i-dgm", type: "abre", note: "Puerta · Migración" },
+  { source: "c-sistema", target: "c-pueblo-viejo", type: "abre", note: "Puerta · Minería" },
   { source: "c-casas-puente", target: "e-grupo-rizek", type: "ejemplo", note: "Puente multi-sector" },
   { source: "c-casas-puente", target: "e-grupo-vicini", type: "ejemplo", note: "Capital histórico" },
   { source: "c-casas-puente", target: "e-grupo-corripio", type: "ejemplo", note: "Medios" },
