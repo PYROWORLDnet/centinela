@@ -25,6 +25,10 @@ const THEME_NAV = [
   { id: "adp", label: "ADP", path: "/adp" },
   { id: "salud", label: "Salud", path: "/salud" },
   { id: "agua", label: "Agua", path: "/agua" },
+  { id: "azucar", label: "Azúcar", path: "/azucar" },
+  { id: "transporte", label: "Transporte", path: "/transporte" },
+  { id: "basura", label: "Basura", path: "/basura" },
+  { id: "juego", label: "Juego", path: "/juego" },
 ];
 
 const THEME_NUCLEO = THEME_NAV[0];

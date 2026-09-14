@@ -87,23 +87,24 @@ export const CONSTRUCCION_TOUR = {
     },
     {
       id: 8,
-      line: "Productores locales también cuentan.",
+      line: "Antes del cemento, el permiso.",
       detail:
-        "Cementos Cibao y Cemento Santo Domingo están en el gremio. El mapa no es solo Estrella vs multinacionales: es un oligopolio de productores con una casa que además construye.",
-      nodeIds: ["e-cementos-cibao", "e-cemento-sd", "e-adocem", "c-materia-prima"],
-      panelId: "e-cementos-cibao",
+        "MIVHED (Ley 160-21) emite la licencia. El ayuntamiento certifica uso de suelo. Sin ese peaje, la torre —por bien financiada— es irregular. Materia prima construye; el permiso legaliza. Ahí también está el poder.",
+      nodeIds: ["i-mivhed", "c-uso-suelo", "c-permiso-obra", "c-ley-160-21", "c-cadena-construccion"],
+      panelId: "c-permiso-obra",
     },
     {
       id: 9,
-      line: "Por eso esto cierra con Familias y Electricidad.",
+      line: "Por eso esto cierra con Familias y El Núcleo.",
       detail:
-        "Estrella entra al club de casas. Rainieri ya estaba en turismo y en la zona de CEPM. Construir el país y electrificarlo son capas del mismo poder material. Siguiente puerta: el detalle en cada tema.",
+        "Estrella integra material y obra; Rainieri exige infraestructura; el Estado sella con MIVHED. Construir el país no es solo grúa: es planta + permiso + casa. Siguiente puerta: el detalle en cada tema.",
       nodeIds: [
         "c-cadena-construccion",
         "e-grupo-estrella",
+        "c-permiso-obra",
+        "i-mivhed",
         "e-grupo-rainieri",
         "c-materia-prima",
-        "e-adocem",
       ],
       panelId: "c-cadena-construccion",
       pathEdges: true,

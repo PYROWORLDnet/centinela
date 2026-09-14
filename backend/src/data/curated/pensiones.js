@@ -112,6 +112,30 @@ const SRC = {
     label: "Banreservas",
     url: "https://www.banreservas.com/",
   },
+  jrssffaa: {
+    label: "Junta de Retiro y Fondo de Pensiones de las FF.AA.",
+    url: "https://juntaderetiroffaa.gob.do/",
+  },
+  jrssffaaDatos: {
+    label: "Datos abiertos — Junta de Retiro y Fondo de Pensiones FF.AA.",
+    url: "https://datos.gob.do/organization/about/junta-de-retiro-y-fondo-de-pensiones-de-las-fuerzas-armadas-ffaa",
+  },
+  issffaa: {
+    label: "ISSFFAA — Instituto de Seguridad Social de las Fuerzas Armadas",
+    url: "https://issffaa.mil.do/quienes-somos/",
+  },
+  mideSueldoAno: {
+    label: "MIDE — RD$515 MM en sueldos por años a 628 militares retirados",
+    url: "https://mide.gob.do/entregan-515-millones-de-pesos-en-sueldos-por-anos-de-servicio-a-628-militares-retirados/",
+  },
+  sipenCorepol: {
+    label: "SIPEN Res. 457-22 — COREPOL y DGJP · régimen especial Policía",
+    url: "https://sipen.gob.do/documentos/norm_resolucion_sipen_457_22.pdf",
+  },
+  ley59016: {
+    label: "Ley 590-16 — Orgánica de la Policía Nacional (régimen de pensiones)",
+    url: "https://www.policianacional.gob.do/wp-content/uploads/2019/07/LEY_ley_organica_de_la_policia_nacional_no._590_16.pdf",
+  },
 };
 
 /** @type {Array<object>} */
@@ -439,6 +463,81 @@ export const PENSIONES_NODES = [
     source: SRC.afpPopularFs,
     themes: ["pensiones"],
   },
+
+  // —— Regímenes especiales: militares y policía (fuera de las AFP) ——
+  {
+    id: "c-regimen-ffaa",
+    name: "Régimen especial FF.AA.",
+    kind: "fondo",
+    role: "Pensiones militares · fuera del sistema AFP",
+    aliases: ["pensiones militares", "retiro militar", "jrssffaa"],
+    summary:
+      "Los miembros de las Fuerzas Armadas no cotizan al régimen de capitalización de las AFP como el resto de trabajadores formales. Tienen un régimen propio: la Junta de Retiro y Fondo de Pensiones de las FF.AA. administra el retiro; el ISSFFAA gestiona seguridad social militar (salud, sueldo por año, etc.). Es otro circuito de plata y lealtad.",
+    mechanism: "Separar el retiro militar del mapa AFP es también separar un veto institucional.",
+    weight: 90,
+    source: SRC.jrssffaaDatos,
+    themes: ["pensiones"],
+  },
+  {
+    id: "i-jrssffaa",
+    name: "Junta de Retiro FF.AA.",
+    kind: "estado",
+    role: "Administra pensiones militares",
+    aliases: ["junta de retiro", "fondo de pensiones ffaa", "jrssffaa"],
+    summary:
+      "Organismo de las Fuerzas Armadas responsable de administrar y dirigir el retiro militar: reconoce y paga asignaciones al personal pasivo y familiares calificados. No es una AFP: es el brazo pensionario castrense.",
+    weight: 88,
+    source: SRC.jrssffaa,
+    themes: ["pensiones"],
+  },
+  {
+    id: "i-issffaa",
+    name: "ISSFFAA",
+    kind: "estado",
+    role: "Seguridad social militar",
+    aliases: ["issffaa", "instituto de seguridad social fuerzas armadas"],
+    summary:
+      "Instituto de Seguridad Social de las Fuerzas Armadas (adscrito al MIDE). Administra planes de protección social militar: sueldo por año al retiro, seguro de vida, salud. MIDE reportó entregas de RD$515 MM a 628 retirados en un tramo y RD$1,027 MM a 1,424 beneficiarios desde sep. 2024 (sueldo por año, Ley 139-13 art. 169).",
+    weight: 86,
+    source: SRC.issffaa,
+    themes: ["pensiones"],
+  },
+  {
+    id: "c-regimen-policia",
+    name: "Régimen especial Policía",
+    kind: "fondo",
+    role: "Pensiones policiales · Ley 590-16",
+    aliases: ["pensiones policia", "corepol", "retiro policial"],
+    summary:
+      "La Ley 590-16 crea un Régimen de Reparto Especial para la Policía Nacional, administrado vía DGJP (Hacienda). COREPOL tramita solicitudes; el Consejo Superior Policial aprueba; DGJP paga. Tampoco es AFP: es otro silo de retiro estatal.",
+    mechanism: "Reparto especial = presupuesto público, no cuenta individual en AFP.",
+    weight: 88,
+    source: SRC.ley59016,
+    themes: ["pensiones"],
+  },
+  {
+    id: "i-corepol",
+    name: "COREPOL",
+    kind: "estado",
+    role: "Comité de Retiro Policía Nacional",
+    aliases: ["corepol", "comite de retiro policia"],
+    summary:
+      "Unidad bajo el Consejo Superior Policial. SIPEN Res. 457-22: tramita pensiones por antigüedad, discapacidad y sobrevivencia, y remite a DGJP para el pago. El retiro policial pasa por aquí antes del cheque.",
+    weight: 82,
+    source: SRC.sipenCorepol,
+    themes: ["pensiones"],
+  },
+  {
+    id: "c-retirado-uniforme",
+    name: "El retirado de uniforme",
+    kind: "trabajador",
+    role: "Pensión especial · fuera del relato AFP",
+    summary:
+      "Militar o policía en retiro. Su pensión no aparece en el marketing de las AFP. Vive del régimen especial —y de beneficios como el sueldo por año (ISSFFAA)— mientras el sistema contributivo civil concentra el debate público. Dos mapas de vejez: uno con logo AFP, otro con uniforme.",
+    weight: 78,
+    source: SRC.mideSueldoAno,
+    themes: ["pensiones"],
+  },
 ];
 
 /** @type {Array<object>} */
@@ -748,6 +847,66 @@ export const PENSIONES_EDGES = [
     type: "comision_para",
     note: "La AFP cobra comisión por administrar; pertenece al Grupo Popular",
     sourceRef: SRC.ley8701Comision,
+  },
+  {
+    source: "c-regimen-ffaa",
+    target: "i-jrssffaa",
+    type: "administra",
+    note: "Junta de Retiro dirige el retiro militar",
+    sourceRef: SRC.jrssffaa,
+  },
+  {
+    source: "c-regimen-ffaa",
+    target: "i-issffaa",
+    type: "incluye",
+    note: "ISSFFAA: sueldo por año, salud, vida",
+    sourceRef: SRC.issffaa,
+  },
+  {
+    source: "i-issffaa",
+    target: "c-retirado-uniforme",
+    type: "paga_beneficio",
+    note: "Sueldo por año (MIDE / Ley 139-13)",
+    sourceRef: SRC.mideSueldoAno,
+  },
+  {
+    source: "i-jrssffaa",
+    target: "c-retirado-uniforme",
+    type: "pensiona",
+    sourceRef: SRC.jrssffaaDatos,
+  },
+  {
+    source: "c-regimen-policia",
+    target: "i-corepol",
+    type: "tramita_via",
+    sourceRef: SRC.sipenCorepol,
+  },
+  {
+    source: "i-corepol",
+    target: "i-hacienda",
+    type: "remite_pago",
+    note: "DGJP ejecuta pensiones policiales (Ley 590-16)",
+    sourceRef: SRC.ley59016,
+  },
+  {
+    source: "c-regimen-policia",
+    target: "c-retirado-uniforme",
+    type: "cubre",
+    sourceRef: SRC.ley59016,
+  },
+  {
+    source: "c-fondos-pensiones",
+    target: "c-regimen-ffaa",
+    type: "contrasta_con",
+    note: "AFP (civil) vs régimen especial (castrense)",
+    sourceRef: SRC.jrssffaaDatos,
+  },
+  {
+    source: "i-cnss",
+    target: "c-regimen-ffaa",
+    type: "no_gobierna",
+    note: "El retiro militar está fuera del circuito AFP/CNSS",
+    sourceRef: SRC.jrssffaa,
   },
 ];
 

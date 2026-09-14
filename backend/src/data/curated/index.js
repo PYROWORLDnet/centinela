@@ -16,6 +16,10 @@ import { ONG_NODES, ONG_EDGES } from "./ong.js";
 import { ADP_NODES, ADP_EDGES } from "./adp.js";
 import { SALUD_NODES, SALUD_EDGES } from "./salud.js";
 import { AGUA_NODES, AGUA_EDGES } from "./agua.js";
+import { AZUCAR_NODES, AZUCAR_EDGES } from "./azucar.js";
+import { TRANSPORTE_NODES, TRANSPORTE_EDGES } from "./transporte.js";
+import { BASURA_NODES, BASURA_EDGES } from "./basura.js";
+import { JUEGO_NODES, JUEGO_EDGES } from "./juego.js";
 import { NUCLEO_NODES, NUCLEO_EDGES } from "./nucleo.js";
 import { TODO_TOUR } from "./todoTour.js";
 import { getPensionesTour } from "./pensionesTour.js";
@@ -34,6 +38,10 @@ import { ONG_TOUR } from "./ongTour.js";
 import { ADP_TOUR } from "./adpTour.js";
 import { SALUD_TOUR } from "./saludTour.js";
 import { AGUA_TOUR } from "./aguaTour.js";
+import { AZUCAR_TOUR } from "./azucarTour.js";
+import { TRANSPORTE_TOUR } from "./transporteTour.js";
+import { BASURA_TOUR } from "./basuraTour.js";
+import { JUEGO_TOUR } from "./juegoTour.js";
 import { NUCLEO_TOUR } from "./nucleoTour.js";
 import { CUPULA_ID, CUPULA_NODE, queryHitsCupula } from "./cupula.js";
 
@@ -56,6 +64,10 @@ const DATASETS = {
   adp: { nodes: ADP_NODES, edges: ADP_EDGES },
   salud: { nodes: SALUD_NODES, edges: SALUD_EDGES },
   agua: { nodes: AGUA_NODES, edges: AGUA_EDGES },
+  azucar: { nodes: AZUCAR_NODES, edges: AZUCAR_EDGES },
+  transporte: { nodes: TRANSPORTE_NODES, edges: TRANSPORTE_EDGES },
+  basura: { nodes: BASURA_NODES, edges: BASURA_EDGES },
+  juego: { nodes: JUEGO_NODES, edges: JUEGO_EDGES },
 };
 
 const TOURS = {
@@ -77,6 +89,10 @@ const TOURS = {
   adp: ADP_TOUR,
   salud: SALUD_TOUR,
   agua: AGUA_TOUR,
+  azucar: AZUCAR_TOUR,
+  transporte: TRANSPORTE_TOUR,
+  basura: BASURA_TOUR,
+  juego: JUEGO_TOUR,
 };
 
 function degreeMap(edges) {

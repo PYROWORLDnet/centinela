@@ -6,7 +6,29 @@
 
 import { SRC_SHARED, pickNodes, SHARED_EDGES } from "./shared.js";
 
-const SRC = { ...SRC_SHARED };
+const SRC = {
+  ...SRC_SHARED,
+  decreto124: {
+    label: "Presidencia — Decreto 1-24 regula la publicidad oficial",
+    url: "https://presidencia.gob.do/noticias/presidente-abinader-promulga-decreto-1-24-que-regula-la-publicidad-oficial",
+  },
+  decreto124Pdf: {
+    label: "Decreto 1-24 (PDF) — criterios de contratación de publicidad oficial",
+    url: "https://presidencia.gob.do/sites/default/files/decree/2024-01/Decreto%201-24.pdf",
+  },
+  diecomDatos: {
+    label: "Datos ABiertos — ejecución presupuestaria DIECOM 2022-2026",
+    url: "https://www.datos.gob.do/dataset/diecom-ejecucion-presupuestaria",
+  },
+  diecom: {
+    label: "DIECOM — Dirección de Estrategia y Comunicación Gubernamental",
+    url: "https://diecom.gob.do/",
+  },
+  digepresPauta: {
+    label: "EyR / Digepres — gasto publicidad 2025 ~RD$10,252 MM (partida modificada)",
+    url: "https://eyr.com.do/gobierno-gasto-publicidad-2025-rd10200-millones/",
+  },
+};
 
 const LOCAL_NODES = [
   {
@@ -19,6 +41,43 @@ const LOCAL_NODES = [
     mechanism: "La agenda informativa es parte del mismo mapa de poder.",
     weight: 96,
     source: SRC.corripioWiki,
+    themes: ["medios"],
+  },
+  {
+    id: "c-pauta-oficial",
+    name: "Pauta oficial",
+    kind: "medio",
+    role: "Publicidad del Estado · control de agenda",
+    aliases: ["pauta", "publicidad oficial", "pauta gubernamental"],
+    summary:
+      "El Estado compra espacios en medios, periodistas e influenciadores. Esa plata no es solo “comunicación”: es oxígeno financiero. El Decreto 1-24 intenta poner criterios objetivos; la partida de publicidad, impresión y encuadernación sigue siendo de miles de millones (Digepres vía prensa: ~RD$10,252 MM en 2025 tras modificación; ~RD$11,292 MM ejecutados en 2024).",
+    mechanism: "Quien reparte la pauta condiciona qué medios respiran.",
+    weight: 94,
+    source: SRC.decreto124,
+    themes: ["medios"],
+  },
+  {
+    id: "i-diecom",
+    name: "DIECOM",
+    kind: "estado",
+    role: "Estrategia y comunicación gubernamental",
+    aliases: ["diecom", "dirección de estrategia y comunicación"],
+    summary:
+      "Dirección de Estrategia y Comunicación Gubernamental (Decreto 542-21). Coordina la comunicación del Ejecutivo. Con el Decreto 1-24, junto a la DGCP, verifica el cumplimiento de las reglas de publicidad oficial. Publica ejecución presupuestaria en datos abiertos.",
+    weight: 88,
+    source: SRC.diecom,
+    themes: ["medios"],
+  },
+  {
+    id: "c-decreto-1-24",
+    name: "Decreto 1-24",
+    kind: "estado",
+    role: "Reglas de la publicidad oficial",
+    summary:
+      "Obliga a instituciones del Poder Ejecutivo a contratar publicidad con criterios documentados (público objetivo, alcance, costo por impacto). Prohíbe usar la pauta como propaganda electoral o subsidio encubierto. DGCP y DIECOM fiscalizan. No elimina la pauta: intenta transparentar el peaje.",
+    mechanism: "Sin criterio publicado, la pauta es favor; con decreto, queda el rastro.",
+    weight: 86,
+    source: SRC.decreto124Pdf,
     themes: ["medios"],
   },
 ];
@@ -111,5 +170,51 @@ export const MEDIOS_EDGES = [
     target: "c-la-cupula",
     type: "atraviesa",
     sourceRef: SRC.corripioWiki,
+  },
+  {
+    source: "c-filtros",
+    target: "c-pauta-oficial",
+    type: "incluye",
+    note: "Ownership + pauta = doble filtro",
+    sourceRef: SRC.decreto124,
+  },
+  {
+    source: "c-pauta-oficial",
+    target: "i-diecom",
+    type: "coordina",
+    sourceRef: SRC.diecom,
+  },
+  {
+    source: "c-decreto-1-24",
+    target: "i-diecom",
+    type: "regula",
+    note: "DIECOM + DGCP verifican cumplimiento",
+    sourceRef: SRC.decreto124,
+  },
+  {
+    source: "c-decreto-1-24",
+    target: "c-pauta-oficial",
+    type: "enmarca",
+    sourceRef: SRC.decreto124Pdf,
+  },
+  {
+    source: "i-diecom",
+    target: "c-pauta-oficial",
+    type: "ejecuta",
+    note: "Ejecución presupuestaria publicada (datos abiertos)",
+    sourceRef: SRC.diecomDatos,
+  },
+  {
+    source: "c-pauta-oficial",
+    target: "e-grupo-corripio",
+    type: "oxigena",
+    note: "Bloques mediáticos compiten por la pauta estatal",
+    sourceRef: SRC.digepresPauta,
+  },
+  {
+    source: "c-pauta-oficial",
+    target: "m-listin",
+    type: "oxigena",
+    sourceRef: SRC.digepresPauta,
   },
 ];
