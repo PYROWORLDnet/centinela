@@ -8,7 +8,7 @@ export const TODO_TOUR = {
   theme: "todo",
   title: "Cómo se sostiene el sistema",
   epilogue:
-    "Ya viste el plano. Pensiones, deuda, banca, partidos, gasolina, electricidad, aduana, medios, construcción, ADP, migración, minería, ONU/ONG y familias no son silos: son la misma red vista por puertas distintas. Entra a cada tema para el detalle con fuentes. El mapa crece; el mecanismo es el mismo.",
+    "Ya viste el plano. Pensiones, deuda, banca, partidos, gasolina, electricidad, aduana, medios, construcción, ADP, salud, migración, minería, ONU/ONG y familias no son silos: son la misma red vista por puertas distintas. Entra a cada tema para el detalle con fuentes. El mapa crece; el mecanismo es el mismo.",
   entry: {
     hubId: "c-sistema",
     satelliteIds: [
@@ -27,6 +27,7 @@ export const TODO_TOUR = {
       "c-pueblo-viejo",
       "c-mecanismo-ong",
       "c-mecanismo-adp",
+      "c-mecanismo-salud",
     ],
     line: null,
   },
@@ -35,7 +36,7 @@ export const TODO_TOUR = {
       id: 1,
       line: "Esto no son pantallas sueltas.",
       detail:
-        "Es una sola red. Cada tema es una puerta. El Todo es el plano: cómo se conectan tu sueldo, el Estado, los bancos, los partidos, el combustible, la luz, la aduana, los medios, la construcción, la escuela pública, la migración, la minería, la cooperación internacional y las casas.",
+        "Es una sola red. Cada tema es una puerta. El Todo es el plano: cómo se conectan tu sueldo, el Estado, los bancos, los partidos, el combustible, la luz, la aduana, los medios, la construcción, la escuela pública, la salud, la migración, la minería, la cooperación internacional y las casas.",
       nodeIds: ["c-sistema", "c-ocho-puertas"],
       panelId: "c-sistema",
     },
@@ -120,8 +121,18 @@ export const TODO_TOUR = {
       panelId: "c-mecanismo-adp",
       pathFrom: ["c-sistema"],
     },
+
     {
       id: 11,
+      line: "Y cuando te enfermas, otra red.",
+      detail:
+        "SeNaSa paga. SISALRIL regula. El SNS atiende. Contratos capitados, farmacia y gestores privados deciden quién cobra antes de la consulta. En Salud está el mapa de esa plata.",
+      nodeIds: ["c-mecanismo-salud", "i-senasa", "c-red-prestadores", "c-afiliado"],
+      panelId: "c-mecanismo-salud",
+      pathFrom: ["c-sistema"],
+    },
+    {
+      id: 12,
       line: "Bajo tierra: el oro y el contrato.",
       detail:
         "Pueblo Viejo no es solo una mina. Es el CEAM de 2002 (RNF 3.2%), Barrick 60% / Newmont 40%, la enmienda 2013 y el debate de si el Estado cobra el windfall del oro. En Minería está el mapa con fuentes; Hacienda siente la caja.",
@@ -130,7 +141,7 @@ export const TODO_TOUR = {
       pathFrom: ["c-sistema"],
     },
     {
-      id: 12,
+      id: 13,
       line: "Quién financia la presión internacional.",
       detail:
         "USAID pone cientos de millones; socios locales (FINJUS, IDDI) y agencias ONU (OIM, PNUD) ejecutan; Amnistía empuja con informes; el Estado responde con soberanía. En ONU/ONG está el circuito — y la cortina que a veces tapa otras cuentas.",
@@ -145,7 +156,7 @@ export const TODO_TOUR = {
       pathFrom: ["c-sistema"],
     },
     {
-      id: 13,
+      id: 14,
       line: "Los medios filtran lo que ves.",
       detail:
         "Corripio concentra pantallas. Vicini y otros pesan en el papel. A menudo omiten el mapa.",
@@ -154,7 +165,7 @@ export const TODO_TOUR = {
       pathFrom: ["c-sistema"],
     },
     {
-      id: 14,
+      id: 15,
       line: "Debajo de todo: las casas.",
       detail:
         "La Cúpula agrupa las casas: Vicini, Corripio, Rainieri, Fanjul, Rizek, González Cuadra, Brache, Estrella, Félix García, Popular, BHD, Banreservas, La Sirena, El Nacional. Familias es el mapa de apellidos; los otros temas son los sectores. La Cúpula no es un tema: es el nodo que aparece al buscar cualquiera de esos nombres.",
@@ -171,7 +182,7 @@ export const TODO_TOUR = {
       pathFrom: ["c-sistema"],
     },
     {
-      id: 15,
+      id: 16,
       line: "El puente no es solo Rizek.",
       detail:
         "Roryk cruza AFP, combustible y —históricamente— la Junta Monetaria (Héctor José falleció en 2026). Estrella cruza cemento, obra y CDN. Linda cruza medios y AES. Brache cruza Rica y el consejo de Popular. Rainieri cruza turismo y la zona de CEPM.",
@@ -186,7 +197,7 @@ export const TODO_TOUR = {
       panelId: "c-la-cupula",
     },
     {
-      id: 16,
+      id: 17,
       line: "Y la frontera también es un negocio.",
       detail:
         "Migración: deportan 670,500 y el ciclo sigue. Camiones, retenes, agro y construcción. Misma lógica de juego cerrado — con la logística del Estado en el medio. En Migración está el mapa.",
@@ -195,10 +206,10 @@ export const TODO_TOUR = {
       pathFrom: ["c-sistema"],
     },
     {
-      id: 17,
+      id: 18,
       line: "Ahora elige una puerta.",
       detail:
-        "Escuchaste el plano. En el navbar haz scroll: ADP, Migración, Minería y ONU/ONG ya están. Dale play en cada tema. El Todo siempre será el resumen para entender el sistema de un tirón.",
+        "Escuchaste el plano. En el navbar haz scroll: ADP, Salud, Migración, Minería y ONU/ONG ya están. Dale play en cada tema. El Todo siempre será el resumen para entender el sistema de un tirón.",
       nodeIds: ["c-ocho-puertas", "c-sistema"],
       panelId: "c-ocho-puertas",
     },

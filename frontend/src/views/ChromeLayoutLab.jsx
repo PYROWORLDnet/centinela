@@ -16,6 +16,7 @@ const THEMES = [
   "Minería",
   "ONU/ONG",
   "ADP",
+  "Salud",
 ];
 
 const OPTIONS = [
