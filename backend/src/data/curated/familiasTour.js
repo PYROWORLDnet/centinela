@@ -40,7 +40,7 @@ export const FAMILIAS_TOUR = {
       line: "Vicini / INICIA: capital viejo.",
       detail:
         "Más de un siglo en el país. En 2016 VICINI pasó a llamarse INICIA. Juan Bautista Vicini fue uno de los que asumieron Listín Diario en 2010. Casa histórica, brazo en medios y activos.",
-      nodeIds: ["e-grupo-vicini", "m-listin", "c-casas"],
+      nodeIds: ["e-grupo-vicini", "e-caei", "m-listin", "c-casas"],
       panelId: "e-grupo-vicini",
     },
     {
@@ -54,6 +54,7 @@ export const FAMILIAS_TOUR = {
         "e-patsa",
         "e-refidomsa",
         "e-rizek-cacao",
+        "e-parval",
         "p-hector-rizek",
         "i-junta-monetaria",
       ],
@@ -64,7 +65,7 @@ export const FAMILIAS_TOUR = {
       line: "Corripio: la pantalla y el titular.",
       detail:
         "Hoy, Telesistema, Teleantillas, El Día, El Nacional — y participación en Listín. Quien concentra pantallas concentra la conversación pública.",
-      nodeIds: ["e-grupo-corripio", "m-listin"],
+      nodeIds: ["e-grupo-corripio", "m-listin", "m-hoy", "m-telesistema", "m-teleantillas", "e-distribuidora-corripio", "e-pinturas-tropical", "e-isla-petroleo"],
       panelId: "e-grupo-corripio",
     },
     {
@@ -76,6 +77,8 @@ export const FAMILIAS_TOUR = {
         "e-grupo-popular",
         "e-banco-popular",
         "e-afp-popular",
+        "e-qik",
+        "e-popular-bank-panama",
         "e-grupo-bhd",
         "e-banco-bhd",
       ],
@@ -91,19 +94,20 @@ export const FAMILIAS_TOUR = {
     },
     {
       id: 7,
-      line: "Bonetti, Rainieri, Estrella — y también Fanjul, CCN, Rica, Linda, Sirena.",
+      line: "Bonetti / SID: del aceite al anaquel — y las otras casas del mapa.",
       detail:
-        "Azúcar y Este (Fanjul / Central Romana). Retail (González Cuadra / Jumbo y Nacional; Ramos / La Sirena). Lácteos (Brache / Rica, con asiento en Popular). Industria y medios del Cibao (Félix García / Linda: El Caribe, CDN, AES). El mapa creció: ya no son solo las casas de siempre.",
+        "Grupo SID (Bonetti): MercaSID (“La Manicera”), Induveca, Induspalma, liderado por Ligia Bonetti. Azúcar y Este (Fanjul / Central Romana). Retail (González Cuadra / Jumbo y Nacional; Ramos / La Sirena). Lácteos (Brache / Rica). Medios del Cibao (Félix García / Linda: El Caribe, CDN). El mapa creció: hay que ver cada casa con sus filiales.",
       nodeIds: [
+        "e-grupo-bonetti",
+        "e-mercasid",
+        "e-induveca",
+        "e-induspalma",
+        "p-ligia-bonetti",
         "e-grupo-fanjul",
-        "e-grupo-ccn",
-        "e-grupo-brache",
-        "e-grupo-linda",
-        "e-grupo-ramos",
         "e-grupo-estrella",
         "c-la-cupula",
       ],
-      panelId: "c-la-cupula",
+      panelId: "e-grupo-bonetti",
     },
     {
       id: 8,
