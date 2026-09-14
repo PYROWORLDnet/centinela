@@ -8,7 +8,7 @@ export const TODO_TOUR = {
   theme: "todo",
   title: "Cómo se sostiene el sistema",
   epilogue:
-    "Ya viste el plano. Pensiones, deuda, banca, partidos, gasolina, electricidad, aduana, medios, construcción, ADP, salud, agua, migración, minería, ONU/ONG, el Núcleo y familias no son silos: son la misma red vista por puertas distintas. Entra a cada tema para el detalle con fuentes. El Núcleo muestra por qué ninguna puerta se cambia sola con un voto. El mapa crece; el mecanismo es el mismo.",
+    "Ya viste el plano. Pensiones, deuda, banca, partidos, gasolina, electricidad, aduana, medios, construcción, ADP, salud, agua, migración, minería, ONU/ONG, azúcar, transporte, basura, juego, el Núcleo y familias no son silos: son la misma red vista por puertas distintas. Entra a cada tema para el detalle con fuentes. El Núcleo muestra por qué ninguna puerta se cambia sola con un voto. El mapa crece; el mecanismo es el mismo.",
   entry: {
     hubId: "c-sistema",
     satelliteIds: [
@@ -29,6 +29,11 @@ export const TODO_TOUR = {
       "c-mecanismo-adp",
       "c-mecanismo-salud",
       "c-mecanismo-agua",
+      "c-mecanismo-azucar",
+      "c-mecanismo-transporte",
+      "c-mecanismo-basura",
+      "c-mecanismo-juego",
+      "c-nucleo",
     ],
     line: null,
   },
@@ -37,7 +42,7 @@ export const TODO_TOUR = {
       id: 1,
       line: "Esto no son pantallas sueltas.",
       detail:
-        "Es una sola red. Cada tema es una puerta. El Todo es el plano: cómo se conectan tu sueldo, el Estado, los bancos, los partidos, el combustible, la luz, la aduana, los medios, la construcción, la escuela pública, la salud, el agua, la migración, la minería, la cooperación internacional y las casas.",
+        "Es una sola red. Cada tema es una puerta. El Todo es el plano: cómo se conectan tu sueldo, el Estado, los bancos, los partidos, el combustible, la luz, la aduana, los medios, la construcción, la escuela pública, la salud, el agua, la migración, la minería, la cooperación internacional, el azúcar, el transporte, la basura, el juego y las casas.",
       nodeIds: ["c-sistema", "c-ocho-puertas"],
       panelId: "c-sistema",
     },
@@ -220,7 +225,7 @@ export const TODO_TOUR = {
       id: 19,
       line: "Ahora elige una puerta — o entra al Núcleo.",
       detail:
-        "Escuchaste el plano. En el navbar haz scroll: ADP, Salud, Agua, Migración, Minería, ONU/ONG y El Núcleo ya están. Dale play en cada tema. El Todo siempre será el resumen para entender el sistema de un tirón.",
+        "Escuchaste el plano. En el navbar haz scroll: ADP, Salud, Agua, Migración, Minería, ONU/ONG, Azúcar, Transporte, Basura, Juego y El Núcleo ya están. Dale play en cada tema. El Todo siempre será el resumen para entender el sistema de un tirón.",
       nodeIds: ["c-ocho-puertas", "c-sistema"],
       panelId: "c-ocho-puertas",
     },
