@@ -2,6 +2,8 @@
 
 Mapa curado de transparencia en República Dominicana: temas, nodos y recorridos con fuente.
 
+**Sitio:** [centinela.do](https://centinela.do)
+
 Cualquier persona puede proponer un tema nuevo o una conexión. Nadie escribe directo en el repositorio oficial: todo entra por Pull Request y solo los [maintainers](./MAINTAINERS.md) aprueban.
 
 Lee [CONTRIBUTING.md](./CONTRIBUTING.md) antes de abrir un issue o un PR.
