@@ -10,6 +10,8 @@ node_modules/
 *.pem
 credentials*.json
 service-account*.json
+*.p12
+*.key
 
 # build / cache
 dist/
@@ -31,5 +33,15 @@ Thumbs.db
 .idea/
 .vscode/
 *.swp
+
+# raw ingest / production dumps — never commit
+# backend/data = CSVs/PDFs descargados por scripts del maintainer
+# /data y /dumps = dumps locales en la raíz; no confundir con backend/src/data/curated
 backend/data/
+/data/
+/dumps/
+*.dump
+*.sql.gz
+*.pgdump
+*.bak
 .vercel

@@ -1,6 +1,10 @@
 /**
- * Job diario: baja TODAS las fuentes oficiales y actualiza Postgres.
- * Diseñado para un cron de Railway (una vez al día, luego sale).
+ * Job diario del maintainer: baja fuentes oficiales y actualiza Postgres.
+ * Diseñado para un cron privado (Railway u otro), una vez al día, luego sale.
+ *
+ * No incluye credenciales. Requiere DATABASE_URL o PG* en backend/.env
+ * (archivo local, nunca en el repo). Los contribuyentes no ejecutan este
+ * script ni tienen acceso a la base de producción.
  *
  * Fuentes: préstamos, DGCP (+ proveedores/RM), nómina Cámara, nómina Senado, DJP.
  */
@@ -10,6 +14,13 @@ import path from "node:path";
 import { loadEnv } from "../db/loadEnv.js";
 
 loadEnv();
+
+if (!process.env.DATABASE_URL && !process.env.PGHOST) {
+  console.error(
+    "refreshDiario.js solo corre en el entorno del maintainer. Configura DATABASE_URL o PGHOST en backend/.env. No subas credenciales al repositorio.",
+  );
+  process.exit(1);
+}
 
 const root = path.dirname(fileURLToPath(new URL(".", import.meta.url)));
 
