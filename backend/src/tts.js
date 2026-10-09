@@ -43,6 +43,10 @@ export const FILM_LINES = {
   outro: "Esto es Centinela. Míralo tú mismo. Comparte esto con alguien que necesite despertar.",
 };
 
+/** Tras un fallo de ElevenLabs (sin crédito, caído) se usa OpenAI sin reintentar cada frase. */
+const ELEVEN_COOLDOWN_MS = 10 * 60 * 1000;
+let elevenDownUntil = 0;
+
 const elevenKey = () => process.env.ELEVENLABS_API_KEY || "";
 const openaiKey = () => process.env.OPENAI_API_KEY || "";
 
@@ -257,7 +261,17 @@ export async function synthesizeSpeech(text, voice = "", { film = false } = {}) 
       err.status = 400;
       throw err;
     }
-    return elevenSpeech(el, input, { film });
+    // El modo película necesita los tiempos por palabra de ElevenLabs: sin respaldo.
+    if (film) return elevenSpeech(el, input, { film });
+    if (Date.now() >= elevenDownUntil) {
+      try {
+        return await elevenSpeech(el, input, { film });
+      } catch (err) {
+        if (!openaiKey()) throw err;
+        elevenDownUntil = Date.now() + ELEVEN_COOLDOWN_MS;
+        console.warn(`[tts] ElevenLabs falló, usando OpenAI por un rato: ${err.message}`);
+      }
+    }
   }
 
   if (!openaiKey()) {
