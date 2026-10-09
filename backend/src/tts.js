@@ -8,19 +8,40 @@ import { tmpdir } from "node:os";
 import path from "node:path";
 import { THEMES } from "./data/curated/themes.js";
 import { getCuratedTour } from "./data/curated/index.js";
+import { episodeTexts } from "./data/episodes/index.js";
 
-/** Voz de la biblioteca compartida de ElevenLabs con acento dominicano. */
+/** Voces de la biblioteca compartida de ElevenLabs etiquetadas con acento dominicano. */
 const ELEVEN_VOICES = [
   { id: "el-mayra", elId: "matPJjeuu5MgFjRpMGfZ", label: "Mayra · cálida", gender: "female" },
+  { id: "el-diana", elId: "IeiHyO4UwOOUdKQ0HSDK", label: "Diana · joven, expresiva", gender: "female" },
+  { id: "el-angelina", elId: "NNLcf0MlUZirnZQqeMJ8", label: "Angelina · clara", gender: "female" },
+  { id: "el-crystal", elId: "dfbit8KZwSN0OJGuj7pq", label: "Crystal · narradora", gender: "female" },
+  { id: "el-amara", elId: "Y6B7kfk4Eyet3NowpN3g", label: "Amara · suave", gender: "female" },
+  { id: "el-lina", elId: "oWjuL7HSoaEJRMDMP3HD", label: "Lina · cercana", gender: "female" },
+  { id: "el-chaer", elId: "6yJbRCDgjQDmHJ6NrRYG", label: "Chaer · locutor grave", gender: "male" },
+  { id: "el-tony", elId: "2vyVHGyPYK7eCnfdVvk9", label: "Tony Vásquez · reflexivo", gender: "male" },
+  { id: "el-makemcie", elId: "awOajHsqRllBLH3sYn6Z", label: "Makemcie · documental", gender: "male" },
+  { id: "el-luis", elId: "fokPj1J1ZT7E7ul4hoLS", label: "Luis Féliz · narrador", gender: "male" },
+  { id: "el-matias", elId: "IoWn77TsmQnza94sYlfg", label: "Matías · relajado", gender: "male" },
+  { id: "el-wanaby", elId: "CCXmXKZExbF90N5aaPWM", label: "Wanaby · joven, redes", gender: "male" },
+  { id: "el-anderson", elId: "tpbS1suUR3ke5cIZG2E3", label: "Anderson · carismático", gender: "male" },
+  { id: "el-michael", elId: "1cbIUZoxnknSRNz8qJ6d", label: "Michael · conversado", gender: "male" },
 ];
 
-/** El recorrido de la web usa una sola voz: la narradora. */
+/** El recorrido de la web usa una sola voz: la narradora de los episodios. */
 const NARRATOR_ELEVEN = "el-mayra";
 const NARRATOR_OPENAI = "nova";
 
 /** gpt-4o-mini-tts = más natural; tts-1 = más rápido pero menos calidad */
 const OPENAI_MODEL = process.env.OPENAI_TTS_MODEL || "gpt-4o-mini-tts";
-const ELEVEN_MODEL = process.env.ELEVENLABS_MODEL || "eleven_multilingual_v2";
+/** Escuchar en vivo prioriza latencia; el modo película prioriza expresión. */
+const ELEVEN_MODEL_LIVE = process.env.ELEVENLABS_MODEL || "eleven_multilingual_v2";
+const ELEVEN_MODEL_FILM = process.env.ELEVENLABS_FILM_MODEL || "eleven_v3";
+
+/** Frases fijas del modo película que no salen de los recorridos. */
+export const FILM_LINES = {
+  outro: "Esto es Centinela. Míralo tú mismo. Comparte esto con alguien que necesite despertar.",
+};
 
 const elevenKey = () => process.env.ELEVENLABS_API_KEY || "";
 const openaiKey = () => process.env.OPENAI_API_KEY || "";
@@ -94,7 +115,7 @@ let corpusCache = null;
 
 /**
  * ElevenLabs cobra por carácter: solo narra texto que sale de los recorridos
- * curados, para que el endpoint no sea un TTS gratis abierto.
+ * curados (o de FILM_LINES), para que el endpoint no sea un TTS gratis abierto.
  */
 function corpus() {
   if (corpusCache) return corpusCache;
@@ -105,6 +126,7 @@ function corpus() {
     pieces.push(tour.title, tour.epilogue);
     for (const s of tour.steps || []) pieces.push(s.line, s.detail);
   }
+  pieces.push(...Object.values(FILM_LINES), ...episodeTexts());
   corpusCache = pieces.map(squash).filter(Boolean);
   return corpusCache;
 }
@@ -150,8 +172,8 @@ function alignmentToWords(alignment) {
   return words;
 }
 
-async function elevenSpeech(voice, input) {
-  const model = ELEVEN_MODEL;
+async function elevenSpeech(voice, input, { film }) {
+  const model = film ? ELEVEN_MODEL_FILM : ELEVEN_MODEL_LIVE;
   const text = input.slice(0, model === "eleven_v3" ? 3000 : 5000);
   const key = cacheKey(["el", model, voice.elId, text]);
   const hit = readCache(key);
@@ -217,9 +239,10 @@ async function openaiSpeech(voiceId, input) {
 /**
  * @param {string} text
  * @param {string} voice  id de listTtsVoices()
+ * @param {{ film?: boolean }} [opts]
  * @returns {Promise<{audio: Buffer, words: Array<{w:string,start:number,end:number}>|null}>}
  */
-export async function synthesizeSpeech(text, voice = "") {
+export async function synthesizeSpeech(text, voice = "", { film = false } = {}) {
   const input = String(text || "").trim();
   if (!input) {
     const err = new Error("Texto vacío");
@@ -234,7 +257,7 @@ export async function synthesizeSpeech(text, voice = "") {
       err.status = 400;
       throw err;
     }
-    return elevenSpeech(el, input);
+    return elevenSpeech(el, input, { film });
   }
 
   if (!openaiKey()) {
