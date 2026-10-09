@@ -2,21 +2,45 @@ import { useCallback, useEffect, useRef, useState } from "react";
 
 const VOICE_KEY = "centinela-tts-voice";
 const DEFAULT_VOICE = "nova";
-const ALLOWED_VOICES = new Set(["nova", "alloy"]);
 
-const FALLBACK_VOICES = [
-  { id: "nova", label: "Nova · clara" },
-  { id: "alloy", label: "Alloy · neutra" },
-];
+const FALLBACK_VOICES = [{ id: "nova", label: "Narradora", gender: "female" }];
+const FALLBACK_GROUPS = [{ provider: "browser", label: "Navegador", voices: FALLBACK_VOICES }];
 
-function readStoredVoice() {
+export function readStoredVoice() {
   try {
-    const stored = localStorage.getItem(VOICE_KEY);
-    if (stored && ALLOWED_VOICES.has(stored)) return stored;
-    return DEFAULT_VOICE;
+    return localStorage.getItem(VOICE_KEY) || null;
   } catch {
-    return DEFAULT_VOICE;
+    return null;
   }
+}
+
+export function storeVoice(id) {
+  try {
+    localStorage.setItem(VOICE_KEY, id);
+  } catch {
+    /* ignore */
+  }
+}
+
+let voicesPromise = null;
+/** Lista de voces del servidor (compartida entre recorrido y modo película). */
+export function fetchVoices() {
+  if (!voicesPromise) {
+    voicesPromise = fetch("/api/tts/voices")
+      .then((r) => r.json())
+      .catch((err) => {
+        voicesPromise = null;
+        throw err;
+      });
+  }
+  return voicesPromise;
+}
+
+/** Voz guardada si sigue existiendo; si no, la que recomienda el servidor. */
+export function resolveVoice(voices, defaultVoice) {
+  const stored = readStoredVoice();
+  if (stored && voices.some((v) => v.id === stored)) return stored;
+  return defaultVoice || voices[0]?.id || DEFAULT_VOICE;
 }
 
 function stopBrowserSpeech() {
@@ -24,8 +48,8 @@ function stopBrowserSpeech() {
   window.speechSynthesis.cancel();
 }
 
-/** Nova → voz española femenina; Alloy → masculina/grave (fallback del navegador). */
-function pickBrowserVoice(preferredId) {
+/** Voz femenina/masculina del navegador según el género de la voz elegida. */
+function pickBrowserVoice(gender) {
   if (typeof window === "undefined" || !window.speechSynthesis) return null;
   const list = window.speechSynthesis.getVoices?.() || [];
   if (!list.length) return null;
@@ -39,7 +63,7 @@ function pickBrowserVoice(preferredId) {
   const femaleRe =
     /\b(female|femenin\w*|mujer|monica|mónica|paulina|lucia|lucía|maria|maría|carmen|elena|soledad|sabina|ines|inés|penelope|meadow|samantha|karen|moira|zira|victoria|fiona)\b|español.*femen|mexican.*femen|google uk english female|microsoft .+ female/i;
 
-  if (preferredId === "alloy") {
+  if (gender === "male") {
     return (
       pool.find((v) => maleRe.test(label(v))) ||
       list.find((v) => maleRe.test(label(v))) ||
@@ -86,7 +110,8 @@ export function useTourSpeech(text, { autoKey, prefetchText, done = false, onAdv
   const [speaking, setSpeaking] = useState(false);
   const [supported, setSupported] = useState(true);
   const [voices, setVoices] = useState(FALLBACK_VOICES);
-  const [voiceId, setVoiceIdState] = useState(DEFAULT_VOICE);
+  const [voiceGroups, setVoiceGroups] = useState(FALLBACK_GROUPS);
+  const [voiceId, setVoiceIdState] = useState(() => readStoredVoice() || DEFAULT_VOICE);
   const [loading, setLoading] = useState(false);
   const [provider, setProvider] = useState("openai");
 
@@ -98,7 +123,8 @@ export function useTourSpeech(text, { autoKey, prefetchText, done = false, onAdv
   const cacheRef = useRef(new Map()); // key → objectUrl
   const inflightRef = useRef(new Map()); // key → Promise<objectUrl>
   const playAbortRef = useRef(null);
-  const voiceIdRef = useRef(DEFAULT_VOICE);
+  const voiceIdRef = useRef(voiceId);
+  const voicesRef = useRef(voices);
   const prefetchGen = useRef(0);
   const doneRef = useRef(done);
   const onAdvanceRef = useRef(onAdvance);
@@ -106,18 +132,23 @@ export function useTourSpeech(text, { autoKey, prefetchText, done = false, onAdv
   textRef.current = text;
   speakingRef.current = speaking;
   voiceIdRef.current = voiceId;
+  voicesRef.current = voices;
   doneRef.current = done;
   onAdvanceRef.current = onAdvance;
 
   useEffect(() => {
-    setVoiceIdState(readStoredVoice());
     let cancelled = false;
-    fetch("/api/tts/voices")
-      .then((r) => r.json())
+    fetchVoices()
       .then((data) => {
         if (cancelled) return;
-        if (data?.voices?.length) setVoices(data.voices);
-        setProvider(data?.configured ? "openai" : "browser");
+        if (data?.voices?.length) {
+          setVoices(data.voices);
+          setVoiceGroups(data.groups?.length ? data.groups : FALLBACK_GROUPS);
+          const next = resolveVoice(data.voices, data.defaultVoice);
+          voiceIdRef.current = next;
+          setVoiceIdState(next);
+        }
+        setProvider(data?.configured ? data.provider || "openai" : "browser");
         setSupported(true);
       })
       .catch(() => {
@@ -214,11 +245,7 @@ export function useTourSpeech(text, { autoKey, prefetchText, done = false, onAdv
       const next = id || DEFAULT_VOICE;
       setVoiceIdState(next);
       voiceIdRef.current = next;
-      try {
-        localStorage.setItem(VOICE_KEY, next);
-      } catch {
-        /* ignore */
-      }
+      storeVoice(next);
       autoplayRef.current = false;
       continueRef.current = false;
       stopPlayback();
@@ -240,7 +267,8 @@ export function useTourSpeech(text, { autoKey, prefetchText, done = false, onAdv
     u.rate = 1;
     u.pitch = 1;
     u.lang = "es-MX";
-    const picked = pickBrowserVoice(voiceIdRef.current);
+    const current = voicesRef.current.find((v) => v.id === voiceIdRef.current);
+    const picked = pickBrowserVoice(current?.gender);
     if (picked) {
       u.voice = picked;
       if (picked.lang) u.lang = picked.lang;
@@ -346,6 +374,7 @@ export function useTourSpeech(text, { autoKey, prefetchText, done = false, onAdv
     supported,
     provider,
     voices,
+    voiceGroups,
     voiceId,
     setVoiceId,
     toggle,

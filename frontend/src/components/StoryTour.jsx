@@ -74,9 +74,6 @@ function StoryTourInner({
     speaking,
     loading,
     supported,
-    voices,
-    voiceId,
-    setVoiceId,
     toggle,
     stop,
     markContinue,
@@ -112,11 +109,6 @@ function StoryTourInner({
     onRestart();
   }
 
-  function handleVoiceChange(e) {
-    stop();
-    setVoiceId(e.target.value);
-  }
-
   const voiceControls = supported && (
     <div className="story__voice">
       <SpeakButton
@@ -125,22 +117,6 @@ function StoryTourInner({
         onClick={toggle}
         label={speaking || loading ? "Pausar recorrido" : "Escuchar recorrido"}
       />
-      <label className="story__voice-label">
-        <span className="sr-only">Voz</span>
-        <select
-          className="story__voice-select"
-          value={voiceId}
-          onChange={handleVoiceChange}
-          aria-label="Elegir voz"
-          title="Elegir voz"
-        >
-          {voices.map((v) => (
-            <option key={v.id} value={v.id}>
-              {v.label}
-            </option>
-          ))}
-        </select>
-      </label>
     </div>
   );
 
