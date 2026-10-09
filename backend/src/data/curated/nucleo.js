@@ -360,7 +360,7 @@ export const NUCLEO_EDGES = [
   spoke("c-mecanismo-azucar", "No se toca. Tierra, batey y casas azucareras."),
   spoke("c-mecanismo-transporte", "No se toca. Rutas, federaciones y presupuesto."),
   spoke("c-mecanismo-basura", "No se toca. Contratos y vertedero."),
-  spoke("c-mecanismo-juego", "No se toca. Lotería, bancas y regularización."),
+  spoke("c-mecanismo-juego", "No se toca. Los dueños de bancas votan la ley del juego."),
   spoke("c-pauta-oficial", "No se toca. Pauta oficial como oxígeno mediático."),
   spoke("c-la-cupula", "La Cúpula es la cara del Núcleo. No se toca."),
 
