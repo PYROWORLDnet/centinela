@@ -8,7 +8,8 @@ import {
   getCuratedTour,
   searchCurated,
 } from "./data/curated/index.js";
-import { listTtsVoices, synthesizeSpeech } from "./tts.js";
+import { FILM_LINES, listTtsVoices, synthesizeSpeech } from "./tts.js";
+import { getEpisode, listEpisodes } from "./data/episodes/index.js";
 
 export function createApp() {
   const app = express();
@@ -58,14 +59,41 @@ export function createApp() {
     res.json(listTtsVoices());
   });
 
+  app.get("/api/tts/film-lines", (_req, res) => {
+    res.json(FILM_LINES);
+  });
+
+  app.get("/api/episodes", (_req, res) => {
+    res.json(listEpisodes());
+  });
+
+  app.get("/api/episodes/:id", (req, res) => {
+    const ep = getEpisode(req.params.id);
+    if (!ep) return res.status(404).json({ error: "Episodio no encontrado" });
+    res.json(ep);
+  });
+
   app.post("/api/tts", async (req, res) => {
     try {
       const text = String(req.body?.text || "");
-      const voice = String(req.body?.voice || "nova");
-      const audio = await synthesizeSpeech(text, voice);
+      const { audio } = await synthesizeSpeech(text, listTtsVoices().defaultVoice);
       res.setHeader("Content-Type", "audio/mpeg");
       res.setHeader("Cache-Control", "private, max-age=3600");
       res.send(audio);
+    } catch (err) {
+      const status = err.status && Number.isInteger(err.status) ? err.status : 500;
+      res.status(status).json({ error: err.message || "Error de voz" });
+    }
+  });
+
+  /** Audio + tiempos por palabra (ElevenLabs) para subtítulos del modo película. */
+  app.post("/api/tts/timed", async (req, res) => {
+    try {
+      const text = String(req.body?.text || "");
+      const voice = String(req.body?.voice || "");
+      const { audio, words } = await synthesizeSpeech(text, voice, { film: true });
+      res.setHeader("Cache-Control", "private, max-age=3600");
+      res.json({ audio: audio.toString("base64"), mime: "audio/mpeg", words });
     } catch (err) {
       const status = err.status && Number.isInteger(err.status) ? err.status : 500;
       res.status(status).json({ error: err.message || "Error de voz" });
