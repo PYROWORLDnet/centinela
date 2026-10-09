@@ -4,8 +4,6 @@
  * Solo hechos con fuente. Sin fuente = sin nodo.
  */
 
-import { CUPULA_NODE } from "./cupula.js";
-
 const SRC = {
   diarioLibreDuquesa: {
     label: "Diario Libre — Duquesa, un vertedero fuera de control",
@@ -35,10 +33,25 @@ const SRC = {
     label: "Consejo Estatal del Azúcar (CEA) — origen documental de Duquesa",
     url: "https://cea.gob.do/",
   },
+  diarioLibreLaudo: {
+    label: "Diario Libre — Estado deberá pagar más de US$43 millones a Lajun (oct 2023)",
+    url: "https://www.diariolibre.com/actualidad/nacional/2023/10/07/estado-dominicano-debera-pagar-mas-de-43-millones-a-lajun/2484487",
+  },
+  diarioLibreTitulos: {
+    label: "Diario Libre — Lajun gana arbitraje con títulos de origen fraudulento (oct 2023)",
+    url: "https://www.diariolibre.com/actualidad/justicia/2023/10/11/lajun-gana-arbitraje-con-titulos-de-origen-fraudulento/2488531",
+  },
+  elCaribeLajun: {
+    label: "El Caribe — Revenden Duquesa: dueños de Lajun",
+    url: "https://www.elcaribe.com.do/panorama/pais/revenden-duquesa-por-135-millones-dolares-empresas/",
+  },
+  elCaribeAdnServices: {
+    label: "El Caribe — La basura se acumula en el GSD (propietario de ADN Services)",
+    url: "https://www.elcaribe.com.do/panorama/pais/la-basura-se-acumula-montones-gsd/",
+  },
 };
 
 export const BASURA_NODES = [
-  CUPULA_NODE,
   {
     id: "c-mecanismo-basura",
     name: "Quién cobra la basura",
@@ -69,7 +82,7 @@ export const BASURA_NODES = [
     kind: "estado",
     role: "Emergencia · compras por excepción",
     summary:
-      "Decreto presidencial que declara emergencia nacional en la gestión de residuos sólidos del Distrito Nacional y habilita contrataciones de excepción (Ley 340-06 / Reglamento 416-23). Es la llave jurídica que permite adjudicar sin licitación ordinaria.",
+      "Decreto presidencial (abril 2025) que declara emergencia nacional en la gestión de residuos sólidos del Distrito Nacional y habilita contrataciones de excepción (Ley 340-06 / Reglamento 416-23). Panorama: la emergencia se declaró por 60 días, pero el contrato a las mismas dos empresas es por 36 meses y sin concurso.",
     mechanism: "La emergencia acorta el concurso; el contrato define quién cobra años.",
     weight: 88,
     source: SRC.diarioLibreContratos,
@@ -82,7 +95,7 @@ export const BASURA_NODES = [
     role: "Recolectora · circunscripciones 1 y 3",
     aliases: ["adn services"],
     summary:
-      "Empresa que ha operado recolección en el DN. Reportes (RDE Digital / Panorama) atribuyen en el proceso de excepción ~RD$1,680 MM para circunscripciones 1 y 3, dentro de un paquete total ~RD$2,653 MM a 36 meses junto a DSC.",
+      "Empresa que ha operado recolección en el DN por años. El Caribe identifica como su propietario a Andrés Ayala. Reportes (RDE Digital / Panorama) atribuyen en el proceso de excepción ~RD$1,680 MM para circunscripciones 1 y 3, dentro de un paquete total ~RD$2,653 MM a 36 meses junto a DSC.",
     weight: 86,
     source: SRC.rdeDigital,
     themes: ["basura"],
@@ -119,7 +132,7 @@ export const BASURA_NODES = [
     role: "Opera / reclama Duquesa",
     aliases: ["lajun", "lajún", "lajun corporation"],
     summary:
-      "Empresa que asegura ser propietaria/operadora del área de Duquesa. Diario Libre documenta el origen: en los 90s el CEA, por decreto, facilitó al Ayuntamiento DN el uso del terreno; décadas después el control privado y las irregularidades documentadas sobre la tierra son el conflicto de fondo.",
+      "Administró Duquesa de 2007 a 2017 por contrato con el Ayuntamiento de Santo Domingo Norte. Desde 2013 su accionista mayoritario (90%) es el jamaiquino Michael Lee-Chin (Portland Holdings), con Luis José Asilis (Grupo Metro), que compraron también el terreno (Diario Libre; El Caribe). El CEA dijo en 2017 que esa tierra era del Estado, y las cámaras del Congreso certificaron que la aprobación de la venta no reposa en sus archivos (Diario Libre).",
     weight: 90,
     source: SRC.diarioLibreDuquesa,
     themes: ["basura"],
@@ -144,6 +157,19 @@ export const BASURA_NODES = [
       "Ministerio que opina sobre el vertedero. Prensa: proyectó que el cierre técnico de Duquesa podría tomar 5–6 años — argumento usado en la cadena de justificación de la emergencia y la continuidad operativa.",
     weight: 72,
     source: SRC.diarioLibreContratos,
+    themes: ["basura"],
+  },
+  {
+    id: "c-laudo-duquesa",
+    name: "El laudo de Duquesa",
+    kind: "estado",
+    role: "US$43.6 MM que paga el Estado",
+    aliases: ["laudo lajun", "arbitraje duquesa", "lee-chin"],
+    summary:
+      "En octubre de 2023 un tribunal arbitral (CNUDMI/UNCITRAL) condenó al Estado dominicano a pagar US$43,590,090 a Michael Lee-Chin por el caso Duquesa (Diario Libre). Diario Libre recuerda que desde 2018 se advirtió del fraude en los títulos y que ni el CEA, ni la Procuraduría, ni el Congreso llevaron el caso a la justicia local. Acción Verde calcula que el pueblo pagará más de RD$2,500 millones.",
+    mechanism: "La tierra era del Estado; la factura también.",
+    weight: 94,
+    source: SRC.diarioLibreLaudo,
     themes: ["basura"],
   },
   {
@@ -172,5 +198,9 @@ export const BASURA_EDGES = [
   { source: "i-medio-ambiente", target: "c-duquesa", type: "supervisa", note: "Cierre técnico multi-año", sourceRef: SRC.diarioLibreContratos },
   { source: "i-adn", target: "c-vecino", type: "sirve", sourceRef: SRC.adn },
   { source: "c-duquesa", target: "c-vecino", type: "afecta", sourceRef: SRC.diarioLibreDuquesa },
-  { source: "c-mecanismo-basura", target: "c-la-cupula", type: "atraviesa", sourceRef: SRC.diarioLibreDuquesa },
+  { source: "e-lajun", target: "c-laudo-duquesa", type: "gana", note: "US$43.6 MM (2023)", sourceRef: SRC.diarioLibreLaudo },
+  { source: "c-laudo-duquesa", target: "c-vecino", type: "cobra_a", note: "Lo paga el presupuesto", sourceRef: SRC.diarioLibreTitulos },
+  { source: "i-cea-basura", target: "c-laudo-duquesa", type: "no_actuo", note: "Títulos cuestionados sin acción judicial (prensa)", sourceRef: SRC.diarioLibreTitulos },
+  { source: "c-decreto-213-25", target: "e-adn-services", type: "renueva", note: "Emergencia de 60 días, contrato de 36 meses", sourceRef: SRC.panorama },
+  { source: "c-nucleo", target: "c-laudo-duquesa", type: "no_se_toca", note: "Nadie fue a la justicia; paga el pueblo", sourceRef: SRC.diarioLibreTitulos },
 ];
