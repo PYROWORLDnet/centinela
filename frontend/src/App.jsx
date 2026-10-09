@@ -1,10 +1,7 @@
-import { Suspense, lazy, useEffect } from "react";
+import { useEffect } from "react";
 import CuratedView from "./views/CuratedView";
 import ChromeLayoutLab from "./views/ChromeLayoutLab";
 import { themeFromPath, usePathname } from "./lib/useCurated";
-
-const FilmView = lazy(() => import("./film/FilmView"));
-const EpisodeView = lazy(() => import("./film/episode/EpisodeView"));
 
 export default function App() {
   const { path, navigate } = usePathname();
@@ -25,24 +22,6 @@ export default function App() {
 
   if (isLayouts) {
     return <ChromeLayoutLab onBack={() => navigate("/todo")} />;
-  }
-
-  const episodeMatch = (path || "").match(/^\/episodio(?:\/([^/?#]+))?/);
-  if (episodeMatch) {
-    return (
-      <Suspense fallback={null}>
-        <EpisodeView episodeId={episodeMatch[1] || "guia"} />
-      </Suspense>
-    );
-  }
-
-  const filmMatch = (path || "").match(/^\/film(?:\/([^/?#]+))?/);
-  if (filmMatch) {
-    return (
-      <Suspense fallback={null}>
-        <FilmView themeId={filmMatch[1] || "pensiones"} navigate={navigate} />
-      </Suspense>
-    );
   }
 
   return <CuratedView themeId={theme || "todo"} navigate={navigate} />;
