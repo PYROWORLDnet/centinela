@@ -29,6 +29,7 @@ const THEME_NAV = [
   { id: "transporte", label: "Transporte", path: "/transporte" },
   { id: "basura", label: "Basura", path: "/basura" },
   { id: "juego", label: "Juego", path: "/juego" },
+  { id: "protesta", label: "Protesta", path: "/protesta" },
 ];
 
 const THEME_TODO = THEME_NAV[0];
