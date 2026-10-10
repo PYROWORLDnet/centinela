@@ -61,6 +61,10 @@ const SRC = {
     label: "Acento — gasoil +RD$3 y subsidio RD$1,770.65 MM (26 sep–2 oct 2026)",
     url: "https://acento.com.do/economia/que-acordaron-los-transportistas-con-el-gobierno-para-no-subir-los-pasajes-9760541.html",
   },
+  combustiblesOct: {
+    label: "Noticias SIN — premium +RD$5 y gasoil óptimo +RD$12; subsidio RD$1,525.4 MM (10–16 oct 2026)",
+    url: "https://noticiassin.com/pais/nacional/2026/10/09/gobierno-sube-gasolina-premium-y-gasoil-optimo-en-rd-2140166/",
+  },
   mesaTransporte: {
     label: "Presidencia — mesa permanente con transportistas para evitar alza del pasaje",
     url: "https://www.presidencia.gob.do/noticias/gobierno-dispone-mesa-permanente-con-transportistas-para-mitigar-alza-de-combustibles-y",
@@ -133,10 +137,10 @@ export const PROTESTA_NODES = [
     role: "Precio semanal · subsidio pagado por todos",
     aliases: ["gasolina 2026", "gasoil", "alza combustibles"],
     summary:
-      "Con la tensión en Medio Oriente de 2026, la gasolina regular llegó a RD$301.50 el galón en mayo (Listín). Para la semana del 26 de septiembre al 2 de octubre el gasoil regular subió RD$3, hasta RD$270.80, y el Gobierno anunció RD$1,770.65 millones de subsidio solo esa semana (Acento). El alza llega al bolsillo y el subsidio al presupuesto: los dos los paga el contribuyente.",
+      "Con la tensión en Medio Oriente de 2026, la gasolina regular estaba en RD$301.50 el galón en mayo (Listín) y en octubre ya está en RD$317.50. Para la semana del 26 de septiembre al 2 de octubre el gasoil regular subió RD$3 y el subsidio fue de RD$1,770.65 millones (Acento). El 9 de octubre, otra vez: premium +RD$5 (RD$358.10) y gasoil óptimo +RD$12 (RD$318.10) para la semana del 10 al 16, con RD$1,525.4 millones de subsidio (MICM vía Noticias SIN). El alza llega al bolsillo y el subsidio al presupuesto: los dos los paga el contribuyente.",
     mechanism: "Sube poco cada semana: nunca hay un día que indigne lo suficiente.",
     weight: 88,
-    source: SRC.combustiblesSep,
+    source: SRC.combustiblesOct,
     themes: ["protesta"],
   },
   {
@@ -332,8 +336,8 @@ export const PROTESTA_EDGES = [
     source: "i-micm",
     target: "c-alza-combustibles-2026",
     type: "anuncia",
-    note: "Precios semanales",
-    sourceRef: SRC.combustiblesSep,
+    note: "Precios semanales · 9 oct 2026: premium +RD$5, gasoil óptimo +RD$12",
+    sourceRef: SRC.combustiblesOct,
   },
   {
     source: "c-alza-combustibles-2026",

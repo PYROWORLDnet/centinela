@@ -35,7 +35,7 @@ export const PROTESTA_TOUR = {
       id: 2,
       line: "Los del megáfono: mucho video, cero calle.",
       detail:
-        "Los influencers nos informan cada alza. En mayo de 2026 la gasolina regular estaba en RD$301.50 el galón. A finales de septiembre el gasoil subió RD$3 más, y esa semana el subsidio costó RD$1,770 millones que pagamos todos. ¿Y qué hacen? El video, el meme, el comentario. La semana siguiente, otra alza y otra vez lo mismo.",
+        "Los influencers nos informan cada alza. En mayo de 2026 la gasolina regular estaba en RD$301.50 el galón; hoy está en RD$317.50. Y el 9 de octubre, otra vez: premium cinco pesos más, a RD$358.10, y gasoil óptimo doce pesos más, a RD$318.10. Solo esta semana el subsidio cuesta RD$1,525 millones, que pagamos todos. ¿Y qué hacen? El video, el meme, el comentario. La semana que viene, otra alza y otra vez lo mismo.",
       nodeIds: ["c-queja-digital", "c-alza-combustibles-2026", "i-micm", "c-subsidio", "c-contribuyente"],
       panelId: "c-queja-digital",
     },
