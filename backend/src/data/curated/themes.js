@@ -25,6 +25,7 @@ export const THEMES = [
   { id: "basura", label: "Basura", ready: true, pills: [] },
   { id: "juego", label: "Juego", ready: true, pills: [] },
   { id: "protesta", label: "Protesta", ready: true, pills: [] },
+  { id: "fachada", label: "Fachada democrática", ready: true, pills: [] },
 ];
 
 export const THEME_COLORS = {

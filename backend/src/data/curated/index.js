@@ -21,6 +21,7 @@ import { TRANSPORTE_NODES, TRANSPORTE_EDGES } from "./transporte.js";
 import { BASURA_NODES, BASURA_EDGES } from "./basura.js";
 import { JUEGO_NODES, JUEGO_EDGES } from "./juego.js";
 import { PROTESTA_NODES, PROTESTA_EDGES } from "./protesta.js";
+import { FACHADA_NODES, FACHADA_EDGES } from "./fachada.js";
 import { NUCLEO_NODES, NUCLEO_EDGES } from "./nucleo.js";
 import { TODO_TOUR } from "./todoTour.js";
 import { getPensionesTour } from "./pensionesTour.js";
@@ -44,6 +45,7 @@ import { TRANSPORTE_TOUR } from "./transporteTour.js";
 import { BASURA_TOUR } from "./basuraTour.js";
 import { JUEGO_TOUR } from "./juegoTour.js";
 import { PROTESTA_TOUR } from "./protestaTour.js";
+import { FACHADA_TOUR } from "./fachadaTour.js";
 import { NUCLEO_TOUR } from "./nucleoTour.js";
 import { CUPULA_ID, CUPULA_NODE, queryHitsCupula } from "./cupula.js";
 
@@ -71,6 +73,7 @@ const DATASETS = {
   basura: { nodes: BASURA_NODES, edges: BASURA_EDGES },
   juego: { nodes: JUEGO_NODES, edges: JUEGO_EDGES },
   protesta: { nodes: PROTESTA_NODES, edges: PROTESTA_EDGES },
+  fachada: { nodes: FACHADA_NODES, edges: FACHADA_EDGES },
 };
 
 const TOURS = {
@@ -97,6 +100,7 @@ const TOURS = {
   basura: BASURA_TOUR,
   juego: JUEGO_TOUR,
   protesta: PROTESTA_TOUR,
+  fachada: FACHADA_TOUR,
 };
 
 function degreeMap(edges) {
