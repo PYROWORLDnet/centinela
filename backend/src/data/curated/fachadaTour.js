@@ -76,7 +76,7 @@ export const FACHADA_TOUR = {
       id: 7,
       line: "Dos varas de medir.",
       detail:
-        "La red que robaba municiones dentro de la Policía, la Operación Pandora, dejó un desfalco de RD$92 millones, según el Ministerio Público. Dos años después hay dos condenas por acuerdo: la más alta, 5 años de arresto domiciliario. El coronel que custodiaba las armas apenas fue enviado a juicio en septiembre. Para el que se involucre en una protesta que termine en violencia, 30 a 40 años escritos. Para el que le roba balas al Estado, la casa. La vara dura es para abajo.",
+        "La red que robaba municiones dentro de la Policía, la Operación Pandora, dejó un desfalco de RD$92 millones, según el Ministerio Público. Dos años después hay dos condenas por acuerdo: la más alta, 5 años de arresto domiciliario. El coronel que custodiaba las armas apenas fue enviado a juicio en septiembre, y lo espera en libertad, con fianza. Para el que se involucre en una protesta que termine en violencia, 30 a 40 años escritos. Para el que le roba balas al Estado, la casa. La vara dura es para abajo.",
       nodeIds: ["c-dos-varas", "c-operacion-pandora", "c-art-384", "c-pueblo"],
       panelId: "c-dos-varas",
     },
