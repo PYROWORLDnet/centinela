@@ -212,7 +212,7 @@ export const FACHADA_NODES = [
     role: "Robo de municiones de la Policía · 2 años después",
     aliases: ["pandora", "caso pandora", "robo de municiones"],
     summary:
-      "En noviembre de 2024 se desmanteló una red dentro de la Intendencia de Armas de la Policía que robaba y vendía municiones. El Ministerio Público calcula el desfalco en RD$92,191,732.92 y, según el expediente, parte iba a bandas en Haití. Dos años después solo hay dos condenas, por acuerdo: un segundo teniente con 5 años de arresto domiciliario y otra imputada con 3 años (la mitad en su casa y la mitad suspendidos). El coronel que custodiaba las armas apenas fue enviado a juicio en septiembre de 2026, y a otro imputado le archivaron los cargos en octubre.",
+      "En noviembre de 2024 se desmanteló una red dentro de la Intendencia de Armas de la Policía que robaba y vendía municiones. El Ministerio Público calcula el desfalco en RD$92,191,732.92 y, según el expediente, parte iba a bandas en Haití. Dos años después solo hay dos condenas, por acuerdo: un imputado con 5 años de prisión domiciliaria (dueño de un negocio de armas que el tribunal clausuró) y otra imputada con 3 años (la mitad en su casa y la mitad suspendidos). El coronel que custodiaba las armas apenas fue enviado a juicio en septiembre de 2026, y lo espera en libertad: el tribunal le cambió la prisión preventiva por una fianza de RD$500 mil, igual que a otros cuatro acusados. A otro imputado le archivaron los cargos en octubre.",
     mechanism: "Robar balas del Estado: 5 años en la casa, y el juicio grande todavía por empezar.",
     weight: 92,
     source: SRC.pandoraJuicio,
