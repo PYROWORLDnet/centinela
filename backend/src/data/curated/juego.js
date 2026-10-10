@@ -5,8 +5,6 @@
  * Nota: el tema "banca" es banca financiera; este es juego de azar.
  */
 
-import { CUPULA_NODE } from "./cupula.js";
-
 const SRC = {
   loteria: {
     label: "Lotería Nacional Dominicana",
@@ -40,17 +38,44 @@ const SRC = {
     label: "DGII — Dirección General de Impuestos Internos",
     url: "https://dgii.gov.do/",
   },
+  diarioLibreDiputados: {
+    label: "Diario Libre — nueve diputados dueños de bancas (declaraciones juradas)",
+    url: "https://www.diariolibre.com/actualidad/politica/hay-nueve-diputados-duenos-de-bancas-de-apuestas-y-muy-millonarios-HE24463455",
+  },
+  nDiputados: {
+    label: "N Digital / Nuria — 8 diputados propietarios de consorcios de bancas (2022)",
+    url: "https://n.com.do/2022/03/20/estos-son-los-8-diputados-que-tambien-son-propietarios-de-consorcios-de-bancas-de-loterias/",
+  },
+  nLoteka: {
+    label: "N Digital / Nuria — Loteka, contratos de Hacienda y Sajama (2022)",
+    url: "https://n.com.do/2022/03/27/loteka-por-anos-pago-impuestos-por-debajo-de-lo-que-establece-ley-donald-guerrero-fue-su-dueno/",
+  },
+  panoramaAmos: {
+    label: "Panorama — Los amos del azar (abr 2025)",
+    url: "https://panorama.com.do/los-amos-del-azar-el-imperio-silencioso-detras-de-un-negocio-lucrativo/",
+  },
+  panoramaLey: {
+    label: "Panorama — Proyecto de ley de juegos de azar: lo que no toca (jun 2025)",
+    url: "https://panorama.com.do/proponen-ley-sobre-juegos-de-azar-tras-reportajes-del-periodico-panorama-pero-la-banca-sigue-ganando/",
+  },
+  cdnEntramado: {
+    label: "CDN Reporte Especial — Bancas ilegales y poder político",
+    url: "https://cdn.com.do/investigacion/reporte-especial/bancas-ilegales-y-el-poder-politico-mantienen-entramado-que-afecta-al-fisco/",
+  },
+  casinosConcesionarios: {
+    label: "Dirección de Casinos y Juegos de Azar — concesionarios de loterías electrónicas",
+    url: "https://www.casinos.gob.do/juegos-autorizados/concesionarios-de-loterias-electronicas/",
+  },
 };
 
 export const JUEGO_NODES = [
-  CUPULA_NODE,
   {
     id: "c-mecanismo-juego",
     name: "Quién controla el juego",
     kind: "estado",
     role: "Lotería · bancas · regularización",
     summary:
-      "El juego de azar en RD no es solo “entretenimiento”. Es un mapa de concesiones, puntos de venta, federaciones de bancas y un Estado que intenta regularizar lo que ya opera. La Lotería Nacional concentra sorteos oficiales; Fenabanca agrupa dueños de bancas; los decretos de regularización revelan la brecha entre lo legal y lo que realmente existe en la esquina.",
+      "El juego de azar en RD no es solo “entretenimiento”. Es un mapa de concesiones, puntos de venta, federaciones de bancas y un Estado que intenta regularizar lo que ya opera. La Lotería Nacional concentra sorteos oficiales; loterías electrónicas privadas (Leidsa, Loteka, Lotedom…) dan sombrilla a consorcios de bancas; varios de esos consorcios son de diputados y senadores que votan las leyes del sector. Los decretos de regularización revelan la brecha entre lo legal y lo que realmente existe en la esquina.",
     mechanism: "Quien licencia la banca decide quién cobra la esperanza del barrio.",
     weight: 100,
     source: SRC.presidencia19726,
@@ -137,6 +162,57 @@ export const JUEGO_NODES = [
     source: SRC.loteria,
     themes: ["juego"],
   },
+  {
+    id: "c-curules-banca",
+    name: "Curules con banca",
+    kind: "partido",
+    role: "Legisladores dueños de consorcios · PRM, PLD, FP",
+    aliases: ["diputados banqueros", "legisladores bancas", "bancas joselito", "consorcio eduard"],
+    summary:
+      "Según sus propias declaraciones juradas (Diario Libre; N Digital / Nuria, 2022), al menos ocho o nueve diputados eran a la vez dueños de consorcios de bancas, de los tres partidos grandes: Orlando Martínez (PRM, Bancas OM), Alexander Javier Cuevas (PRM, Alex Sport), Manuel Florián (PRM, Los Mellizos), Juan Carlos Echavarría (PLD, Bancas Joselito / Negosur), Carlos Gil (PLD, La Dinámica), Eduard Espiritusanto (FP, Consorcio Eduard; hoy senador). Panorama (2025) suma exlegisladores como Pedro Alegría (Leidsa) y Antonio Cruz Torres. Fenabanca ha denunciado bancas sin regularizar en algunos de esos consorcios: son denuncias, no sentencias.",
+    mechanism: "El que vende el chance también vota la ley del chance.",
+    weight: 96,
+    source: SRC.diarioLibreDiputados,
+    themes: ["juego"],
+  },
+  {
+    id: "e-loteka-fixtil",
+    name: "Loteka · Fixtil",
+    kind: "empresa",
+    role: "Lotería electrónica · matriz con acciones al portador",
+    aliases: ["loteka", "fixtil", "fixtil corporation"],
+    summary:
+      "Loteka es concesionaria de lotería electrónica (Dirección de Casinos). Su matriz, Fixtil Corporation LTD, está constituida en el extranjero con acciones al portador: no se puede saber con certeza quiénes son sus dueños (Panorama, 2025). Aun así, legisladores declaran acciones en Fixtil: Echavarría reportó US$14 mil (Diario Libre) y Espiritusanto también se declara accionista (Panorama). Nuria (2022) mostró un contrato en el que Sajama, presidida por Donald Guerrero —luego ministro de Hacienda—, figuraba como propietaria de la marca Loteka.",
+    mechanism: "Si el dueño es al portador, el dueño es nadie… y es alguien.",
+    weight: 92,
+    source: SRC.panoramaAmos,
+    themes: ["juego"],
+  },
+  {
+    id: "e-lotedom",
+    name: "Lotedom · Bancas OM",
+    kind: "empresa",
+    role: "Lotería electrónica · ~6,700 bancas concesionadas",
+    aliases: ["lotedom", "bancas om", "orlando martínez"],
+    summary:
+      "Lotedom es concesionaria de lotería electrónica (Dirección de Casinos). Panorama (2025): su accionista mayoritario es el diputado Orlando Martínez (PRM), dueño también de Bancas OM; Lotedom figura con más de 6,700 bancas y, según esos registros, al menos 1,381 sin los permisos requeridos (señalamiento periodístico, no sentencia).",
+    mechanism: "Concesión, consorcio y curul en la misma persona.",
+    weight: 90,
+    source: SRC.panoramaAmos,
+    themes: ["juego"],
+  },
+  {
+    id: "c-ley-juego",
+    name: "La ley que no toca",
+    kind: "estado",
+    role: "Proyecto de ley de juegos de azar (Hacienda, 2025)",
+    summary:
+      "Hacienda sometió al Congreso un proyecto para crear una Dirección General de Juegos de Azar, licencias y sanciones. Panorama (jun 2025) señala lo que no hace: no pone tope de bancas por consorcio, no prohíbe que diputados o senadores sean dueños de bancas, no prohíbe sociedades con acciones al portador. La votan, entre otros, legisladores que son dueños del negocio.",
+    mechanism: "El regulado y el regulador se sientan en la misma curul.",
+    weight: 89,
+    source: SRC.panoramaLey,
+    themes: ["juego"],
+  },
 ];
 
 export const JUEGO_EDGES = [
@@ -150,5 +226,13 @@ export const JUEGO_EDGES = [
   { source: "i-loteria-nacional", target: "c-jugador", type: "sortea_para", sourceRef: SRC.loteria },
   { source: "c-brecha-bancas", target: "c-jugador", type: "captura", sourceRef: SRC.rccFenabanca },
   { source: "i-dgii-juego", target: "c-brecha-bancas", type: "fiscaliza", sourceRef: SRC.presidencia19726 },
-  { source: "c-mecanismo-juego", target: "c-la-cupula", type: "atraviesa", sourceRef: SRC.presidencia19726 },
+  { source: "c-mecanismo-juego", target: "c-curules-banca", type: "incluye", note: "Dueños de bancas con curul", sourceRef: SRC.diarioLibreDiputados },
+  { source: "c-curules-banca", target: "e-loteka-fixtil", type: "accionistas_declarados", note: "Acciones en Fixtil en declaraciones juradas", sourceRef: SRC.diarioLibreDiputados },
+  { source: "c-curules-banca", target: "e-lotedom", type: "controla", note: "Accionista mayoritario: diputado Orlando Martínez", sourceRef: SRC.panoramaAmos },
+  { source: "c-curules-banca", target: "c-ley-juego", type: "vota", note: "Los dueños votan la ley de su negocio", sourceRef: SRC.panoramaLey },
+  { source: "o-fenabanca", target: "c-curules-banca", type: "denuncia", note: "Bancas sin regularizar en consorcios de legisladores (denuncia)", sourceRef: SRC.panoramaAmos },
+  { source: "e-loteka-fixtil", target: "c-brecha-bancas", type: "sombrilla", note: "Consorcios bajo su concesión, muchos sin regularizar (prensa)", sourceRef: SRC.panoramaAmos },
+  { source: "e-lotedom", target: "c-brecha-bancas", type: "sombrilla", note: "≥1,381 bancas sin permisos (prensa)", sourceRef: SRC.panoramaAmos },
+  { source: "c-ley-juego", target: "c-jugador", type: "deja_igual", note: "Sin tope, sin incompatibilidad, sin transparencia de dueños", sourceRef: SRC.panoramaLey },
+  { source: "i-hacienda-juego", target: "c-ley-juego", type: "somete", sourceRef: SRC.panoramaLey },
 ];

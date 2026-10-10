@@ -3,8 +3,6 @@
  * Quién mueve la ciudad: Estado (OMSA/Metro) vs federaciones que controlan rutas.
  */
 
-import { CUPULA_NODE } from "./cupula.js";
-
 const SRC = {
   acento: {
     label: "Acento — transporte público: lucha por un sector de RD$18,250 MM/año",
@@ -34,10 +32,29 @@ const SRC = {
     label: "Ley 63-17 — Movilidad, Transporte Terrestre, Tránsito y Seguridad Vial",
     url: "https://intrant.gob.do/transparencia/index.php/base-legal/leyes",
   },
+  senadoMarte: {
+    label: "Senado — Casimiro Antonio Marte, senador Santiago Rodríguez 2024-2028",
+    url: "https://www.senadord.gob.do/provincia/santiago-rodriguez/",
+  },
+  dumMarte: {
+    label: "De Último Minuto — Marte: “si me ponen a elegir entre el Senado y mis autobuses…”",
+    url: "https://deultimominuto.com/nacionales/antonio-marte-reclama-mayor-participacion-de-autobuses-conatra-en-el-transporte-escolar/",
+  },
+  atentoConatra: {
+    label: "Atento — Conatra reelige a Antonio Marte (nov 2024)",
+    url: "https://atento.com.do/2024/11/30/conatra-reelige-antonio-marte-como-nuevo-presidente/",
+  },
+  hoyHubieres: {
+    label: "Hoy — Conatra y el diputado Juan Hubieres (Fenatrano) sobre subsidios (2016)",
+    url: "https://hoy.com.do/economia/conatra-esta-de-acuerdo-con-eliminar-subsidio-combustibles-pero-subira-el-pasaje_656720.html",
+  },
+  acentoSubsidio: {
+    label: "Acento — Hubieres: RD$3 mil MM al transporte vs RD$30 mil MM a grandes empresas (2025)",
+    url: "https://acento.com.do/economia/eliminando-todos-los-subsidios-de-combustible-se-pone-fin-a-la-mafia-que-genera-mas-que-el-narcotrafico-9565818.html",
+  },
 };
 
 export const TRANSPORTE_NODES = [
-  CUPULA_NODE,
   {
     id: "c-mecanismo-transporte",
     name: "Quién mueve la ciudad",
@@ -144,6 +161,44 @@ export const TRANSPORTE_NODES = [
     source: SRC.acento,
     themes: ["transporte"],
   },
+  {
+    id: "p-antonio-marte",
+    name: "Antonio Marte",
+    kind: "partido",
+    role: "Presidente de Conatra · senador · dueño de autobuses",
+    aliases: ["antonio marte", "casimiro antonio marte", "grupo sidra", "tarea bus", "aetra bus", "ppg"],
+    summary:
+      "Según la ficha oficial del Senado: presidente de Conatra, presidente de Grupo Sidra (Tarea Bus, Aetra Bus y otras), presidente del Partido Primero La Gente (PPG) y senador por Santiago Rodríguez en 2020-2024 y 2024-2028. En 2024 dijo en radio: “Si a mí me pusieran a elegir entre el Senado y los autobuses que tengo, yo elijo a los autobuses” (De Último Minuto). También dijo que Conatra fue “la primera empresa aliada al gobierno para los corredores” (Atento).",
+    mechanism: "El gremio, la empresa, el partido y la curul en una sola persona.",
+    weight: 96,
+    source: SRC.senadoMarte,
+    themes: ["transporte"],
+  },
+  {
+    id: "p-juan-hubieres",
+    name: "Juan Hubieres",
+    kind: "partido",
+    role: "Presidente de Fenatrano · exdiputado",
+    aliases: ["juan hubieres", "hubieres"],
+    summary:
+      "Presidente de Fenatrano, la federación con más unidades licenciadas. En 2016 el periódico Hoy lo presentaba como diputado y presidente de Fenatrano a la vez. Hoy denuncia, sin que sea sentencia, que el subsidio al combustible favorece a grandes empresas y que parte se revende en el mercado negro.",
+    mechanism: "Los dos gremios más grandes han tenido su silla en el Congreso.",
+    weight: 90,
+    source: SRC.hoyHubieres,
+    themes: ["transporte"],
+  },
+  {
+    id: "c-subsidio-combustible",
+    name: "El subsidio que no ves",
+    kind: "estado",
+    role: "Combustible subsidiado · quién se lleva la parte grande",
+    summary:
+      "Según Juan Hubieres (Acento, 2025): el transporte de carga y pasajeros recibe unos RD$3 mil millones en subsidio de gasoil, mientras el gran sector empresarial recibe unos RD$30 mil millones, sin contar las generadoras eléctricas; menciona a Barrick Gold, zonas de turismo y zonas francas. Es una denuncia de parte interesada, pero coincide con el mapa de Centinela: el combustible y la electricidad son piezas del Núcleo.",
+    mechanism: "A la guagua le dan la propina; la parte grande va a otra mesa.",
+    weight: 88,
+    source: SRC.acentoSubsidio,
+    themes: ["transporte"],
+  },
 ];
 
 export const TRANSPORTE_EDGES = [
@@ -160,5 +215,11 @@ export const TRANSPORTE_EDGES = [
   { source: "e-omsa", target: "c-pasajero", type: "transporta", sourceRef: SRC.diarioLibreOmsa },
   { source: "c-corredores", target: "c-pasajero", type: "cobra", sourceRef: SRC.diarioLibre2026 },
   { source: "i-opret", target: "c-pasajero", type: "transporta", note: "Metro / Teleférico SD", sourceRef: SRC.opret },
-  { source: "c-mecanismo-transporte", target: "c-la-cupula", type: "atraviesa", note: "Rutas y permisos tocan el mismo centro de poder", sourceRef: SRC.acento },
+  { source: "p-antonio-marte", target: "o-conatra", type: "preside", sourceRef: SRC.senadoMarte },
+  { source: "p-juan-hubieres", target: "o-fenatrano", type: "preside", sourceRef: SRC.hoyHubieres },
+  { source: "o-conatra", target: "c-corredores", type: "aliado_del_gobierno", note: "“Primera empresa aliada para los corredores”", sourceRef: SRC.atentoConatra },
+  { source: "c-subsidio-combustible", target: "o-fenatrano", type: "reparte", note: "~RD$3 mil MM al transporte (según Hubieres)", sourceRef: SRC.acentoSubsidio },
+  { source: "c-subsidio-combustible", target: "c-pasajero", type: "lo_paga", sourceRef: SRC.acentoSubsidio },
+  { source: "c-nucleo", target: "p-antonio-marte", type: "no_se_toca", note: "El dueño de autobuses vota en el Senado", sourceRef: SRC.senadoMarte },
+  { source: "c-nucleo", target: "c-subsidio-combustible", type: "no_se_toca", note: "Combustible y generadoras: el perímetro", sourceRef: SRC.acentoSubsidio },
 ];
