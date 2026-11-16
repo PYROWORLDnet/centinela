@@ -1,0 +1,47 @@
+name: Actualizar datos oficiales
+
+# Cada día revisa si DIGEPRES, la DGII o el registro de contrataciones publicaron algo nuevo.
+# Solo hace commit si el archivo cambió Y pasaron todas las verificaciones
+# (si algo no cuadra, el script sale con error y no se publica nada).
+on:
+  schedule:
+    - cron: "17 11 * * *" # 7:17 a. m. hora de RD
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: actualizar-datos
+  cancel-in-progress: false
+
+jobs:
+  actualizar:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: backend/package-lock.json
+
+      - name: Instalar
+        run: npm ci --prefix backend
+
+      - name: Descargar, verificar y generar datos
+        run: npm run actualizar:refresh --prefix backend
+
+      - name: Publicar si cambió
+        run: |
+          if git diff --quiet -- backend/src/data/finanzas/datos.json; then
+            echo "Sin cambios en los datos."
+            exit 0
+          fi
+          git config user.name "centinela-bot"
+          git config user.email "centinela-bot@users.noreply.github.com"
+          git add backend/src/data/finanzas/datos.json
+          git commit -m "Datos: actualización automática desde fuentes oficiales"
+          git push
