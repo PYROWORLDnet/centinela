@@ -72,7 +72,7 @@ institucion_alias (fuente, codigo_fuente, nombre_fuente,
 
 - **Paso 1. Unión por RNC** cuando la fuente lo traiga. Hay que verificar si el comprador en OCDS (`parties[role=buyer].identifier`) trae el RNC de la institución **[VERIFICAR]**. Si lo trae, cubre gran parte de los casos con poco esfuerzo.
 - **Paso 2. Unión por nombre normalizado:** sin tildes, en minúsculas, sin "Ministerio de", "Dirección General de" ni siglas. Se acepta automáticamente solo con similitud alta (por ejemplo, trigramas ≥ 0,9 con `pg_trgm`). Todo lo demás va a una cola de revisión.
-- **Paso 3. Revisión humana.** Cada equivalencia queda con `verificado_por`. Va en el mismo espíritu de "sin fuente verificable, no entra" de `CONTRIBUTING.md`: la tabla se publica y se puede corregir por Pull Request.
+- **Paso 3. Revisión humana.** Cada equivalencia queda con `verificado_por`. Va en el mismo espíritu de "sin fuente verificable, no entra": cada equivalencia queda documentada y se puede corregir.
 - Las unidades de compra sin pareja en DIGEPRES se marcan `ambito = 'fuera_presupuesto_central'`. No se fuerzan.
 
 ### 3.2 Montos
@@ -204,7 +204,7 @@ Todo con fuente: cada fila de `fact_*` guarda la URL del recurso o la consulta d
 | 10 | CKAN 2.6.2 viejo, portal `backoffice` inestable, posible bloqueo de clientes que no son navegador | Medio | Reintentos, espejo local del último archivo bueno, User-Agent y Referer como ya hace `downloadDgcp.js` |
 | 11 | Correcciones de datos pasados por parte de la fuente | Bajo o medio | Guardar el crudo con hash y fecha; reprocesar; registrar los cambios |
 | 12 | Los datasets vienen hasta 2025; 2026 puede tardar en publicarse | Medio para el "tiempo real" | Mostrar el atraso de cada fuente; para el año en curso solo hay DGCP al día |
-| 13 | Licencias de los datos de origen | Bajo | Revisar la licencia de cada dataset en CKAN; Centinela ya separa código (MIT) y datos (ODbL) |
+| 13 | Licencias de los datos de origen | Bajo | Revisar las condiciones de uso de cada dataset en CKAN y citarlas en la app |
 
 ---
 

@@ -7,5 +7,6 @@
   },
   "scripts": {
     "build:vercel": "node scripts/vercel-build.mjs"
-  }
+  },
+  "license": "UNLICENSED"
 }

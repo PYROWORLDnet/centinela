@@ -3,8 +3,8 @@
  * Diseñado para un cron privado (Railway u otro), una vez al día, luego sale.
  *
  * No incluye credenciales. Requiere DATABASE_URL o PG* en backend/.env
- * (archivo local, nunca en el repo). Los contribuyentes no ejecutan este
- * script ni tienen acceso a la base de producción.
+ * (archivo local, nunca en el repo). Solo el maintainer ejecuta este
+ * script; nadie más tiene acceso a la base de producción.
  *
  * Fuentes: préstamos, DGCP (+ proveedores/RM), nómina Cámara, nómina Senado, DJP.
  */
