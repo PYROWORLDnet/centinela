@@ -1,11 +1,13 @@
 {
   "name": "centinela-backend",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "private": true,
   "type": "module",
   "scripts": {
     "dev": "node --watch src/index.js",
     "start": "node src/index.js",
+    "actualizar": "NODE_USE_ENV_PROXY=1 node src/scripts/actualizarFinanzas.js",
+    "actualizar:refresh": "NODE_USE_ENV_PROXY=1 node src/scripts/actualizarFinanzas.js --refresh",
     "ingest:proveedores": "node src/scripts/ingestProveedores.js",
     "ingest:dgcp": "node src/scripts/ingestDgcp.js",
     "download:dgcp": "node src/scripts/downloadDgcp.js",
