@@ -30,12 +30,12 @@ export default function Inicio({ datos }) {
           <div>
             <span>↓ Entró</span>
             <b>{millones(b.ingresos.ejecutado)}</b>
-            {vIng != null && <em className={vIng < 0 ? "r" : ""}>{vIng >= 0 ? "▲" : "▼"} {pct(Math.abs(vIng), 1)} vs {periodo.anio - 1}</em>}
+            {vIng != null && <em className={vIng < 0 ? "r" : ""}>{vIng >= 0 ? "+" : "−"}{pct(Math.abs(vIng), 1)} vs {periodo.anio - 1}</em>}
           </div>
           <div>
             <span>↑ Salió</span>
             <b>{millones(b.gastos.ejecutado)}</b>
-            {vGas != null && <em className="r">{vGas >= 0 ? "▲" : "▼"} {pct(Math.abs(vGas), 1)} vs {periodo.anio - 1}</em>}
+            {vGas != null && <em className="r">{vGas >= 0 ? "+" : "−"}{pct(Math.abs(vGas), 1)} vs {periodo.anio - 1}</em>}
           </div>
         </div>
         <div className="note">

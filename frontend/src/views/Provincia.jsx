@@ -70,7 +70,7 @@ export default function Provincia({ datos }) {
             <b>{prov.vigente ? pct(prov.devengado / prov.vigente) : "—"}</b>
           </div>
         </div>
-        <div className="note" style={{ background: "rgba(255,255,255,0.08)", color: "#cfe0d9" }}>
+        <div className="note">
           Puesto <b>{ranking}</b> de {lista.length} provincias en inversión este año.
         </div>
       </div>
