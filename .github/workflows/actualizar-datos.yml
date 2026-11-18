@@ -1,9 +1,8 @@
 name: Actualizar datos oficiales
 
 # Cada día revisa si DIGEPRES, la DGII o el registro de contrataciones publicaron algo nuevo.
-# Si hay datos nuevos Y pasaron todas las verificaciones, abre (o actualiza) un Pull Request
-# con el resumen de lo que cambió. Al fusionarlo, la app publica los datos nuevos.
-# (main está protegida: nada entra sin Pull Request.)
+# Si hay datos nuevos Y pasaron todas las verificaciones, hace commit directo a main
+# (solo del archivo de datos) y Vercel publica. Si algo no cuadra, no se publica nada.
 on:
   schedule:
     - cron: "17 11 * * *" # 7:17 a. m. hora de RD
@@ -11,14 +10,10 @@ on:
 
 permissions:
   contents: write
-  pull-requests: write
 
 concurrency:
   group: actualizar-datos
   cancel-in-progress: false
-
-env:
-  RAMA: datos/actualizacion-automatica
 
 jobs:
   actualizar:
@@ -39,9 +34,7 @@ jobs:
       - name: Descargar, verificar y generar datos
         run: npm run actualizar:refresh --prefix backend
 
-      - name: Abrir o actualizar el Pull Request
-        env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Publicar si cambió
         run: |
           if git diff --quiet -- backend/src/data/finanzas/datos.json; then
             echo "Sin cambios en los datos."
@@ -49,16 +42,8 @@ jobs:
           fi
           git config user.name "centinela-bot"
           git config user.email "centinela-bot@users.noreply.github.com"
-          git checkout -B "$RAMA"
           git add backend/src/data/finanzas/datos.json
           git commit -m "Datos: actualización automática desde fuentes oficiales"
-          # La rama es solo del bot: se rehace desde main en cada corrida.
-          git push --force origin "$RAMA"
-          TITULO="Datos nuevos: $(node -p "require('./backend/src/data/finanzas/datos.json').periodo.etiqueta")"
-          ABIERTO=$(gh pr list --head "$RAMA" --state open --json number --jq '.[0].number')
-          if [ -n "$ABIERTO" ]; then
-            gh pr edit "$ABIERTO" --title "$TITULO" --body-file backend/data/resumen-actualizacion.md
-            echo "PR #$ABIERTO actualizado."
-          else
-            gh pr create --base main --head "$RAMA" --title "$TITULO" --body-file backend/data/resumen-actualizacion.md
-          fi
+          # Por si main cambió mientras corría la tarea.
+          git pull --rebase origin main
+          git push origin HEAD:main
