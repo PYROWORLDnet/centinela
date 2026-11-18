@@ -1,8 +1,9 @@
 name: Actualizar datos oficiales
 
 # Cada día revisa si DIGEPRES, la DGII o el registro de contrataciones publicaron algo nuevo.
-# Solo hace commit si el archivo cambió Y pasaron todas las verificaciones
-# (si algo no cuadra, el script sale con error y no se publica nada).
+# Si hay datos nuevos Y pasaron todas las verificaciones, abre (o actualiza) un Pull Request
+# con el resumen de lo que cambió. Al fusionarlo, la app publica los datos nuevos.
+# (main está protegida: nada entra sin Pull Request.)
 on:
   schedule:
     - cron: "17 11 * * *" # 7:17 a. m. hora de RD
@@ -10,19 +11,23 @@ on:
 
 permissions:
   contents: write
+  pull-requests: write
 
 concurrency:
   group: actualizar-datos
   cancel-in-progress: false
+
+env:
+  RAMA: datos/actualizacion-automatica
 
 jobs:
   actualizar:
     runs-on: ubuntu-latest
     timeout-minutes: 30
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
 
-      - uses: actions/setup-node@v4
+      - uses: actions/setup-node@v5
         with:
           node-version: 22
           cache: npm
@@ -34,7 +39,9 @@ jobs:
       - name: Descargar, verificar y generar datos
         run: npm run actualizar:refresh --prefix backend
 
-      - name: Publicar si cambió
+      - name: Abrir o actualizar el Pull Request
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           if git diff --quiet -- backend/src/data/finanzas/datos.json; then
             echo "Sin cambios en los datos."
@@ -42,6 +49,16 @@ jobs:
           fi
           git config user.name "centinela-bot"
           git config user.email "centinela-bot@users.noreply.github.com"
+          git checkout -B "$RAMA"
           git add backend/src/data/finanzas/datos.json
           git commit -m "Datos: actualización automática desde fuentes oficiales"
-          git push
+          # La rama es solo del bot: se rehace desde main en cada corrida.
+          git push --force origin "$RAMA"
+          TITULO="Datos nuevos: $(node -p "require('./backend/src/data/finanzas/datos.json').periodo.etiqueta")"
+          ABIERTO=$(gh pr list --head "$RAMA" --state open --json number --jq '.[0].number')
+          if [ -n "$ABIERTO" ]; then
+            gh pr edit "$ABIERTO" --title "$TITULO" --body-file backend/data/resumen-actualizacion.md
+            echo "PR #$ABIERTO actualizado."
+          else
+            gh pr create --base main --head "$RAMA" --title "$TITULO" --body-file backend/data/resumen-actualizacion.md
+          fi

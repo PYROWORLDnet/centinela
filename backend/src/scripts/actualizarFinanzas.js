@@ -151,11 +151,14 @@ if (prev?.contratos?.fechaMasReciente && prev.contratos.anio === contratos.anio 
   fuenteContratos = prev.fuentes.contratos;
 }
 
+// La ruta local del archivo descargado no se publica (cambia según la máquina).
+const sinRuta = ({ file, ...f } = {}) => f;
+
 const dias = ej.periodo.dias;
 const datos = {
   generado: new Date().toISOString(),
   periodo: ej.periodo,
-  fuentes: { ejecucion: ej.fuente, recaudacion: dgii.fuente, contratos: fuenteContratos, reglas: REGLAS },
+  fuentes: { ejecucion: sinRuta(ej.fuente), recaudacion: sinRuta(dgii.fuente), contratos: sinRuta(fuenteContratos), reglas: REGLAS },
   verificaciones,
   balance: {
     ingresos: r.ingresos,
@@ -203,3 +206,34 @@ await mkdir(OUT_DIR, { recursive: true });
 await writeFile(OUT, JSON.stringify(datos));
 const kb = Math.round(JSON.stringify(datos).length / 1024);
 console.log(`✓ Publicado ${ej.periodo.etiqueta} — ${verificaciones.length} verificaciones OK — ${kb} KB`);
+
+/* Resumen legible de qué cambió, para la descripción del Pull Request automático. */
+const M = (v) => (v == null ? "—" : `${v < 0 ? "−" : ""}RD$${Math.round(Math.abs(v) / 1e6).toLocaleString("en-US")}M`);
+const N = (v) => (v == null ? "—" : Number(v).toLocaleString("en-US"));
+const filas = [
+  ["Período", prev?.periodo?.etiqueta ?? "—", datos.periodo.etiqueta],
+  ["Ingresos", M(prev?.balance?.ingresos?.ejecutado), M(datos.balance.ingresos.ejecutado)],
+  ["Gastos", M(prev?.balance?.gastos?.ejecutado), M(datos.balance.gastos.ejecutado)],
+  ["Resultado (déficit/superávit)", M(prev?.balance?.resultadoFinanciero?.ejecutado), M(datos.balance.resultadoFinanciero.ejecutado)],
+  ["DGII: último mes", prev?.ingresos?.dgii?.ultimoMes?.etiqueta ?? "—", datos.ingresos.dgii.ultimoMes.etiqueta],
+  ["Contratos: hasta", prev?.contratos?.fechaMasReciente ?? "—", datos.contratos.fechaMasReciente ?? "—"],
+  ["Contratos vigentes", N(prev?.contratos?.contratosActivos), N(datos.contratos.contratosActivos)],
+  ["Monto de contratos", M(prev?.contratos?.montoActivo), M(datos.contratos.montoActivo)],
+  ["Montos inconsistentes excluidos", N(prev?.contratos?.inconsistentes?.contratos), N(datos.contratos.inconsistentes?.contratos)],
+];
+const fuentesCambiadas = Object.entries(datos.fuentes)
+  .filter(([k, f]) => f?.sha256 && f.sha256 !== prev?.fuentes?.[k]?.sha256)
+  .map(([, f]) => `- ${f.institucion}: ${f.documento}`);
+const md = [
+  `Actualización automática desde fuentes oficiales. **${verificaciones.length} de ${verificaciones.length} verificaciones cuadran.**`,
+  "",
+  "| Dato | Publicado ahora | Nuevo |",
+  "|---|---|---|",
+  ...filas.map(([a, b, c]) => `| ${a} | ${b} | ${b === c ? c : `**${c}**`} |`),
+  "",
+  "**Fuentes que cambiaron:**",
+  ...(fuentesCambiadas.length ? fuentesCambiadas : ["- Ninguna (solo cambió el procesamiento)."]),
+  "",
+  "Al fusionar este PR, la app publica los datos nuevos.",
+].join("\n");
+await writeFile(new URL("../../data/resumen-actualizacion.md", import.meta.url), md);
