@@ -7,7 +7,6 @@
 Cada número sale tal cual de un archivo oficial (Hacienda/DIGEPRES, DGII, DGCP), tiene su fuente visible y pasa verificaciones automáticas antes de publicarse. Si algo no cuadra, no se publica.
 
 - Especificación de producto: [PRODUCT.md](./PRODUCT.md)
-- Cómo contribuir: [CONTRIBUTING.md](./CONTRIBUTING.md)
 - Contratos al día desde la API de la DGCP: [docs/COLECTOR_DGCP.md](./docs/COLECTOR_DGCP.md)
 - Informe de factibilidad técnica: [docs/INFORME_FACTIBILIDAD_DATOS_ABIERTOS.md](./docs/INFORME_FACTIBILIDAD_DATOS_ABIERTOS.md)
 
@@ -57,12 +56,11 @@ npm run actualizar          # usa lo descargado si ya existe
 npm run actualizar:refresh  # vuelve a descargar todo
 ```
 
-## Licencias
+## Licencia
 
-| Qué | Licencia | Archivo |
-|---|---|---|
-| Código | MIT | [LICENSE](./LICENSE) |
-| Datos derivados que publica Centinela | ODbL 1.0 | [DATA_LICENSE](./DATA_LICENSE) |
+Software propietario de Nodo AI Incorporation. Todos los derechos reservados. Ver [LICENSE](./LICENSE).
+
+Los datos públicos que muestra la app pertenecen a las instituciones que los publican; cada pantalla indica su fuente.
 
 ## Seguridad
 

@@ -1,8 +1,8 @@
 name: Actualizar datos oficiales
 
 # Cada día revisa si DIGEPRES, la DGII o el registro de contrataciones publicaron algo nuevo.
-# Solo hace commit si el archivo cambió Y pasaron todas las verificaciones
-# (si algo no cuadra, el script sale con error y no se publica nada).
+# Si hay datos nuevos Y pasaron todas las verificaciones, hace commit directo a main
+# (solo del archivo de datos) y Vercel publica. Si algo no cuadra, no se publica nada.
 on:
   schedule:
     - cron: "17 11 * * *" # 7:17 a. m. hora de RD
@@ -20,9 +20,9 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 30
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
 
-      - uses: actions/setup-node@v4
+      - uses: actions/setup-node@v5
         with:
           node-version: 22
           cache: npm
@@ -44,4 +44,6 @@ jobs:
           git config user.email "centinela-bot@users.noreply.github.com"
           git add backend/src/data/finanzas/datos.json
           git commit -m "Datos: actualización automática desde fuentes oficiales"
-          git push
+          # Por si main cambió mientras corría la tarea.
+          git pull --rebase origin main
+          git push origin HEAD:main
